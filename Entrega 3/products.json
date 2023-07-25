@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "title": "Lapiz",
+    "description": "Lapiz para dibujo",
+    "price": 200,
+    "thumbnail": "lapiz.png",
+    "code": "111111",
+    "stock": 30
+  },
+  {
+    "id": 2,
+    "title": "Goma de borrar",
+    "description": "Goma blanca",
+    "price": 50,
+    "thumbnail": "gomaDeBorrar.jpg",
+    "code": "111112",
+    "stock": 20
+  },
+  {
+    "id": 3,
+    "title": "Lapiz de dibujo",
+    "description": "Lapiz para dibujar",
+    "price": 150,
+    "thumbnail": "lapizDibujo.jpg",
+    "code": "111113",
+    "stock": 40
+  },
+  {
+    "id": 4,
+    "title": "Resaltador",
+    "description": "Resaltador",
+    "price": 250,
+    "thumbnail": "resaltador.jpg",
+    "code": "111114",
+    "stock": 30
+  },
+  {
+    "id": 5,
+    "title": "Hoja A3",
+    "description": "Hoja A3",
+    "price": 100,
+    "thumbnail": "hojaA3.jpg",
+    "code": "111115",
+    "stock": 18
+  },
+  {
+    "id": 6,
+    "title": "Hoja A4",
+    "description": "Hoja A4",
+    "price": 100,
+    "thumbnail": "Hoja A4.jpg",
+    "code": "111116",
+    "stock": 20
+  }
+]
