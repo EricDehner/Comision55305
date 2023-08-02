@@ -1,0 +1,119 @@
+[
+    {
+        "id": 1,
+        "title": "Lapiz",
+        "description": "Lapiz para dibujo",
+        "code": "111111",
+        "price": 200,
+        "status": true,
+        "stock": 30,
+        "category": "librería",
+        "thumbnails": [
+            "lapiz.png"
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Goma de borrar",
+        "description": "Goma blanca",
+        "code": "111112",
+        "price": 50,
+        "status": true,
+        "stock": 20,
+        "category": "librería",
+        "thumbnails": [
+            "gomaDeBorrar.jpg"
+        ]
+    },
+    {
+        "id": 3,
+        "title": "Lapiz de dibujo",
+        "description": "Lapiz para dibujar",
+        "code": "111113",
+        "price": 150,
+        "status": true,
+        "stock": 40,
+        "category": "librería",
+        "thumbnails": [
+            "lapizDibujo.jpg"
+        ]
+    },
+    {
+        "id": 4,
+        "title": "Resaltador",
+        "description": "Resaltador",
+        "code": "111114",
+        "price": 250,
+        "status": true,
+        "stock": 30,
+        "category": "librería",
+        "thumbnails": [
+            "resaltador.jpg"
+        ]
+    },
+    {
+        "id": 5,
+        "title": "Hoja A3",
+        "description": "Hoja A3",
+        "code": "111115",
+        "price": 100,
+        "status": true,
+        "stock": 18,
+        "category": "librería",
+        "thumbnails": [
+            "hojaA3.jpg"
+        ]
+    },
+    {
+        "id": 6,
+        "title": "Hoja A4",
+        "description": "Hoja A4",
+        "code": "111116",
+        "price": 100,
+        "status": true,
+        "stock": 20,
+        "category": "librería",
+        "thumbnails": [
+            "Hoja A4.jpg"
+        ]
+    },
+    {
+        "id": 7,
+        "title": "Fibras de colores",
+        "description": "Fibras de colores",
+        "code": "111117",
+        "price": 20000,
+        "status": false,
+        "stock": 10,
+        "category": "librería",
+        "thumbnails": [
+            "fibrasColores.jpg"
+        ]
+    },
+    {
+        "id": 8,
+        "title": "Tijera",
+        "description": "Tijera",
+        "code": "111118",
+        "price": 250,
+        "status": true,
+        "stock": 10,
+        "category": "librería",
+        "thumbnails": [
+            "tijera.jpg"
+        ]
+    },
+    {
+        "id": 9,
+        "title": "Tijera",
+        "description": "Tijera",
+        "code": "111119",
+        "price": 250,
+        "status": true,
+        "stock": 10,
+        "category": "librería",
+        "thumbnails": [
+            "tijera.jpg"
+        ]
+    }
+]
