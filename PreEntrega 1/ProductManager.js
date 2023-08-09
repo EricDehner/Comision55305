@@ -44,7 +44,17 @@ class ProductManager {
 
     async updateProduct(id, updatedFields) {
         const productIndex = this.products.findIndex(product => product.id === id);
+
+
         if (productIndex !== -1) {
+
+            const newCode = updatedFields.code;
+
+            if (newCode !== this.products[productIndex].code && await this.validateCode(newCode)) {
+                console.log("The new product code is already in use.");
+                return false;
+            }
+
             const updatedProduct = { ...this.products[productIndex], ...updatedFields };
             this.products[productIndex] = updatedProduct;
             await this.saveProducts();
@@ -65,34 +75,6 @@ class ProductManager {
             console.log("Product not found.");
             return false;
         }
-    }
-
-    async addProduct({ title, description, code, price, status, stock, category, thumbnails }) {
-        if (!title || !description || !code || !price || !status || !stock || !category || !thumbnails) {
-            console.log("All fields are required.");
-            return false;
-        }
-
-        const codeProduct = this.products.some(product => product.code === code);
-        if (codeProduct) {
-            console.log("");
-            return false;
-        }
-
-        const newProduct = {
-            id: this.generateId(),
-            title,
-            description,
-            code,
-            price,
-            status,
-            stock,
-            thumbnails
-        };
-
-        this.products.push(newProduct);
-        await this.saveProducts();
-
     }
 
     async addProduct(product) {
