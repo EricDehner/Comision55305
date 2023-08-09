@@ -4,7 +4,7 @@ class ProductManager {
         this.lastProductId = 0;
     }
 
-    addProduct(title, description, price, thumbnail, code, stock) {
+    addProduct({ title, description, price, thumbnail, code, stock }) {
 
         if (!title || !description || !price || !thumbnail || !code || !stock) {
             console.log("All fields are required.");
@@ -48,8 +48,24 @@ class ProductManager {
 
 const productManager = new ProductManager();
 
-productManager.addProduct("Lapiz", "Lapiz para dibujo", 200, "lapiz.jpg", "111111", 30);
-productManager.addProduct("Goma de borrar", "Goma blanca", 50, "gomaDeBorrar.jpg", "111112", 20);
+productManager.addProduct(
+    {
+        title: "Lapiz",
+        description: "Lapiz para dibujo",
+        price: 200,
+        thumbnail: "lapiz.png",
+        code: "111111",
+        stock: 30
+    })
+productManager.addProduct(
+    {
+        title: "Goma de borrar",
+        description: "Goma blanca",
+        price: 50,
+        thumbnail: "gomaDeBorrar.jpg",
+        code: "111112",
+        stock: 20
+    })
 
 
 //Ver productos del array

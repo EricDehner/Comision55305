@@ -81,13 +81,32 @@ export default class ProductManager {
         }
     }
 
-    async deleteProduct(id) {
-        const productIndex = this.products.findIndex(product => product.id === id);
-        if (productIndex !== -1) {
-            this.products.splice(productIndex, 1);
-            await this.saveProducts();
+    /*     async deleteProduct(id) {
+            const productIndex = this.products.findIndex(product => product.id === id);
+            if (productIndex !== -1) {
+                this.products.splice(productIndex, 1);
+                await this.saveProducts();
+                return true;
+            } else {
+                console.log("Product not found.");
+                return false;
+            }
+        } */
+
+    deleteProduct(id) {
+        this.products = this.getProducts();
+        let pos = this.products.findIndex(item => item.id === id);
+
+        if (pos > -1) {
+            this.products.splice(pos, 1); (0, 1)
+            this.saveProducts();
+            console.log("Product #" + id + " deleted!");
+
+            return true;
         } else {
-            console.log("Product not found.");
+            console.log("Not found!");
+
+            return false;
         }
     }
 }

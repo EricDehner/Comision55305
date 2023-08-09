@@ -12,9 +12,9 @@ cartsRouter.post("/", (req, res) => {
     }
 });
 
-cartsRouter.get("/:cid", async (req, res) => {
+cartsRouter.get("/:cid", (req, res) => {
     const cid = Number(req.params.cid);
-    const cart = await CM.getCart(cid);
+    const cart = CM.getCart(cid);
 
     if (cart) {
         res.send({products:cart.products});
@@ -23,10 +23,10 @@ cartsRouter.get("/:cid", async (req, res) => {
     }
 });
 
-cartsRouter.post("/:cid/products/:pid", async (req, res) => {
+cartsRouter.post("/:cid/products/:pid", (req, res) => {
     const cid = Number(req.params.cid);
     const pid = Number(req.params.pid);
-    const cart = await CM.getCart(cid);
+    const cart = CM.getCart(cid);
 
     if (cart) {
         if (CM.addProductToCart(cid, pid)) {

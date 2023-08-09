@@ -1,0 +1,11 @@
+[
+  {
+    "id": 2,
+    "title": "Goma de borrar",
+    "description": "Goma blanca",
+    "price": 250,
+    "thumbnail": "gomaDeBorrar.jpg",
+    "code": "111112",
+    "stock": 40
+  }
+]
