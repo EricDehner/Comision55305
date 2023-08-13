@@ -1,69 +1,107 @@
-const socketClient = io();
+const socket = io();
+const content = document.getElementById("content");
+const menu = document.getElementById("menu");
+const IDviews = document.getElementById("id")
+const button = document.querySelector(".realTime_header-btn");
+let menuActive = false;
+let idActive = false;
 
-//Muestra los productos disponibles
-socketClient.on("envioDeProductos", (obj) => {
-    updateProductList(obj);
+socket.on("realTimeProducts", (data) => {
+    let salida = ``;
+    data.forEach(item => {
+        salida += `<div class="card">
+            <p id="id" class="ID_card nne">${item.id}</p>
+            <div class="card_img">
+            <img class="card_img-img" src=${item.thumbnails} alt=${item.description} />
+            </div>
+        <div class="card_content">
+            <h2 class="card_content-title">${item.title}</h2>
+            <h3 class="card_content-description">${item.description}</h3>
+            <p class="card_content-price">$${item.price}</p>
+            <a class="card_content-btn" href="#">Comprar</a>
+            </div>
+            </div>`;
+    });
+    content.innerHTML = salida;
 });
 
-//Funcion usada para mostrar los productos disponibles
-function updateProductList(products) {
-    let div = document.getElementById("list-products");
-    let productos = " ";
-
-    products.forEach((product) => {
-        productos += `<article class="container">
-                     <div class="card">
-                     <div class="imgBx">
-                     <img src="${product.thumbnail}" width="150"/>
-                     </div>
-                     <div class="contentBx">
-                     <h2>${product.title}</h2>
-                     <div class="size">
-                     <h3>${product.description}</h3>
-                     </div>
-                     <div class="color">
-                     <h3>$${product.price}</h3>
-                     </div>
-                     <a href="#">Comprar ahora</a>
-                     </div>
-                     </div>
-                     </article>`;
-
-    });
-    div.innerHTML = productos;
+function showID() {
+    const IDviews = document.getElementById("id")
+    if (!idActive) {
+        console.log("muestra id");
+        document.querySelector(".realTime_content-btn.blue").textContent = "OCULTAR ID's";
+        IDviews.classList.remove("none");
+        idActive = true;
+    } else {
+        console.log("oculta id");
+        document.querySelector(".realTime_content-btn.blue").textContent = "MOSTRAR ID's";
+        IDviews.classList.add("none");
+        idActive = false;
+    }
 }
 
-//Formulario para agregar y quitar productos de la lista
-let form = document.getElementById("formProduct");
-form.addEventListener("submit", (evt) => {
-    evt.preventDefault();
+function editMenu() {
+    if (!menuActive) {
+        menu.innerHTML = `
+        <div class="realTime_content-add">
+        <h2 class="realTime_content-add--title">Agregar Producto</h2>
+        <div class="realTime_content-add--input">
+        <input type="text" class="realTime_content-add--input---item" id="title" placeholder="Titulo" required>
+        <input type="text" class="realTime_content-add--input---item" id="description" placeholder="Descripción"
+        required>
+        <input type="number" class="realTime_content-add--input---item" id="code" placeholder="Codigo" required>
+        <input type="number" class="realTime_content-add--input---item" id="price" placeholder="Precio"
+        required>
+        <input type="text" class="realTime_content-add--input---item" id="status" placeholder="Status">
+        <input type="number" class="realTime_content-add--input---item" id="stock" placeholder="Stock" required>
+        <input type="text" class="realTime_content-add--input---item" id="category" placeholder="Categoría"
+        required>
+        <input type="text" class="realTime_content-add--input---item" id="thumbnails" placeholder="Imagen"
+        required>
+        </div>
+        <button class="realTime_content-btn green" type="submit" onclick="addProduct()">AGREGAR</button>
+    </div>
+    <div class="realTime_content-stick"></div>
+    <div class="realTime_content-delete">
+    <h2 class="realTime_content-delete--title">Eliminar Producto</h2>
+    <div class="realTime_content-delete--input">
+    <input type="number" class="realTime_content-delete--input---item" id="idProduct"
+    placeholder="ID del producto">
+    </div>
+    <button class="realTime_content-btn red" onclick="deleteProduct()">ELIMINAR</button>
+    </div>
+    <div class="realTime_content-stick-x"></div>
+    <div class="realTime_content-showID">
+    <h3 class="realTime_content-showID--title">Mostrar ID de productos</h3>
+    <button class="realTime_content-btn blue" onclick="showID()">MOSTRAR ID´S</button>
+    </div>`
+        button.classList.add("realTime_header-btn--active");
+        menu.classList.remove("none");
+        menuActive = true;
+    } else {
+        menu.innerHTML = "";
+        button.classList.remove("realTime_header-btn--active");
+        menu.classList.add("none");
+        menuActive = false;
+    }
+}
 
-    let title = form.elements.title.value;
-    let description = form.elements.description.value;
-    let stock = form.elements.stock.value;
-    let thumbnail = form.elements.thumbnail.value;
-    let category = form.elements.category.value;
-    let price = form.elements.price.value;
-    let code = form.elements.code.value;
+function addProduct() {
+    const title = document.getElementById("title").value;
+    const description = document.getElementById("description").value;
+    const code = document.getElementById("code").value;
+    const price = document.getElementById("price").value;
+    const status = document.getElementById("status").value;
+    const stock = document.getElementById("stock").value;
+    const category = document.getElementById("category").value;
+    const thumbnails = document.getElementById("thumbnails").value;
+    const product = { title: title, description: description, code: code, price: price, status: status, stock: stock, category: category, thumbnails: thumbnails };
 
-    socketClient.emit("addProduct", {
-        title,
-        description,
-        stock,
-        thumbnail,
-        category,
-        price,
-        code,
-    });
+    socket.emit("nuevoProducto", product);
+}
 
-    form.reset();
+function deleteProduct() {
+    const idProduct = document.getElementById("idProduct").value;
+    socket.emit("eliminarProducto", idProduct);
+}
 
-});
-
-//Elimina producto por su ID
-document.getElementById("delete-btn").addEventListener("click", function () {
-    const deleteidinput = document.getElementById("id-prod");
-    const deleteid = parseInt(deleteidinput.value);
-    socketClient.emit("deleteProduct", deleteid);
-    deleteidinput.value = "";
-});

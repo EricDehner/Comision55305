@@ -1,22 +1,14 @@
-import { Router } from "express";
+import express from "express";
 import ProductManager from "../managers/ProductManager.js";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
+const router = express.Router();
+const PM = new ProductManager();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const pmanager = new ProductManager(__dirname + "/files/products.json");
-const router = Router();
-
-//Obtiene la lista de productos
-router.get("/", async(req,res)=>{
-    const listaProductos = await pmanager.getProducts({});
-    res.render("home", {listaProductos});
+router.get("/", (req, res) => {
+    const products = PM.getProducts();
+    res.render("home", { products });
 });
 
-//Acceso al formulario
-router.get("/realtimeProducts", (req,res)=>{
+router.get("/realtimeproducts", (req, res) => {
     res.render("realtimeProducts");
 });
 

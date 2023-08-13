@@ -1,10 +1,10 @@
 <article>
-    <h1 class="card_title">Productos</h1>
+    <h1 class="card_title">Catálogo</h1>
     <div class="card_container">
-        {{#each listaProductos}}
+        {{#each products}}
         <div class="card">
             <div class="card_img">
-                <img src={{thumbnail}} alt={{description}} />
+                <img class="card_img-img" src={{thumbnails}} alt={{description}} />
             </div>
             <div class="card_content">
                 <h2 class="card_content-title">{{title}}</h2>

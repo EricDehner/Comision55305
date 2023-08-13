@@ -1,52 +1,47 @@
 import express from "express";
-import productsRouter from "./routes/products.router.js";
-import cartsRouter from "./routes/carts.router.js";
-import viewRouter from "./routes/view.routes.js";
-import handlerbars from "express-handlebars";
 import __dirname from "./utils.js";
-import { Server, Socket } from "socket.io";
-
+import handlerbars from "express-handlebars";
+import viewRouter from "./routes/view.routes.js";
+import { Server } from "socket.io";
+import productsRouter from "./routes/products.router.js";
+import ProductManager from "./managers/ProductManager.js";
+import cartsRouter from "./routes/carts.router.js";
 
 const app = express();
 const puerto = 8080;
+const httpServer = app.listen(puerto, () => {
+    console.log("Servidor Activo en el puerto: " + puerto);
+});
+
+const socketServer = new Server(httpServer);
+const PM = new ProductManager();
 
 app.engine("handlebars", handlerbars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 app.use(express.static(__dirname + "/public"));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use("/api/products/", productsRouter);
 app.use("/api/carts/", cartsRouter);
 app.use("/", viewRouter);
 
+socketServer.on("connection", (socket) => {
+    console.log("¡Conexión exitosa!");
 
-const httpServer=app.listen(puerto, () => {
-    console.log("Servidor Activo en el puerto: " + puerto);
-});
-const socketServer = new Server(httpServer);
+    const products = PM.getProducts();
+    socket.emit("realTimeProducts", products);
 
-import ProductManager from "./managers/ProductManager.js";
-const PM = new ProductManager(__dirname + "./files/products.json");
-
-//Primero recibe una nueva coneccion de usuario y da un ID para este, luego permite desde el formulario agregar o quitar productos de la lista
-socketServer.on("connection", async (socket) => {
-    console.log("Cliente conectado con ID: ", socket.id);
-    const listadeproductos = await PM.getProducts({});
-    socketServer.emit("envioDeProductos", listadeproductos);
-
-    socket.on("addProduct", async (obj) => {
-        await PM.addProduct(obj);
-        const listadeproductos = await PM.getProducts({});
-        socketServer.emit("envioDeProductos", listadeproductos);
+    socket.on("nuevoProducto", (data) => {
+        const product = { title: data.title, description: data.description, code: data.code, price: data.price, status: data.status, stock: data.stock, category: data.category, thumbnails: data.thumbnails };
+        PM.addProduct(product);
+        const products = PM.getProducts();
+        socket.emit("realTimeProducts", products);
     });
 
-    socket.on("deleteProduct", async (id) => {
-        console.log(id)
-        await PM.deleteProduct(id)
-        const listadeproductos = await PM.getProducts({})
-        socketServer.emit("envioDeProducts", listadeproductos)
-    })
+    socket.on("eliminarProducto", (data) => {
+        PM.deleteProduct(parseInt(data));
+        const products = PM.getProducts();
+        socket.emit("realTimeProducts", products);
+    });
 });

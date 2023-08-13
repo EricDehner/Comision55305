@@ -1,106 +1,128 @@
 [
   {
     "id": 1,
-    "title": "Lapiz",
-    "description": "Lapiz para dibujo",
+    "title": "Coca Cola 2.5L",
+    "description": "Gaseosa Coca-Cola 2,5 Lt.",
     "code": "111111",
-    "price": 200,
+    "price": 590,
     "status": true,
     "stock": 30,
-    "category": "librería",
+    "category": "bebida",
     "thumbnails": [
-      "lapiz.png"
+      "https://ardiaprod.vtexassets.com/arquivos/ids/253496-1200-auto?v=638211303854800000&width=1200&height=auto&aspect=true"
     ]
   },
   {
     "id": 2,
-    "title": "Goma de borrar",
-    "description": "Goma blanca",
+    "title": "Pepsi Cola 2L",
+    "description": "Gaseosa Cola Pepsi 2 Lt",
     "code": "111112",
-    "price": 50,
+    "price": 880,
     "status": true,
     "stock": 20,
-    "category": "librería",
+    "category": "bebida",
     "thumbnails": [
-      "gomaDeBorrar.jpg"
+      "https://ardiaprod.vtexassets.com/arquivos/ids/256924-1200-auto?v=638254618000600000&width=1200&height=auto&aspect=true"
     ]
   },
   {
     "id": 3,
-    "title": "Lapiz de dibujo",
-    "description": "Lapiz para dibujar",
+    "title": "Spite 2.25L",
+    "description": "Gaseosa Sprite Lima-Limón 2,25 Lt",
     "code": "111113",
-    "price": 150,
+    "price": 520,
     "status": true,
     "stock": 40,
-    "category": "librería",
+    "category": "bebida",
     "thumbnails": [
-      "lapizDibujo.jpg"
+      "https://jumboargentina.vtexassets.com/arquivos/ids/783975/Gaseosa-Sprite-Lima-lim-n-2-25-Lt-2-248213.jpg?v=638215869640830000"
     ]
   },
   {
     "id": 4,
-    "title": "Resaltador",
-    "description": "Resaltador",
+    "title": "Not Mila Chicken",
+    "description": "Not Mila Chicken 220 Gr.",
     "code": "111114",
-    "price": 250,
+    "price": 700,
     "status": true,
     "stock": 30,
-    "category": "librería",
+    "category": "congelado",
     "thumbnails": [
-      "resaltador.jpg"
+      "https://ardiaprod.vtexassets.com/arquivos/ids/252345-1200-auto?v=638198344255830000&width=1200&height=auto&aspect=true"
     ]
   },
   {
     "id": 5,
-    "title": "Hoja A3",
-    "description": "Hoja A3",
+    "title": "Papas McCain",
+    "description": "Papas McCain Tradicionales 720 Gr.",
     "code": "111115",
-    "price": 100,
+    "price": 690,
     "status": true,
     "stock": 18,
-    "category": "librería",
+    "category": "congelado",
     "thumbnails": [
-      "hojaA3.jpg"
+      "https://ardiaprod.vtexassets.com/arquivos/ids/219484-1200-auto?v=637790481206670000&width=1200&height=auto&aspect=true"
     ]
   },
   {
     "id": 6,
-    "title": "Hoja A4",
-    "description": "Hoja A4",
+    "title": "Bocaditos de Pollo",
+    "description": "Bocaditos de Pollo Swift 380 Gr.",
     "code": "111116",
-    "price": 100,
+    "price": 740,
     "status": true,
     "stock": 20,
-    "category": "librería",
+    "category": "congelado",
     "thumbnails": [
-      "Hoja A4.jpg"
+      "https://ardiaprod.vtexassets.com/arquivos/ids/231097-1200-auto?v=638026467473800000&width=1200&height=auto&aspect=true"
     ]
   },
   {
     "id": 7,
-    "title": "Fibras de colores",
-    "description": "Fibras de colores",
+    "title": "Jabón Líquido Ala",
+    "description": "Jabón Líquido Para Diluir 500 Ml.",
     "code": "111117",
-    "price": 20000,
+    "price": 1600,
     "status": false,
     "stock": 10,
-    "category": "librería",
+    "category": "limpieza",
     "thumbnails": [
-      "fibrasColores.jpg"
+      "https://ardiaprod.vtexassets.com/arquivos/ids/240618-1200-auto?v=638093024773200000&width=1200&height=auto&aspect=true"
     ]
   },
   {
     "id": 8,
-    "title": "Tijera",
-    "description": "Tijera",
+    "title": "Detergente Magistral Limón",
+    "description": "Detergente Líquido Lavavajillas 500ml",
     "code": "111118",
-    "price": 250,
+    "price": 720,
     "status": true,
     "stock": 10,
-    "category": "librería",
+    "category": "limpieza",
     "thumbnails": [
-      "tijera.jpg"
+      "https://ardiaprod.vtexassets.com/arquivos/ids/251651-1200-auto?v=638197541488300000&width=1200&height=auto&aspect=true"
     ]
+  },
+  {
+    "id": 9,
+    "title": " Fanta naranja 2.25L",
+    "description": "Gaseosa Fanta naranja 2,25 Lts.",
+    "code": "111120",
+    "price": "530",
+    "status": "",
+    "stock": "20",
+    "category": "babida",
+    "thumbnails": "https://ardiaprod.vtexassets.com/arquivos/ids/253504-1200-auto?v=638211303942900000&width=1200&height=auto&aspect=true"
+  },
+  {
+    "id": 10,
+    "title": "",
+    "description": "",
+    "code": "",
+    "price": "",
+    "status": "",
+    "stock": "",
+    "category": "",
+    "thumbnails": ""
   }
 ]

@@ -1,19 +1,11 @@
-<form id="formProduct">
-    <h2>Realtime Products</h2>
-    <input class="contols" type="text" name="title" id="title" placeholder="Nombre del producto" required>
-    <input class="contols" type="text" name="description" id="description" placeholder="Descripcion del producto" required>
-    <input class="contols" type="number" name="stock" id="stock" placeholder="Stock disponible" required>
-    <input class="contols" type="text" name="thumbnail" id="thumbnail" placeholder="Imagen del producto" required>
-    <input class="contols" type="text" name="category" id="category" placeholder="Categoria" required>
-    <input class="contols" type="number" name="price" id="price" placeholder="Precio" required>
-    <input class="contols" type="text" name="code" id="code" placeholder="Codigo" required>
-    <button class="botons" type="submit" id="add-btn">Registrar nuevo Producto</button>
-    <h2>Para eliminar el producto:</h2>
-    <input class="contol" type="number" name="id-prod" id="id-prod" placeholder="Ingrese el ID del producto a eliminar">
-    <button class="botons" type="button" id="delete-btn">Eliminar</button>
-</form>
+<div class="realTime">
+    <div class="realTime_header">
+        <h1 class="realTime_header-title">¡Catálogo en tiempo real!</h1>
+        <button class="realTime_header-btn" onclick="editMenu()">Editar</button>
+    </div>
+    <div id="menu" class="realTime_content none"></div>
+    <div id="content" class="card_container"></div>
+</div>
 
-<article id="list-products"></article>
-
-<script src="/socket.io/socket.io.js"></script>
-<script src="../public/js/realtime.js"></script>
+<script src="socket.io/socket.io.js"></script>
+<script src="/js/realtime.js"></script>

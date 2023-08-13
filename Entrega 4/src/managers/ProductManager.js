@@ -45,9 +45,7 @@ class ProductManager {
     async updateProduct(id, updatedFields) {
         const productIndex = this.products.findIndex(product => product.id === id);
 
-
         if (productIndex !== -1) {
-
             const newCode = updatedFields.code;
 
             if (newCode !== this.products[productIndex].code && await this.validateCode(newCode)) {
@@ -70,6 +68,7 @@ class ProductManager {
         if (productIndex !== -1) {
             this.products.splice(productIndex, 1);
             await this.saveProducts();
+            console.log("Product deleted!");
             return true;
         } else {
             console.log("Product not found.");
@@ -86,8 +85,8 @@ class ProductManager {
                 const producto = { id: await this.generateId(), title: product.title, description: product.description, code: product.code, price: product.price, status: product.status, stock: product.stock, category: product.category, thumbnails: product.thumbnails };
                 this.products = await this.getProducts();
                 this.products.push(producto);
-                await this.saveProducts();
                 console.log("Product added!");
+                await this.saveProducts();
                 return true;
             }
         } catch (error) {
