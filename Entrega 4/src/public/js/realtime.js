@@ -10,7 +10,7 @@ socket.on("realTimeProducts", (data) => {
     let salida = ``;
     data.forEach(item => {
         salida += `<div class="card">
-            <p id="id" class="ID_card nne">${item.id}</p>
+            <p id="id" class="ID_card none">${item.id}</p>
             <div class="card_img">
             <img class="card_img-img" src=${item.thumbnails} alt=${item.description} />
             </div>
@@ -26,16 +26,21 @@ socket.on("realTimeProducts", (data) => {
 });
 
 function showID() {
-    const IDviews = document.getElementById("id")
+    const IDviews = document.getElementsByClassName("ID_card")
     if (!idActive) {
+        for (let i = 0; i < IDviews.length; i++) {
+            IDviews[i].classList.remove("none");
+        }
+
         console.log("muestra id");
         document.querySelector(".realTime_content-btn.blue").textContent = "OCULTAR ID's";
-        IDviews.classList.remove("none");
         idActive = true;
     } else {
+        for (let i = 0; i < IDviews.length; i++) {
+            IDviews[i].classList.add("none");
+        }
         console.log("oculta id");
         document.querySelector(".realTime_content-btn.blue").textContent = "MOSTRAR ID's";
-        IDviews.classList.add("none");
         idActive = false;
     }
 }

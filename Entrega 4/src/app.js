@@ -32,15 +32,15 @@ socketServer.on("connection", (socket) => {
     const products = PM.getProducts();
     socket.emit("realTimeProducts", products);
 
-    socket.on("nuevoProducto", (data) => {
+    socket.on("nuevoProducto", async (data) => {
         const product = { title: data.title, description: data.description, code: data.code, price: data.price, status: data.status, stock: data.stock, category: data.category, thumbnails: data.thumbnails };
-        PM.addProduct(product);
+        await PM.addProduct(product);
         const products = PM.getProducts();
         socket.emit("realTimeProducts", products);
     });
 
-    socket.on("eliminarProducto", (data) => {
-        PM.deleteProduct(parseInt(data));
+    socket.on("eliminarProducto", async (data) => {
+        await PM.deleteProduct(parseInt(data));
         const products = PM.getProducts();
         socket.emit("realTimeProducts", products);
     });
