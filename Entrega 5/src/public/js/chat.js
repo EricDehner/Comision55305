@@ -2,15 +2,20 @@ const socket = io();
 const messages = document.getElementById("messages");
 
 socket.on("messages", (data) => {
-    const formContainer = document.querySelector(".form_container");
+    const form = document.querySelector(".form");
+    const messageContainer = document.querySelector(".messages_container");
+    const body = document.querySelector(".body")
 
     setTimeout(() => {
-
-        formContainer.classList.remove("form_container");
-        formContainer.classList.add("form_container-active");
-
+        body.classList.remove("body");
+        body.classList.add("body-active");
+        form.classList.remove("form");
+        form.classList.add("form-active");
     }, 1000);
+
     setTimeout(() => {
+        messageContainer.classList.remove("messages_container");
+        messageContainer.classList.add("messages_container-active");
 
         let salida = ``;
         data.forEach(item => {
@@ -20,7 +25,6 @@ socket.on("messages", (data) => {
         <p class="message_card-message">${item.message}</p>
         </div>`;
         });
-
         messages.innerHTML = salida;
     }, 1500);
 });

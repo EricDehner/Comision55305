@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-body {
+.body {
     background-color: #dddddd;
     background-image: url("https://www.transparenttextures.com/patterns/arches.png");
     height: 100dvh;
@@ -18,14 +18,36 @@ body {
         "header"
         "main"
         "footer";
+    overflow: hidden;
+}
+
+.body-active {
+    background-color: #dddddd;
+    background-image: url("https://www.transparenttextures.com/patterns/arches.png");
+    height: 100dvh;
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-auto-rows: 1fr;
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content auto max-content;
+    gap: 0px 0px;
+    grid-template-areas:
+        "header"
+        "main"
+        "footer";
+    overflow: auto;
 }
 
 header {
     grid-area: header;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 main {
     grid-area: main;
+    position: relative;
 }
 
 footer {
@@ -33,15 +55,13 @@ footer {
 }
 
 .navBar {
-    position: sticky;
-    top: 0;
-    z-index: 11;
     background-color: #a9bac2;
     height: 55px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0px 4px 11px #00000042;
 }
 
 .navBar_brand {
@@ -157,13 +177,16 @@ footer {
     font-weight: 700;
 }
 
-
 .footer {
     background-color: #5e5e5e;
     width: auto;
     margin-top: 2rem;
+    bottom: 0;
+    width: 100%;
+    position: fixed;
     height: 35px;
     display: flex;
+    z-index: 10;
     justify-content: center;
     align-items: center;
 }
@@ -370,11 +393,10 @@ input[type="number"]::-webkit-outer-spin-button {
 .form_container {
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    transition: all 1s ease-in-out;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0);
 }
 
 .form_container-active {
@@ -388,12 +410,30 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .form {
-    margin-top: 3rem;
     width: 1140px;
     height: 330px;
     background-color: rgb(228, 228, 228);
     border-radius: 14px;
     box-shadow: 5px 3px 8px rgba(0, 0, 0, 0.361);
+    position: absolute;
+    left: 50%;
+    transition: all 1s ease-in-out;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0);
+}
+
+.form-active {
+    width: 1140px;
+    height: 330px;
+    background-color: rgb(228, 228, 228);
+    margin-top: 3rem;
+    border-radius: 14px;
+    box-shadow: 5px 3px 8px rgba(0, 0, 0, 0.361);
+    position: absolute;
+    left: 50%;
+    transition: all 1s ease-in-out;
+    top: 0%;
+    transform: translate3d(-50%, 0%, 0);
 }
 
 .form_title {
@@ -468,6 +508,21 @@ input[type="number"]::-webkit-outer-spin-button {
     height: max-content;
     display: flex;
     justify-content: center;
+    position: absolute;
+    bottom: -400px;
+    transition: all 1.5s ease-in-out;
+    clip-path: inset(0 0 100% 0);
+}
+
+.messages_container-active {
+    width: 100%;
+    height: max-content;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 377px;
+    transition: all 1s ease-in-out;
+    clip-path: inset(0 0 0 0);
 }
 
 .message {
