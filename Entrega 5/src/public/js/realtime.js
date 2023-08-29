@@ -6,7 +6,7 @@ const button = document.querySelector(".realTime_header-btn");
 let menuActive = false;
 let idActive = false;
 
-socket.on("realTimeProducts", (data) => {
+socket.on("realTimeProducts",  (data) => {
     let salida = ``;
     console.log(data);
     data.forEach(item => {
@@ -68,7 +68,7 @@ function editMenu() {
     <div class="realTime_content-delete">
     <h2 class="realTime_content-delete--title">Eliminar Producto</h2>
     <div class="realTime_content-delete--input">
-    <input type="number" class="realTime_content-delete--input---item" id="idProduct"
+    <input type="text" class="realTime_content-delete--input---item" id="idProduct"
     placeholder="ID del producto">
     </div>
     <button class="realTime_content-btn red" onclick="deleteProduct()">ELIMINAR</button>

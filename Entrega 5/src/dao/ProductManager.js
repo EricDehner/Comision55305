@@ -2,7 +2,6 @@ import { productModel } from "./models/product.model.js";
 
 class ProductManager {
     async getProducts(limit) {
-        console.log(limit);
         if (limit) {
             return productModel.find().limit(limit).lean()
         } else {

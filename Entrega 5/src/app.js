@@ -13,7 +13,7 @@ import cartsRouter from "./routes/carts.router.js";
 const app = express();
 const puerto = 8080;
 const httpServer = app.listen(puerto, () => {
-    console.log("Servidor Activo en el puerto: " + puerto);
+    console.log("Servidor Activo\nIngrese a http://localhost:" + puerto + "/");
 });
 
 const socketServer = new Server(httpServer);
@@ -41,13 +41,13 @@ socketServer.on("connection", async (socket) => {
     socket.on("nuevoProducto", async (data) => {
         const product = { title: data.title, description: data.description, code: data.code, price: data.price, status: data.status, stock: data.stock, category: data.category, thumbnails: data.thumbnails };
         await PM.addProduct(product);
-        const products = PM.getProducts();
+        const products = await PM.getProducts();
         socket.emit("realTimeProducts", products);
     });
 
     socket.on("eliminarProducto", async (data) => {
         await PM.deleteProduct((data)); 
-        const products = PM.getProducts();
+        const products = await PM.getProducts();
         socket.emit("realTimeProducts", products);
     });
 
