@@ -33,37 +33,27 @@
     {{/each}}
 </div>
 <div class="paginate_container">
-    <ul class="paginate">
+    <div class="paginate">
         {{#if products.hasPrevPage}}
-        <li class="paginate_first">
-            <a class="paginate_first-item paginate_item" href="{{products.prevLink}}">
+            <a class="paginate_first paginate_item" href="{{products.prevLink}}">
                 <span class="material-symbols-outlined">
                     arrow_back_ios
                 </span></a>
-        </li>
         {{/if}}
         {{#if products.hasPrevPage}}
-        <li class="paginate_prev">
-            <a class="paginate_prev-item paginate_item" href="{{products.prevLink}}">{{products.prevPage}}</a>
-        </li>
+            <a class="paginate_prev paginate_item" href="{{products.prevLink}}">{{products.prevPage}}</a>
         {{/if}}
-        <li class="paginate_current">
-            <a class="paginate_current-item paginate_item">{{products.page}}</a>
-        </li>
+            <a class="paginate_current paginate_item">{{products.page}}</a>
         {{#if products.hasNextPage}}
-        <li class="paginate_next">
-            <a class="paginate_next-item paginate_item" href="{{products.nextLink}}">{{products.nextPage}}</a>
-        </li>
+            <a class="paginate_next paginate_item" href="{{products.nextLink}}">{{products.nextPage}}</a>
         {{/if}}
         {{#if products.hasNextPage}}
-        <li class="paginate_last">
-            <a class="paginate_last-item paginate_item" href="{{products.nextLink}}"><span
+            <a class="paginate_last paginate_item" href="{{products.nextLink}}"><span
                     class="material-symbols-outlined">
                     arrow_forward_ios
                 </span></a>
-        </li>
         {{/if}}
-    </ul>
+    </div>
 </div>
 
 <script src="js/products.js"></script>

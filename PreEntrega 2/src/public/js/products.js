@@ -1,14 +1,28 @@
 const limitSelect = document.getElementById("limit");
 const sortSelect = document.getElementById("sort");
-console.log("holja");
 const storedLimit = localStorage.getItem("limitValue");
 const storedSort = localStorage.getItem("sortValue");
 
-if (storedLimit) {
-    limitSelect.value = storedLimit;
+function getQueryParams() {
+    const queryParams = new URLSearchParams(window.location.search);
+    console.log(queryParams);
+    console.log(queryParams.get(`limit`));
+    console.log(queryParams.get(`sort`));
+    console.log(queryParams.get(`page`));
+    return {
+        limit: queryParams.get('limit') || storedLimit || '',
+        sort: queryParams.get('sort') || storedSort || '',
+        page: queryParams.get("page") ||'1'
+    };
 }
-if (storedSort) {
-    sortSelect.value = storedSort;
+
+const queryParams = getQueryParams();
+
+if (queryParams.limit) {
+    limitSelect.value = queryParams.limit;
+}
+if (queryParams.sort) {
+    sortSelect.value = queryParams.sort;
 }
 
 limitSelect.addEventListener("change", function () {
@@ -16,17 +30,24 @@ limitSelect.addEventListener("change", function () {
 
     localStorage.setItem("limitValue", limitValue);
 
-    window.location.href = `?limit=${limitValue}`;
-});
+    const currentPage = queryParams.page;
 
+    const newUrl = `?limit=${limitValue}&sort=${queryParams.sort}&page=${currentPage}`;
+
+    window.location.href = newUrl;
+});
 
 sortSelect.addEventListener("change", function () {
     const sortValue = sortSelect.value;
 
     localStorage.setItem("sortValue", sortValue);
+    const currentPage = queryParams.page;
 
-    window.location.href = `?sort=${sortValue}`;
+    const newUrl = `?limit=${queryParams.limit}&sort=${sortValue}&page=${currentPage}`;
+
+    window.location.href = newUrl;
 });
+console.log(localStorage.getItem("sortValue"));
 
 const crearCarrito = async () => {
     try {

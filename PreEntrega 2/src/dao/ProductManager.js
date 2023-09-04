@@ -1,9 +1,7 @@
 import { productModel } from "./models/product.model.js";
 
 class ProductManager {
-
     async getProducts(params) {
-
         if (params) {
             let { limit, page, query, sort } = params
             limit = limit ? limit : 9;
@@ -20,7 +18,6 @@ class ProductManager {
 
             return products;
         } else {
-
             if (params) {
                 return productModel.find().limit(limit).lean()
             } else {
@@ -28,6 +25,8 @@ class ProductManager {
             }
         }
     }
+
+
 
     async addProduct(product) {
         try {
