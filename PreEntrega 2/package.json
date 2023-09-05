@@ -1,0 +1,21 @@
+{
+  "name": "preentrega-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@handlebars/allow-prototype-access": "^1.0.5",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.1",
+    "mongoose": "^7.4.5",
+    "mongoose-paginate-v2": "^1.7.31",
+    "socket.io": "^4.7.2"
+  }
+}

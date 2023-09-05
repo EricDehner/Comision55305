@@ -6,16 +6,22 @@ class ProductManager {
             let { limit, page, query, sort } = params
             limit = limit ? limit : 9;
             page = page ? page : 1;
-            query = query || {};
-            sort = sort ? sort == "asc" ? 1 : -1 : 0;
-            let products = await productModel.paginate(query, { limit: limit, page: page, sort: { price: sort } });
+            sort = sort ? (sort == "asc" ? 1 : -1) : 0;
+
+            let queryFilter = {};
+            if (query) {
+                queryFilter.category = query.replace('category:', ``);
+            }
+
+            console.log("Params:", params, "Limit:", limit, "Page:", page, "Sort:", sort, "Query Filter:", queryFilter);
+            let products = await productModel.paginate(queryFilter, { limit: limit, page: page, sort: { price: sort } });
             let status = products ? "success" : "error";
 
-            let prevLink = products.hasPrevPage ? "http://localhost:8080/products?limit=" + limit + "&page=" + products.prevPage : null;
-            let nextLink = products.hasNextPage ? "http://localhost:8080/products?limit=" + limit + "&page=" + products.nextPage : null;
+
+            let prevLink = products.hasPrevPage ? "http://localhost:8080/products?limit=" + limit + "&sort=" + sort + "&page=" + products.prevPage + "&query=" + queryFilter : null;
+            let nextLink = products.hasNextPage ? "http://localhost:8080/products?limit=" + limit + "&sort=" + sort + "&page=" + products.nextPage + "&query=" + queryFilter : null;
 
             products = { status: status, payload: products.docs, totalPages: products.totalPages, prevPage: products.prevPage, nextPage: products.nextPage, page: products.page, hasPrevPage: products.hasPrevPage, hasNextPage: products.hasNextPage, prevLink: prevLink, nextLink: nextLink };
-
             return products;
         } else {
             if (params) {
@@ -25,7 +31,6 @@ class ProductManager {
             }
         }
     }
-
 
 
     async addProduct(product) {

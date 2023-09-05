@@ -24,7 +24,16 @@
         <nav class="navBar">
             <h1 class="navBar_brand">Eric Dehner</h1>
             <div class="navBar_content">
-                <a class="navBar_content-item" href="/products">PRODUCTOS</a>
+                <div class="navBar_content-dropdown">
+                    <button onclick="dropdown()" class="navBar_content-item--btn">PRODUCTOS <span class="material-symbols-outlined rotate-icon"> expand_more </span></button>
+                    <div id="dropdown-content" class="navBar_content-item--dropdown">
+                        <a class="navBar_content-dropdown--item" href="/products">Todos los productos</a>
+                        <a class="navBar_content-dropdown--item" href="/products?query=bebidas">Bebidas</a>
+                        <a class="navBar_content-dropdown--item" href="/products?query=congelados">Congelados</a>
+                        <a class="navBar_content-dropdown--item" href="/products?query=caldos">Caldos</a>
+                        <a class="navBar_content-dropdown--item" href="/products?query=limpieza">Limpieza</a>
+                    </div>
+                </div>
                 <a class="navBar_content-item" href="/realtimeProducts">PRODUCTOS ONLINE</a>
                 <a class="navBar_content-item" href="/chat">CONTACTO</a>
             </div>
@@ -36,6 +45,7 @@
     <footer class="footer">
         <p class="footer_text">Proyecto BackEnd</p>
     </footer>
+    <script src="/js/main.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
 

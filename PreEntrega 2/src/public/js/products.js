@@ -5,14 +5,14 @@ const storedSort = localStorage.getItem("sortValue");
 
 function getQueryParams() {
     const queryParams = new URLSearchParams(window.location.search);
-    console.log(queryParams);
-    console.log(queryParams.get(`limit`));
-    console.log(queryParams.get(`sort`));
-    console.log(queryParams.get(`page`));
+    /*     console.log(queryParams);
+        console.log(queryParams.get(`limit`));
+        console.log(queryParams.get(`sort`));
+        console.log(queryParams.get(`page`)); */
     return {
         limit: queryParams.get('limit') || storedLimit || '',
         sort: queryParams.get('sort') || storedSort || '',
-        page: queryParams.get("page") ||'1'
+        page: queryParams.get("page") || '1'
     };
 }
 
@@ -47,11 +47,11 @@ sortSelect.addEventListener("change", function () {
 
     window.location.href = newUrl;
 });
-console.log(localStorage.getItem("sortValue"));
 
 const crearCarrito = async () => {
     try {
         if (localStorage.getItem("carrito")) {
+            console.log("hay un carrito creado y tiene cosas");
             return await JSON.parse(localStorage.getItem("carrito"));
         } else {
             const response = await fetch("/api/carts/", {
@@ -61,6 +61,7 @@ const crearCarrito = async () => {
             const data = await response.json();
             localStorage.setItem("carrito", JSON.stringify(data));
 
+            console.log("se crea el carrito");
             return data;
         }
     } catch (error) {
@@ -78,10 +79,11 @@ const obtenerIdCarrito = async () => {
     }
 }
 
-const agregarProductoAlCarrito = async (pid) => {
+async function agregarProductoAlCarrito(pid) {
+    console.log("Hola");
     try {
         let cid = await obtenerIdCarrito();
-
+        console.log(cid);
         await fetch("/api/carts/" + cid + "/products/" + pid, {
             method: "POST",
             headers: { "Content-type": "application/json; charset=UTF-8" }
