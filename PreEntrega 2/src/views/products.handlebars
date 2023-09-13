@@ -43,7 +43,11 @@
         {{#if products.hasPrevPage}}
         <a class="paginate_prev paginate_item" href="{{products.prevLink}}">{{products.prevPage}}</a>
         {{/if}}
+        {{#if products.hasPrevPage}}
         <a class="paginate_current paginate_item">{{products.page}}</a>
+        {{else if products.hasNextPage}}
+        <a class="paginate_current paginate_item">{{products.page}}</a>
+        {{/if}}
         {{#if products.hasNextPage}}
         <a class="paginate_next paginate_item" href="{{products.nextLink}}">{{products.nextPage}}</a>
         {{/if}}
