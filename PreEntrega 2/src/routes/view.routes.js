@@ -34,7 +34,6 @@ router.get("/chat", (req, res) => {
 
 router.get("/carts", async (req, res) => {
     const carts = await CM.getCarts();
-    console.log(carts);
     res.render("carts", { carts });
 });
 

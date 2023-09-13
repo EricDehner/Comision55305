@@ -17,19 +17,21 @@
     </div>
 </div>
 
-<div class="card_container">
+<div class="cards_container">
     {{#each products.payload}}
-    <a href="http://localhost:8080/products/{{this._id}}" class="card">
-        <div class="card_img">
-            <img class="card_img-img" src={{this.thumbnails}} alt={{this.description}} />
-        </div>
-        <div class="card_content">
-            <h2 class="card_content-title">{{this.title}}</h2>
-            <h3 class="card_content-description">{{this.description}}</h3>
-            <p class="card_content-price">${{this.price}}</p>
-            <button class="card_content-btn--add" onclick="agregarProductoAlCarrito('{{product._id}}')">Comprar</button>
-        </div>
-    </a>
+    <div class="card_container">
+        <a href="http://localhost:8080/products/{{this._id}}" class="card">
+            <div class="card_img">
+                <img class="card_img-img" src={{this.thumbnails}} alt={{this.description}} />
+            </div>
+            <div class="card_content">
+                <h2 class="card_content-title">{{this.title}}</h2>
+                <h3 class="card_content-description">{{this.description}}</h3>
+                <p class="card_content-price">${{this.price}}</p>
+            </div>
+        </a>
+        <button class="card_content-btn--add" onclick="agregarProductoAlCarrito(`{{this._id}}`)">Comprar</button>
+    </div>
     {{/each}}
 </div>
 <div class="paginate_container">
@@ -60,3 +62,4 @@
 </div>
 
 <script src="js/products.js"></script>
+<script src="js/product.js"></script>
