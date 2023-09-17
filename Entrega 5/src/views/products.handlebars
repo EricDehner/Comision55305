@@ -1,0 +1,65 @@
+<h1 class="card_title_prods">Catálogo</h1>
+<div class="filter">
+    <div class="limit">
+        <label for="limit">Mostrar:</label>
+        <select id="limit" name="limit">
+            <option value="9">9</option>
+            <option value="6">6</option>
+            <option value="3">3</option>
+        </select>
+    </div>
+    <div class="sort">
+        <label for="sort">Ordenar por:</label>
+        <select id="sort" name="sort">
+            <option value="asc">menor precio</option>
+            <option value="desc">mayor precio</option>
+        </select>
+    </div>
+</div>
+
+<div class="cards_container">
+    {{#each products.payload}}
+    <div class="card_container">
+        <a href="http://localhost:8080/products/{{this._id}}" class="card">
+            <div class="card_img">
+                <img class="card_img-img" src={{this.thumbnails}} alt={{this.description}} />
+            </div>
+            <div class="card_content">
+                <h2 class="card_content-title">{{this.title}}</h2>
+                <h3 class="card_content-description">{{this.description}}</h3>
+                <p class="card_content-price">${{this.price}}</p>
+            </div>
+        </a>
+        <button class="card_content-btn--add" onclick="agregarProductoAlCarrito(`{{this._id}}`)">Comprar</button>
+    </div>
+    {{/each}}
+</div>
+<div class="paginate_container">
+    <div class="paginate">
+        {{#if products.hasPrevPage}}
+        <a class="paginate_first paginate_item" href="{{products.prevLink}}">
+            <span class="material-symbols-outlined">
+                arrow_back_ios
+            </span></a>
+        {{/if}}
+        {{#if products.hasPrevPage}}
+        <a class="paginate_prev paginate_item" href="{{products.prevLink}}">{{products.prevPage}}</a>
+        {{/if}}
+        {{#if products.hasPrevPage}}
+        <a class="paginate_current paginate_item">{{products.page}}</a>
+        {{else if products.hasNextPage}}
+        <a class="paginate_current paginate_item">{{products.page}}</a>
+        {{/if}}
+        {{#if products.hasNextPage}}
+        <a class="paginate_next paginate_item" href="{{products.nextLink}}">{{products.nextPage}}</a>
+        {{/if}}
+        {{#if products.hasNextPage}}
+        <a class="paginate_last paginate_item" href="{{products.nextLink}}"><span class="material-symbols-outlined">
+                arrow_forward_ios
+            </span></a>
+        {{/if}}
+    </div>
+</div>
+
+<script src="js/products.js"></script>
+<script src="js/product.js"></script>

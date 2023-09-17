@@ -1,0 +1,10 @@
+<article>
+    <h1 class="card_title">Carts</h1>
+    <div class="carts_container">
+        {{#each carts}}
+        <a href="/cart/{{_id}}" class="card_content-title">
+            <p>{{_id}}</p>
+        </a>
+        {{/each}}
+    </div>
+</article>

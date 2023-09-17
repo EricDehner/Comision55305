@@ -1,38 +1,13 @@
 import { productModel } from "./models/product.model.js";
 
 class ProductManager {
-    async getProducts(params) {
-        if (params) {
-            let { limit, page, query, sort } = params
-            limit = limit ? limit : 9;
-            page = page ? page : 1;
-            sort = sort ? (sort == "asc" ? 1 : -1) : 0;
-            query = query || {};
-
-            let queryFilter = {};
-            if (query && typeof query === 'string') {
-                queryFilter.category = query.replace('category:', '');
-            }
-
-            console.log("Params:", params, "Limit:", limit, "Page:", page, "Sort:", sort, "Query Filter:", queryFilter);
-            let products = await productModel.paginate(queryFilter, { limit: limit, page: page, sort: { price: sort } });
-            let status = products ? "success" : "error";
-
-
-            let prevLink = products.hasPrevPage ? "http://localhost:8080/products?limit=" + limit + "&sort=" + sort + "&page=" + products.prevPage/*  + "&query=" + queryFilter  */: null;
-            let nextLink = products.hasNextPage ? "http://localhost:8080/products?limit=" + limit + "&sort=" + sort + "&page=" + products.nextPage/*  + "&query=" + queryFilter  */: null;
-
-            products = { status: status, payload: products.docs, totalPages: products.totalPages, prevPage: products.prevPage, nextPage: products.nextPage, page: products.page, hasPrevPage: products.hasPrevPage, hasNextPage: products.hasNextPage, prevLink: prevLink, nextLink: nextLink };
-            return products;
+    async getProducts(limit) {
+        if (limit) {
+            return productModel.find().limit(limit).lean()
         } else {
-            if (params) {
-                return productModel.find().limit(limit).lean()
-            } else {
-                return productModel.find().lean();
-            }
+            return productModel.find().lean();
         }
     }
-
 
     async addProduct(product) {
         try {
@@ -65,12 +40,15 @@ class ProductManager {
                 if (await this.getProductById(id)) {
                     await productModel.updateOne({ _id: id }, product);
                     console.log("Product updated!");
+
                     return true;
                 }
             }
+
             return false;
         } catch (error) {
             console.log("Not found!");
+
             return false;
         }
     }
@@ -95,9 +73,11 @@ class ProductManager {
 
     async getProductById(id) {
         if (this.validateId(id)) {
+            console.log(id);
             return await productModel.findOne({ _id: id }).lean() || null;
         } else {
             console.log("Not found!");
+
             return null;
         }
     }
@@ -106,5 +86,6 @@ class ProductManager {
         return id.length === 24 ? true : false;
     }
 }
+
 
 export default ProductManager;

@@ -1,54 +1,34 @@
 import express from "express";
 import __dirname from "./utils.js";
-import expressHandlebars from "express-handlebars";
-import Handlebars from "handlebars";
-import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access'
+import handlerbars from "express-handlebars";
+import viewRouter from "./routes/view.routes.js";
 import { Server } from "socket.io";
-import mongoose from "mongoose";
 import ProductManager from "./dao/ProductManager.js";
 import ChatManager from "./dao/ChatManager.js"
+import mongoose from "mongoose";
+
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
-import sessionsRouter from "./routes/sessions.router.js"
-import viewsRouter from "./routes/view.router.js";
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
-import cookieParser from "cookie-parser"
 
 const app = express();
 const puerto = 8080;
 const httpServer = app.listen(puerto, () => {
-    console.log("Servidor Activo\nIngrese a http://localhost:" + puerto + "/products");
+    console.log("Servidor Activo\nIngrese a http://localhost:" + puerto + "/");
 });
+
 const socketServer = new Server(httpServer);
 const PM = new ProductManager();
 const CM = new ChatManager();
 
+app.engine("handlebars", handlerbars.engine());
 app.set("views", __dirname + "/views");
-app.engine('handlebars', expressHandlebars.engine({
-    handlebars: allowInsecurePrototypeAccess(Handlebars)
-}));
 app.set("view engine", "handlebars");
+app.use(express.static(__dirname + "/public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + "/public"));
 app.use("/api/products/", productsRouter);
 app.use("/api/carts/", cartsRouter);
-app.use("/api/sessions/", sessionsRouter);
-app.use("/", viewsRouter);
-
-
-app.use(cookieParser())
-app.use(session({
-    store: MongoStore.create({
-        mongoUrl: "mongodb+srv://EricDehnerDB:E40021022RIC@ericdehner.8ulp8hy.mongodb.net/ecommerce?retryWrites=true&w=majority",
-        mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-        ttl: 20
-    }),
-    secret: 'G4T0',
-    resave: false,
-    saveUninitialized: false
-    }));
+app.use("/", viewRouter);
 
 mongoose.connect("mongodb+srv://EricDehnerDB:E40021022RIC@ericdehner.8ulp8hy.mongodb.net/ecommerce?retryWrites=true&w=majority")
 
@@ -66,7 +46,7 @@ socketServer.on("connection", async (socket) => {
     });
 
     socket.on("eliminarProducto", async (data) => {
-        await PM.deleteProduct((data));
+        await PM.deleteProduct((data)); 
         const products = await PM.getProducts();
         socket.emit("realTimeProducts", products);
     });
