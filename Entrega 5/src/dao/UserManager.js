@@ -18,20 +18,32 @@ class UserManager {
         }
     }
 
-    async login(user, pass) {
+    async login(user, pass, req) {
         try {
-            const userLogged = await userModel.findOne({ $and: [{ email: user }, { password: pass }] }) || null;
+            const userLogged =
+                (await userModel.findOne({ email: user, password: pass })) || null;
 
             if (userLogged) {
-                console.log("User logged!");
-                return user;
-            }
+                const role =
+                    userLogged.email === "adminCoder@coder.com" ? "admin" : "usuario";
 
+                req.session.user = {
+                    id: userLogged._id,
+                    email: userLogged.email,
+                    first_name: userLogged.first_name,
+                    last_name: userLogged.last_name,
+                    role: role,
+                };
+                const userToReturn = userLogged;
+                return userToReturn;
+            }
             return false;
         } catch (error) {
+            console.error("Error durante el login:", error);
             return false;
         }
     }
+
     async getUserByEmail(user) {
         try {
             const userRegisteredBefore =

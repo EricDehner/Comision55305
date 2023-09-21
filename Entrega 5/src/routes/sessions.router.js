@@ -7,8 +7,8 @@ const UM = new UserManager();
 router.get("/login", async (req, res) => {
     console.log(`req.query: ${JSON.stringify(req.query)}`);
     let { user, pass } = req.query;
-    const userLogged = await UM.login(user, pass);
-console.log(user, pass);
+    const userLogged = await UM.login(user, pass, req);
+    console.log(user, pass);
     if (userLogged) {
         res.send({ status: "OK", message: userLogged });
     } else {
