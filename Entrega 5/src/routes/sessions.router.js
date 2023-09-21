@@ -1,5 +1,6 @@
 import express from "express";
 import UserManager from "../dao/UserManager.js";
+import { set } from "mongoose";
 
 const router = express.Router();
 const UM = new UserManager();
@@ -31,7 +32,9 @@ router.post("/logout", (req, res) => {
         if (err) {
             return res.redirect('/profile');
         }
-        res.redirect('/login');
+        setTimeout(() => {
+            res.redirect('/login');
+        }, 1500);
     });
 });
 

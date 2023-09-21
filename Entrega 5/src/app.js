@@ -52,9 +52,6 @@ app.use("/api/carts/", cartsRouter);
 app.use("/api/sessions/", sessionsRouter);
 app.use("/", viewsRouter);
 
-
-
-
 mongoose.connect("mongodb+srv://EricDehnerDB:E40021022RIC@ericdehner.8ulp8hy.mongodb.net/ecommerce?retryWrites=true&w=majority")
 
 mongoose.connection.on("connected", () => {
@@ -64,7 +61,6 @@ mongoose.connection.on("connected", () => {
 mongoose.connection.on("error", (error) => {
     console.error("Error conectando a MongoDB:", error);
 });
-
 
 socketServer.on("connection", async (socket) => {
     console.log("¡Conexión exitosa!");

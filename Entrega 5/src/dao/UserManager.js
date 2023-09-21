@@ -3,14 +3,11 @@ import { userModel } from "./models/user.model.js";
 class UserManager {
     async addUser(user) {
         try {
-
             if (user.email == "adminCoder@coder.com" && user.password == "adminCod3r123") {
                 user.role = "admin";
             }
-
             await userModel.create(user)
             console.log("User added!");
-
             return true;
         } catch (error) {
             console.log(error);
@@ -22,7 +19,6 @@ class UserManager {
         try {
             const userLogged =
                 (await userModel.findOne({ email: user, password: pass })) || null;
-
             if (userLogged) {
                 const role =
                     userLogged.email === "adminCoder@coder.com" ? "admin" : "usuario";
@@ -52,7 +48,6 @@ class UserManager {
                 console.log("Mail registrado anteriormente");
                 return user;
             }
-
             return true;
         } catch (error) {
             return false;
@@ -66,7 +61,6 @@ class UserManager {
                 console.log(userID);
                 return user;
             }
-
             return true;
         } catch (error) {
             return false;

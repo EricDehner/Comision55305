@@ -34,6 +34,7 @@ router.get("/", checkSession, async (req, res) => {
 router.get("/products", checkSession, async (req, res) => {
     const products = await PM.getProducts(req.query);
     const user = req.session.user;
+    console.log(user);
     res.render("products", { products, user });
 });
 
@@ -77,7 +78,6 @@ router.get("/register", checkAuth, (req, res) => {
 
 router.get("/profile", checkSession, (req, res) => {
     const userData = req.session.user;
-
     res.render("profile", { user: userData });
 });
 
