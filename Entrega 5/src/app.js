@@ -26,7 +26,11 @@ const CM = new ChatManager();
 
 app.set("views", __dirname + "/views");
 app.engine('handlebars', expressHandlebars.engine({
-    handlebars: allowInsecurePrototypeAccess(Handlebars)
+    handlebars: allowInsecurePrototypeAccess(Handlebars), 
+    helpers: {
+        eq(value1, value2){return value1 === value2},
+        ejemplo() {return true}
+    }
 }));
 app.set("view engine", "handlebars");
 app.use(express.json());

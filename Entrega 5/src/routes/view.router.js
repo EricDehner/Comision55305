@@ -19,7 +19,7 @@ console.log(req.session.user);
 
     if (req.session && req.session.user) {
         console.log("Usuario verificado, redirigiendo a /profile");
-        res.redirect("/profile");
+        res.redirect("/products");
     } else {
         console.log("Usuario no verificado.");
         next();
@@ -34,7 +34,6 @@ router.get("/", checkSession, async (req, res) => {
 router.get("/products", checkSession, async (req, res) => {
     const products = await PM.getProducts(req.query);
     const user = req.session.user;
-    console.log(user);
     res.render("products", { products, user });
 });
 
