@@ -1,0 +1,18 @@
+<article>
+    <h1 class="card_title">Catálogo</h1>
+    <div class="cards_container">
+        {{#each products}}
+        <div class="card">
+            <div class="card_img">
+                <img class="card_img-img" src={{thumbnails}} alt={{description}} />
+            </div>
+            <div class="card_content">
+                <h2 class="card_content-title">{{title}}</h2>
+                <h3 class="card_content-description">{{description}}</h3>
+                <p class="card_content-price">${{price}}</p>
+                <a class="card_content-btn" href="#">Comprar</a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</article>
