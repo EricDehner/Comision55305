@@ -1,0 +1,23 @@
+<article class="restore_container">
+    <h2 class="restore_title">Restablecer Contraseña</h2>
+    <p class="restore_data">Email: <span id="userEmail">{{user.email}}</span></p>
+    <label for="password" class="restore_input-label">Contraseña Nueva</label>
+    <input type="password" class="restore_input-input" id="restorePassword1" placeholder="Ingrese su nueva contraseña">
+    <span id="togglePassword" class="password-toggle--restore">
+        <span id="restoreVisibilityIcon" class="material-symbols-outlined restoreShowPw">visibility</span>
+    </span>
+
+
+
+
+    <p class="restore_data-role">{{user.role}}: {{user._id}} </p>
+    <div class="restore_btn">
+        <button class="restore_btn-btn" type="button" onclick="restorePw()">Guardar contraseña <span
+                class="material-symbols-outlined key">
+                key
+            </span></button>
+    </div>
+</article>
+
+
+<script src="js/restore.js"></script>
