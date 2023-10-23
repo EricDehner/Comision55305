@@ -1,0 +1,27 @@
+<div class="form_container">
+    <div class="form">
+        <h1 class="form_title">Formulario</h1>
+        <div class="form_form">
+            <div class="form_form-item">
+                <label for="user" class="form_form-item--label">Nombre y apellido</label>
+                <input type="text" class="form_form-item--input" id="user" placeholder="Ingrese su nombre y apellido">
+            </div>
+            <div class="form_form-item">
+                <label for="email" class="form_form-item--label">Email</label>
+                <input type="text" class="form_form-item--input" id="email" placeholder="Ingrese su email">
+            </div>
+            <div class="form_form-item">
+                <label for="message" class="form_form-item--label">Mensaje</label>
+                <textarea type="text" class="form_form-item--textarea" id="message"
+                    placeholder="Ingrese su mensaje"></textarea>
+            </div>
+            <button type="submit" class="form_form-btn" onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+</div>
+<div class="messages_container">
+    <div id="messages" class="message"></div>
+</div>
+
+<script src="socket.io/socket.io.js"></script>
+<script src="js/chat.js"></script>
