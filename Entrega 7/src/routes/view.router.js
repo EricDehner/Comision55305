@@ -51,7 +51,9 @@ router.get("/realtimeproducts", checkSession, (req, res) => {
 });
 
 router.get("/chat", checkSession, (req, res) => {
-    res.render("chat");
+    const user = req.session.user;
+    console.log(user);
+    res.render("chat", { user });
 });
 
 router.get("/carts", checkSession, async (req, res) => {
@@ -78,7 +80,7 @@ router.get("/register", checkAuth, (req, res) => {
 });
 
 router.get("/profile", checkSession, (req, res) => {
-    const userData = req.user;
+    const userData = req.session.user;
     //console.log(userData);
     res.render("profile", { user: userData });
 });

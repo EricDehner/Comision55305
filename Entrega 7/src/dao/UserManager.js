@@ -1,23 +1,35 @@
 import { userModel } from "./models/user.model.js";
-import { isValidPassword } from "../utils.js";
+import { createHash, isValidPassword } from "../utils.js";
 
 class UserManager {
-    async addUser(user) {
+    async addUser({ first_name, last_name, email, age, password, role }) {
         try {
-            if (user.email == "adminCoder@coder.com") {
-                user.role = "admin";
+            const existingUser = await userModel.findOne({ email });
+
+            if (existingUser) {
+                console.log("User already exists");
+                return null;
             }
 
-            await userModel.create(user);
-            console.log("User added!");
+            const hashedPassword = createHash(password);
+            const user = await userModel.create({
+                first_name,
+                last_name,
+                email,
+                age,
+                password: hashedPassword,
+                role
+            });
 
-            return true;
+            console.log("User added!", user);
+            return user;
         } catch (error) {
-            return false;
+            console.error("Error adding user:", error);
+            throw error;
         }
     }
 
-    async login(user, pass, req) {
+    async login(user, pass) {
         try {
             const userLogged = await userModel.findOne({ email: user });
 
@@ -25,21 +37,12 @@ class UserManager {
                 const role =
                     userLogged.email === "adminCoder@coder.com" ? "admin" : "usuario";
 
-                req.session.user = {
-                    id: userLogged._id,
-                    email: userLogged.email,
-                    first_name: userLogged.first_name,
-                    last_name: userLogged.last_name,
-                    role: role,
-                };
-
-                const userToReturn = userLogged;
-                return userToReturn;
+                return userLogged;
             }
-            return false;
+            return null;
         } catch (error) {
             console.error("Error durante el login:", error);
-            return false;
+            throw error;
         }
     }
 

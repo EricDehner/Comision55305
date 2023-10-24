@@ -11,4 +11,3 @@ export const CLIENT_SECRET_GITHUB = process.env.CLIENT_SECRET_GITHUB;
 export const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
-console.log(process.env.CLIENT_ID_GITHUB, process.env.CLIENT_SECRET_GITHUB);

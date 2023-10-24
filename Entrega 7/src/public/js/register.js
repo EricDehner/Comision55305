@@ -4,59 +4,54 @@ const registerUser = async () => {
     let email = document.getElementById("email").value;
     let age = document.getElementById("age").value;
     let password = document.getElementById("password").value;
-
     const user = { first_name, last_name, email, age, password };
 
-  try {
-    const response = await fetch("/api/sessions/register", {
-      method: "POST",
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-      body: JSON.stringify(user),
-    });
+    try {
+        if (first_name !== "" && last_name !== "" && email !== "" && age !== "" && password !== "") {
+            if (/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(email)) {
+                const user = { first_name, last_name, email, age, password };
 
-    if (!response.ok) {
-        console.error("Error al registrar el usuario:", await response.text());
-    } else {
-        const data = await response.json();
-        if (data.status === "success" && data.redirect) {
-            window.location.href = data.redirect;
-        }
-    }
-  } catch (error) {
-    console.error("Hubo un error al registrar el usuario:", error);
-  }
+                const response = await fetch("/api/sessions/register", {
+                    method: "POST",
+                    headers: { "Content-type": "application/json; charset=UTF-8" },
+                    body: JSON.stringify(user),
+                });
 
-
-
-
-
-
-    /* if (first_name !== "" && last_name !== "" && email !== "" && age !== "" && password !== "") {
-        if (/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(email)) {
-            const user = { first_name, last_name, email, age, password };
-
-            const response = await fetch("/api/sessions/register", {
-                method: "POST",
-                headers: { "Content-type": "application/json; charset=UTF-8" },
-                body: JSON.stringify(user),
-            });
-            const data = await response.json();
-
-            Toastify({
-                text: "¡Usuario registrado!",
-                duration: 1500,
-                position: "right",
-                offset: {
-                    x: 0,
-                    y: 55,
+                if (!response.ok) {
+                    console.error("Error al registrar el usuario:", await response.text());
+                } else {
+                    const data = await response.json();
+                    if (data.status === "success" && data.redirect) {
+                        window.location.href = data.redirect;
+                    }
                 }
-            }).showToast();
-            setTimeout(() => {
-                location.href = "/login";
-            }, 1500);
+
+                Toastify({
+                    text: "¡Usuario registrado!",
+                    duration: 1500,
+                    position: "right",
+                    offset: {
+                        x: 0,
+                        y: 55,
+                    }
+                }).showToast();
+                setTimeout(() => {
+                    location.href = "/login";
+                }, 1500);
+            } else {
+                Toastify({
+                    text: "¡Por favor ingrese una dirección de correo electrónico válida!",
+                    duration: 1500,
+                    position: "right",
+                    offset: {
+                        x: 0,
+                        y: 55,
+                    }
+                }).showToast();
+            }
         } else {
             Toastify({
-                text: "¡Por favor ingrese una dirección de correo electrónico válida!",
+                text: "¡Por favor complete todos los campos!",
                 duration: 1500,
                 position: "right",
                 offset: {
@@ -65,17 +60,10 @@ const registerUser = async () => {
                 }
             }).showToast();
         }
-    } else {
-        Toastify({
-            text: "¡Por favor complete todos los campos!",
-            duration: 1500,
-            position: "right",
-            offset: {
-                x: 0,
-                y: 55,
-            }
-        }).showToast();
-    } */
+
+    } catch (error) {
+        console.error("Hubo un error al registrar el usuario:", error);
+    }
 }
 
 const passwordInput = document.getElementById('password');

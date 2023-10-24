@@ -4,11 +4,14 @@
         <div class="form_form">
             <div class="form_form-item">
                 <label for="user" class="form_form-item--label">Nombre y apellido</label>
-                <input type="text" class="form_form-item--input" id="user" placeholder="Ingrese su nombre y apellido">
+                {{!-- <input type="text" class="form_form-item--input" id="user"
+                    placeholder="Ingrese su nombre y apellido">
+                --}} <p id="user" class="form_form-item--field">{{user.first_name}} {{user.last_name}}</p>
             </div>
             <div class="form_form-item">
                 <label for="email" class="form_form-item--label">Email</label>
-                <input type="text" class="form_form-item--input" id="email" placeholder="Ingrese su email">
+                {{!-- <input type="text" class="form_form-item--input" id="email" placeholder="Ingrese su email">
+                --}}<p id="email" class="form_form-item--field">{{user.email}}</p>
             </div>
             <div class="form_form-item">
                 <label for="message" class="form_form-item--label">Mensaje</label>

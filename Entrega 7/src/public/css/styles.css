@@ -618,6 +618,19 @@ input[type="number"]::-webkit-outer-spin-button {
     resize: none;
     padding: 0 .5rem;
 }
+.form_form-item--field {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    width: 100%;
+    height: 32px;
+    resize: none;
+    padding: 0 .5rem;
+    background-color: white;
+    border: 1px solid #5d5d5d78;
+    display: flex;
+    align-items: center;
+}
 
 .form_form-item--textarea {
     font-family: 'M PLUS Rounded 1c', sans-serif;
@@ -626,7 +639,8 @@ input[type="number"]::-webkit-outer-spin-button {
     width: 100%;
     height: 100px;
     resize: none;
-    padding: 0 .5rem;
+    padding: 0.2rem .5rem;
+    border: 1px solid #5d5d5d78;
 }
 
 .form_form-btn {
