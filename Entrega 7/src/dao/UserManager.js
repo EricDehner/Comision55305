@@ -1,5 +1,6 @@
 import { userModel } from "./models/user.model.js";
 import { createHash, isValidPassword } from "../utils.js";
+import { cartModel } from "./models/cart.model.js";
 
 class UserManager {
     async addUser({ first_name, last_name, email, age, password, role }) {
@@ -12,12 +13,14 @@ class UserManager {
             }
 
             const hashedPassword = createHash(password);
+            const cart = await cartModel.create({products:[]})
             const user = await userModel.create({
                 first_name,
                 last_name,
                 email,
                 age,
                 password: hashedPassword,
+                cart: cart._id,
                 role
             });
 

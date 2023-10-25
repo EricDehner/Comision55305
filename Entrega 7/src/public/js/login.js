@@ -12,10 +12,12 @@ const loginUser = async () => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-
+        
         const data = await response.json();
         if (data.status === "success") {
+            localStorage.setItem("cart", data.user.cart)
             window.location.href = "/products";
+
         }
     } catch (error) {
         Toastify({

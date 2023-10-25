@@ -20,6 +20,7 @@ class AuthController {
       first_name: userData.user.first_name,
       last_name: userData.user.last_name,
       role: userData.user.role,
+      cart: userData.user.cart
     };
 
     res.cookie('coderCookieToken', userData.token, { httpOnly: true, secure: false });

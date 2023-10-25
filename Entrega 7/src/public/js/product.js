@@ -1,14 +1,16 @@
-
-
 const obtenerIdCarrito = () => {
     return JSON.parse(localStorage.getItem("cart")) || [];
 }
 
 const agregarProductoAlCarrito = async (pid) => {
     try {
-        let cart = obtenerIdCarrito();
+        let cart = localStorage.getItem("cart")
 
-        await fetch("/api/carts/" + cart.id + "/products/" + pid, {
+        if(!cart){  
+            document.cookie = "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+
+        await fetch("/api/carts/" + cart + "/products/" + pid, {
             method: "POST",
             headers: { "Content-type": "application/json; charset=UTF-8" }
         })

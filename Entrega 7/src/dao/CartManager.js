@@ -39,14 +39,14 @@ class CartManager {
                     { $inc: { "products.$.quantity": 1 } }
                 );
 
-                console.log("Update result:", updateResult);
+                //console.log("Update result:", updateResult);
                 if (updateResult.matchedCount === 0) {
                     const pushResult = await cartModel.updateOne(
                         { _id: cid },
                         { $push: { products: { product: pid, quantity: 1 } } }
                     );
 
-                    console.log("Push result:", pushResult);
+                    //console.log("Push result:", pushResult);
                 }
 
                 return {

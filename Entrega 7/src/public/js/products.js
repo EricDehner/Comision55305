@@ -1,3 +1,4 @@
+
 const limitSelect = document.getElementById("limit");
 const sortSelect = document.getElementById("sort");
 const storedLimit = localStorage.getItem("limitValue");
@@ -46,22 +47,14 @@ sortSelect.addEventListener("change", function () {
 
 const createCart = async () => {
     try {
-        if (!localStorage.getItem("cart")) {
-            const response = await fetch("/api/carts/", {
-                method: "POST",
-                headers: { "Content-type": "application/json; charset=UTF-8" }
-            });
+/*         localStorage.setItem("cart", session.);
+ */    } catch (error) {
+        //        console.log("Error en Crear el Carrito! " + error);
 
-            const data = await response.json();
-            localStorage.setItem("cart", JSON.stringify(data));
-        }
-    } catch (error) {
-        /*         console.log("Error en Crear el Carrito! " + error);
-         */
         Toastify({
             text: "Error en Crear el Carrito! " + error,
             duration: 1500,
-            position: "right", 
+            position: "right",
             offset: {
                 x: 0,
                 y: 55,
@@ -70,4 +63,4 @@ const createCart = async () => {
     }
 }
 
-createCart();
+createCart(); 

@@ -34,7 +34,7 @@ router.get("/", checkSession, async (req, res) => {
 router.get("/products", checkSession, async (req, res) => {
     const products = await PM.getProducts(req.query);
     const user = req.session.user;
-
+    
     //console.log(user);
     res.render("products", { products, user });
 });
@@ -42,8 +42,9 @@ router.get("/products", checkSession, async (req, res) => {
 router.get("/products/:pid", checkSession, async (req, res) => {
     const pid = req.params.pid;
     const product = await PM.getProductById(pid);
-
-    res.render("product", { product });
+    const user = req.session.user;
+    
+    res.render("product", { product, user });
 });
 
 router.get("/realtimeproducts", checkSession, (req, res) => {

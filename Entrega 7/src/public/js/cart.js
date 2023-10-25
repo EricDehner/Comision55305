@@ -1,7 +1,6 @@
 function clearCart() {
-    const cart = JSON.parse(localStorage.getItem("cart"));
-    if (cart && cart.id) {
-        const cid = cart.id;
+    const cid = localStorage.getItem("cart");
+    if (cid) {
         fetch(`/api/carts/${cid}`, {
             method: "DELETE",
         })
@@ -57,12 +56,10 @@ function clearCart() {
 
 function deleteProduct(productId) {
     console.log(productId);
-    const cart = JSON.parse(localStorage.getItem("cart"));
+    const cid = localStorage.getItem("cart");
 
-    if (cart && cart.id) {
-        const cid = cart.id;
-
-        fetch(`/api/carts/${cid}/products/${productId}`, {
+    if (cid) {
+                fetch(`/api/carts/${cid}/products/${productId}`, {
             method: "DELETE",
         })
             .then((response) => {
