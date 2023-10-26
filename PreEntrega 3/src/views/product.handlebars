@@ -1,0 +1,32 @@
+<div class="product_container">
+    <div class="url">
+        <a class="url_item" href="/products">Productos</a>
+        <a class="url_item" href="/products?query={{product.category}}">/ {{product.category}}</a>
+        <a class="url_item" href="/products/{{product._id}}">/ {{product.title}}</a>
+    </div>
+    <div class="product">
+        <div class="product_img">
+            <img class="product_img-img" src={{product.thumbnails}} alt={{product.description}} />
+        </div>
+        <div class="product_content">
+            <div class="product_content-header">
+                {{#if product.stock}}
+                <p class="product_content-header--stock">Stock: {{product.stock}} Unidades</p>
+                {{else}}
+                <p class="product_content-header--stock">Producto fuera de stock</p>
+                {{/if}}
+                <p class="product_content-header--id">{{product._id}}</p>
+            </div>
+            <h2 class="product_content-title">{{product.title}}</h2>
+            <hr>
+            <h3 class="product_content-description">{{product.description}}</h3>
+            <p class="product_content-price">${{product.price}}</p>
+            {{#if product.stock}}
+            <button class="product_content-btn" onclick="agregarProductoAlCarrito(`{{product._id}}`)">Agregar</button>
+            {{else}}
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+<script src="/js/product.js"></script>
