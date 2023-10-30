@@ -1,10 +1,10 @@
 const obtenerIdCarrito = () => {
-    return JSON.parse(localStorage.getItem("cart")) || [];
+    return JSON.parse(localStorage.getItem("cartID")) || [];
 }
 
 const agregarProductoAlCarrito = async (pid) => {
     try {
-        let cart = localStorage.getItem("cart")
+        let cart = localStorage.getItem("cartID")
 
         if(!cart){  
             document.cookie = "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";

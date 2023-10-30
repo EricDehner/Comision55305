@@ -1,5 +1,5 @@
 function clearCart() {
-    const cid = localStorage.getItem("cart");
+    const cid = localStorage.getItem("cartID");
     if (cid) {
         fetch(`/api/carts/${cid}`, {
             method: "DELETE",
@@ -56,10 +56,10 @@ function clearCart() {
 
 function deleteProduct(productId) {
     console.log(productId);
-    const cid = localStorage.getItem("cart");
+    const cid = localStorage.getItem("cartID");
 
     if (cid) {
-                fetch(`/api/carts/${cid}/products/${productId}`, {
+        fetch(`/api/carts/${cid}/products/${productId}`, {
             method: "DELETE",
         })
             .then((response) => {
@@ -114,20 +114,46 @@ function deleteProduct(productId) {
     }
 }
 
-function buyCart() {
-    localStorage.removeItem("cart");
+async function buyCart() {
+    try {
+        const cartId = await localStorage.getItem("cartID")
 
-    Toastify({
-        text: "La compra se efectuó correctamente.",
-        duration: 1500,
-        position: "right",
-        offset: {
-            x: 0,
-            y: 55,
-        }
-    }).showToast();
+        console.log(cartId);
 
-    setTimeout(() => {
-        window.location.href = "/products";
-    }, 1500);
+
+        const url = `/api/carts/${cartId}/purchase`;
+        //console.log("URL de compra:", url);
+
+        const response = await fetch(url, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        console.log("response:", response);
+        if (!response.ok) {
+            console.error("Error en la respuesta", response.statusText);
+            const text = await response.text();
+            console.error(text);
+            return;
+          }
+
+        /*         Toastify({
+                    text: "La compra se efectuó correctamente.",
+                    duration: 1500,
+                    position: "right",
+                    offset: {
+                        x: 0,
+                        y: 55,
+                    }
+                }).showToast(); */
+
+        /*     setTimeout(() => {
+                window.location.href = "/products";
+            }, 1500); */
+    }
+    catch (error) {
+        console.log("Error en compra", error);
+    }
 }

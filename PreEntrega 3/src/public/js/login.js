@@ -15,7 +15,7 @@ const loginUser = async () => {
         
         const data = await response.json();
         if (data.status === "success") {
-            localStorage.setItem("cart", data.user.cart)
+            localStorage.setItem("cartID", data.user.cart)
             window.location.href = "/products";
 
         }

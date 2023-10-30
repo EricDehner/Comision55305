@@ -71,7 +71,7 @@ app.use('/sms', smsRouter);
 app.use("/", viewsRouter);
 
 //mongoose.connect(process.env.PORT);
-//DBManager.connectToMongoDB();
+DBManager.connectToMongoDB();
 
 mongoose.connection.on("connected", () => {
     console.log("Conectado a MongoDB");

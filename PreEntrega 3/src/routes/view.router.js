@@ -1,6 +1,7 @@
 import express from "express";
 import ProductManager from "../dao/ProductManager.js";
 import CartManager from "../dao/cartManager.js";
+import cartController from "../controllers/cartController.js";
 
 const router = express.Router();
 const PM = new ProductManager();
@@ -34,7 +35,7 @@ router.get("/", checkSession, async (req, res) => {
 router.get("/products", checkSession, async (req, res) => {
     const products = await PM.getProducts(req.query);
     const user = req.session.user;
-    
+
     //console.log(user);
     res.render("products", { products, user });
 });
@@ -43,7 +44,7 @@ router.get("/products/:pid", checkSession, async (req, res) => {
     const pid = req.params.pid;
     const product = await PM.getProductById(pid);
     const user = req.session.user;
-    
+
     res.render("product", { product, user });
 });
 
@@ -72,6 +73,12 @@ router.get("/cart/:cid", checkSession, async (req, res) => {
         res.status(400).send({ status: "error", message: "Error! No se encuentra el ID de Carrito!" });
     }
 });
+
+router.post("/carts/:cid/purchase", async (req, res) => {
+    const cid = req.params.cid;
+    cartController.createPurchaseTicket(req, res, cid);
+});
+
 router.get("/login", checkAuth, (req, res) => {
     res.render("login");
 });
