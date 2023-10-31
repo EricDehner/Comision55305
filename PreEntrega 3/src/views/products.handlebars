@@ -38,8 +38,14 @@
                 <p class="card_content-price">${{this.price}}</p>
             </div>
         </a>
-        <button class="card_content-btn--add" onclick="agregarProductoAlCarrito(`{{this._id}}`)">Comprar</button>
-    </div>
+
+            {{#if this.stock}}
+            <button class="card_content-btn--add" onclick="agregarProductoAlCarrito(`{{this._id}}`)">Agregar</button>
+            {{else}}
+            <p class="card_content-btn--noStock">Sin Stock</p>
+            {{/if}}
+{{!--         <button class="card_content-btn--add" onclick="agregarProductoAlCarrito(`{{this._id}}`)">Comprar</button>
+ --}}    </div>
     {{/each}}
 </div>
 <div class="paginate_container">

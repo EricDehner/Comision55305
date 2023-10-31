@@ -117,18 +117,16 @@ function deleteProduct(productId) {
 async function buyCart() {
     try {
         const cartId = await localStorage.getItem("cartID")
-
-        console.log(cartId);
-
-
         const url = `/api/carts/${cartId}/purchase`;
-        //console.log("URL de compra:", url);
 
         const response = await fetch(url, {
             method: "POST",
-            credentials: "include",
+            body: "",
             headers: {
+                Accept: "application/json",
                 "Content-Type": "application/json",
+                Origin: "",
+                authorization: "Bearer " + localStorage.getItem("userID"),
             },
         });
         console.log("response:", response);
@@ -137,7 +135,7 @@ async function buyCart() {
             const text = await response.text();
             console.error(text);
             return;
-          }
+        }
 
         /*         Toastify({
                     text: "La compra se efectuó correctamente.",

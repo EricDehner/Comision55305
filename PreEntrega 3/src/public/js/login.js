@@ -12,8 +12,11 @@ const loginUser = async () => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        
+
         const data = await response.json();
+
+        console.log("data contiene: ", data);
+        localStorage.setItem("userID", data.token)
         if (data.status === "success") {
             localStorage.setItem("cartID", data.user.cart)
             window.location.href = "/products";

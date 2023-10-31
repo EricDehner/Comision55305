@@ -70,7 +70,6 @@ app.use('/email', emailRouter);
 app.use('/sms', smsRouter);
 app.use("/", viewsRouter);
 
-//mongoose.connect(process.env.PORT);
 DBManager.connectToMongoDB();
 
 mongoose.connection.on("connected", () => {

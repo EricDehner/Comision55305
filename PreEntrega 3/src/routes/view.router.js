@@ -66,9 +66,10 @@ router.get("/carts", checkSession, async (req, res) => {
 router.get("/cart/:cid", checkSession, async (req, res) => {
     const cid = req.params.cid;
     const cart = await CM.getCart(cid);
+    const user = req.session.user;
 
     if (cart) {
-        res.render("cart", { products: cart.products });
+        res.render("cart", { products: cart.products, user });
     } else {
         res.status(400).send({ status: "error", message: "Error! No se encuentra el ID de Carrito!" });
     }

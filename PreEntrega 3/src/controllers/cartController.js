@@ -1,4 +1,6 @@
 import CartService from "../services/cartService.js";
+import ProductManager from "../dao/ProductManager.js"
+import { cartModel } from "../dao/models/cart.model.js";
 
 class CartController {
     constructor() {
@@ -93,8 +95,7 @@ class CartController {
 
 
     async createPurchaseTicket(req, res) {
-        console.log("Ruta /carts/:cid/purchase accedida");
-console.log(req.user);
+        console.log(`Ruta /carts/${req.params.cid}/purchase accedida`);
         try {
             if (!req.user || !req.user.id) {
                 console.error("req.user no está definido");

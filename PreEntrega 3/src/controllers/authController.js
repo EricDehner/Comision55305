@@ -7,15 +7,15 @@ class AuthController {
 
   async login(req, res) {
     const { email, password } = req.body;
-    const userData = await this.authService.login(email, password); 
-    console.log("User data retrieved:", userData);  
-  
-    if (!userData || !userData.user) { 
+    const userData = await this.authService.login(email, password);
+    //console.log("User data retrieved:", userData);
+
+    if (!userData || !userData.user) {
       return res.status(401).json({ status: "error", message: "Invalid credentials" });
     }
-  
+
     req.session.user = {
-      id: userData.user._id,  
+      id: userData.user._id,
       email: userData.user.email,
       first_name: userData.user.first_name,
       last_name: userData.user.last_name,
@@ -24,10 +24,10 @@ class AuthController {
     };
 
     res.cookie('CookieToken', userData.token, { httpOnly: true, secure: false });
-  
-    console.log('Role retrieved:', userData.user.role);
-  
-    return res.status(200).json({ status: "success", user: userData.user, redirect: "/products" });
+
+    //console.log('Role retrieved:', userData.user.role);
+
+    return res.status(200).json({ status: "success", user: userData.user, token: userData.token,  redirect: "/products" });
   }
 
   async githubCallback(req, res) {

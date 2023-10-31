@@ -326,6 +326,23 @@ footer {
     cursor: pointer;
 }
 
+.card_content-btn--noStock {
+    text-decoration: none;
+    color: rgb(89, 89, 89);
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25px;
+    bottom: 15px;
+    position: absolute;
+    border: 0;
+    border-radius: 8px;
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+
 .footer {
     background-color: #5e5e5e;
     width: auto;
