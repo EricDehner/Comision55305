@@ -153,10 +153,10 @@ class CartController {
             }, 0);
 
             const ticketData = {
-               /*  code: uuidv4(), */
-                purchase_datetime: new Date(),
+                purchase_datetime: new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' }),
                 amount: totalAmount,
                 purchaser: req.user.email,
+                products: cart.products
             };
 
             const ticketCreated = await ticketController.createTicket({
