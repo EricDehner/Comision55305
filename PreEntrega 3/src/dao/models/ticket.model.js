@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const ticketSchema = new mongoose.Schema({
     id: Number,
-    code: {
+/*     code: {
         type: String,
         required: true,
         unique: true,
-    },
+    }, */
     purchase_datetime: {
         type: Date,
         required: true,

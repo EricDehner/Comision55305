@@ -1,11 +1,11 @@
-import { ticketModel } from "../models/ticket.model.js";
+import { ticketModel } from "../dao/models/ticket.model.js";
 
 class TicketService {
     async createTicket(data) {
         console.log("Datos del ticket antes de crear:", data);
 
         if (
-            !data.code ||
+           /*  !data.code || */
             !data.purchase_datetime ||
             !data.amount ||
             !data.purchaser

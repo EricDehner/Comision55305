@@ -1,6 +1,7 @@
 import CartService from "../services/cartService.js";
 import ProductManager from "../dao/ProductManager.js"
 import { cartModel } from "../dao/models/cart.model.js";
+import ticketController from "./ticketController.js";
 
 class CartController {
     constructor() {
@@ -125,9 +126,7 @@ class CartController {
 
                 if (product.stock < item.quantity) {
                     console.error(
-                        `Stock insuficiente para el producto ${JSON.stringify(
-                            item.product
-                        )}`
+                        `Stock insuficiente para el producto ${JSON.stringify(item.product)}`
                     );
                     failedProducts.push(item);
                 } else {
@@ -154,7 +153,7 @@ class CartController {
             }, 0);
 
             const ticketData = {
-                code: uuidv4(),
+               /*  code: uuidv4(), */
                 purchase_datetime: new Date(),
                 amount: totalAmount,
                 purchaser: req.user.email,
