@@ -1,5 +1,8 @@
 import ProductService from "../services/productService.js";
 import { socketServer } from "../app.js";
+import mongoose from "mongoose";
+import CustomError from "../services/errors/customError.js";
+import { generateProductErrorInfo } from "../services/errors/messages/productError.js";
 
 class ProductController {
     constructor() {
@@ -11,33 +14,44 @@ class ProductController {
             const products = await this.productService.getProducts(req.query);
             res.send(products);
         } catch (error) {
-            res
-                .status(500)
-                .send({ status: "error", message: "Error fetching products." });
-            console.log(error);
+            const productError = new CustomError({
+                name: "Error en productos",
+                message: "Error al traer productos.",
+                code: 500,
+                cause: error.message,
+            });
+            console.error(productError);
+            res.status(productError.code).send({ status: "error", message: "Error fetching products." });
         }
     }
 
-    async getProductById(req, res) {
+    async getProductById(req, res, next) {
         try {
             const pid = req.params.pid;
-            console.log("Product ID:", pid);
-            const product = await this.productService.getProductById(pid);
-            if (product) {
-                res.json(product);
-                return;
-            } else {
-                res
-                    .status(404)
-                    .send({ status: "error", message: "Product not found." });
-                return;
+            //console.log("ID del producto:", pid);
+
+            if (!mongoose.Types.ObjectId.isValid(pid)) {
+                throw new CustomError({
+                    name: "Invalid ID Error",
+                    message: "El ID del producto proporcionado no es válido",
+                    code: 400,
+                    cause: generateProductErrorInfo(pid),
+                });
             }
+
+            const product = await this.productService.getProductById(pid);
+
+            if (!product) {
+                throw new CustomError({
+                    name: "Producto no encontrado",
+                    message: generateProductErrorInfo(pid),
+                    code: 404,
+                });
+            }
+
+            res.status(200).json({ status: "success", data: product });
         } catch (error) {
-            console.error("Error fetching product by id:", error);
-            res
-                .status(500)
-                .send({ status: "error", message: "Error fetching product by id." });
-            return;
+            return next(error);
         }
     }
 

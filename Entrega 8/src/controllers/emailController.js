@@ -21,17 +21,17 @@ transporter.verify(function (error, success) {
 });
 
 const mailOptions = {
-    from: "Coder Test " + EMAIL_USER,
+    from: "Coder Test" + EMAIL_USER,
     to: EMAIL_USER,
-    subject: "Correo de prueba Coderhouse Programacion Backend.",
+    subject: "Correo de prueba Programacion Backend.",
     html: "<div><h1>Esto es un Test de envio de correos con Nodemailer!</h1></div>",
     attachments: [],
 };
 
 const mailOptionsWithAttachments = {
-    from: "Coder Test " + EMAIL_USER,
+    from: "Coder Test" + EMAIL_USER,
     to: EMAIL_USER,
-    subject: "Correo de prueba Coderhouse Programacion Backend.",
+    subject: "Correo de prueba Programacion Backend.",
     html: `<div>
               <h1>Esto es un Test de envio de correos con Nodemailer!</h1>
               <p>Ahora usando imagenes: </p>

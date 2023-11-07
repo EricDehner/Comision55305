@@ -2,30 +2,11 @@ import express from "express";
 import ProductManager from "../dao/ProductManager.js";
 import CartManager from "../dao/cartManager.js";
 import cartController from "../controllers/cartController.js";
+import {checkSession, checkAuth} from "../middlewares/errorCheck.js"
 
 const router = express.Router();
 const PM = new ProductManager();
 const CM = new CartManager();
-
-const checkSession = (req, res, next) => {
-    if (req.session && req.session.user) {
-        next();
-    } else {
-        res.redirect("/login");
-    }
-};
-
-const checkAuth = (req, res, next) => {
-    console.log(req.session.user);
-
-    if (req.session && req.session.user) {
-        console.log("Usuario verificado, redirigiendo a /profile");
-        res.redirect("/products");
-    } else {
-        console.log("Usuario no verificado.");
-        next();
-    }
-};
 
 router.get("/", checkSession, async (req, res) => {
     const products = await PM.getProducts();

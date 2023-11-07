@@ -635,6 +635,7 @@ input[type="number"]::-webkit-outer-spin-button {
     resize: none;
     padding: 0 .5rem;
 }
+
 .form_form-item--field {
     font-family: 'M PLUS Rounded 1c', sans-serif;
     font-size: 15px;
@@ -1321,15 +1322,16 @@ label {
     font-weight: 700 !important;
 }
 
-.formAcc_content-btns--github{
+.formAcc_content-btns--github {
     text-align: center;
     padding-top: 1rem;
     font-family: 'M PLUS Rounded 1c', sans-serif;
     font-size: 16px;
 }
-.formAcc_content-btns--github a{
-color: black;
-font-weight: 700;
+
+.formAcc_content-btns--github a {
+    color: black;
+    font-weight: 700;
 }
 
 /* PROFILE */
@@ -1465,6 +1467,7 @@ font-weight: 700;
     font-weight: 700;
     color: black;
 }
+
 .restore_data span {
     font-weight: 400;
     color: #575757;
@@ -1548,4 +1551,9 @@ font-weight: 700;
 
 .restoreShowPw {
     font-weight: 700 !important;
+}
+
+.red-toastify {
+    background-color: #ff0000b0 !important;
+    color: white;
 }

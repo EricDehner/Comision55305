@@ -20,7 +20,6 @@ class AuthService {
             this.secretKey,
             { expiresIn: '24h' }
         );
-        console.log(this.secretKey);
         return { user, token };
     }
 

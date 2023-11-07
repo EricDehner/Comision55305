@@ -20,6 +20,7 @@ import passport from "passport";
 import DBManager from './mongo/ds.js';
 import initializePassport from "./config/passport.config.js";
 import { MONGO_URL, SECRET_KEY_SESSION, PORT } from "./config/config.js"
+import mockingRouter from "./mocking/mock.router.js";
 
 const app = express();
 const puerto = process.env.PORT || 8080;
@@ -68,6 +69,7 @@ app.use("/api/carts/", cartsRouter);
 app.use("/api/sessions/", sessionsRouter);
 app.use('/api/email', emailRouter);
 app.use('/api/sms', smsRouter);
+app.use('/mockingproducts', mockingRouter);
 app.use("/", viewsRouter);
 
 DBManager.connectToMongoDB();
