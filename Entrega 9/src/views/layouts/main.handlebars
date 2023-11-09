@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Entrega 9</title>
+    {{!-- Google Fonts --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    {{!-- Toastify --}}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    {{!-- Toastify --}}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+</head>
+
+<body class="body">
+    <header class="header">
+        <nav class="navBar">
+            <h1 class="navBar_brand">Eric Dehner</h1>
+            <div class="navBar_content">
+                <div class="navBar_content-dropdown">
+                    <button onclick="dropdown()" class="navBar_content-item--btn">PRODUCTOS <span
+                            class="material-symbols-outlined rotate-icon"> expand_more </span></button>
+                    <div id="dropdown-content" class="navBar_content-item--dropdown">
+                        <a class="navBar_content-dropdown--item" href="/products">Todos los productos</a>
+                        <a class="navBar_content-dropdown--item" href="/products?query=bebidas">Bebidas</a>
+                        <a class="navBar_content-dropdown--item" href="/products?query=congelados">Congelados</a>
+                        <a class="navBar_content-dropdown--item" href="/products?query=caldos">Caldos</a>
+                        <a class="navBar_content-dropdown--item" href="/products?query=limpieza">Limpieza</a>
+                    </div>
+                </div>
+                <a class="navBar_content-item" href="/chat">CONTACTO</a>
+                <a class="navBar_content-item" href="/cart/{{user.cart}}"><span class="material-symbols-outlined cart_icon">
+                        shopping_cart
+                    </span></a>
+                <a class="navBar_content-item profile" href="/profile"><span class="material-symbols-outlined user">
+                        person
+                    </span></a>
+            </div>
+        </nav>
+    </header>
+    <main class="main">
+        {{{body}}}
+    </main>
+    <footer class="footer">
+        <p class="footer_text">Proyecto BackEnd</p>
+    </footer>
+    <script src="/js/main.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</body>
+
+</html>
