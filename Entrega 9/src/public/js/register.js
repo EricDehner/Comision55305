@@ -22,7 +22,35 @@ const registerUser = async () => {
     try {
         if (first_name !== "" && last_name !== "" && email !== "" && age !== "" && password !== "") {
             if (/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(email)) {
+                const user = { first_name, last_name, email, age, password };
 
+                const response = await fetch("/api/sessions/register", {
+                    method: "POST",
+                    headers: { "Content-type": "application/json; charset=UTF-8" },
+                    body: JSON.stringify(user),
+                });
+
+                if (!response.ok) {
+                    console.error("Error al registrar el usuario:", await response.text());
+                } else {
+                    const data = await response.json();
+                    if (data.status === "success" && data.redirect) {
+                        window.location.href = data.redirect;
+                    }
+                }
+
+                Toastify({
+                    text: "¡Usuario registrado!",
+                    duration: 1500,
+                    position: "right",
+                    offset: {
+                        x: 0,
+                        y: 55,
+                    }
+                }).showToast();
+                setTimeout(() => {
+                    location.href = "/login";
+                }, 1500);
             } else {
                 Toastify({
                     text: "¡Por favor ingrese una dirección de correo electrónico válida!",
@@ -47,7 +75,6 @@ const registerUser = async () => {
                 }
             }).showToast();
 
-            // Establece el borde de los campos incompletos a rojo
             if (first_name === "") {
                 first_nameInput.style.border = '2px solid #ff0000b0';
             }

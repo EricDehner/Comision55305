@@ -61,10 +61,10 @@ class AuthController {
   logout(req, res) {
     req.session.destroy((err) => {
       if (err) {
-        req.logger.info("Sesión finalizada");
+        req.logger.error("Error al finalizar sesión.");
         return res.redirect("/profile");
       } 
-      req.logger.error("Error al finalizar sesión.");
+      req.logger.info("Sesión finalizada");
       return res.redirect("/login");
     });
   }

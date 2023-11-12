@@ -34,3 +34,7 @@ export const ENV_CONFIG = {
     TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
     TWILIO_SMS_NUMBER: process.env.TWILIO_SMS_NUMBER
 };
+
+export default{
+    environment: ENVIRONMENT
+}

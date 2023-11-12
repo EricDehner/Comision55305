@@ -23,12 +23,14 @@ class UserService {
             });
 
             if (user) {
-                return { status: "success", user, redirect: "/login" };
+                req.logger.error("Usuario creado con éxito.");
+                //return { status: "success", user, redirect: "/login" };
             } else {
-                return { status: "error", message: "User already exists" };
+                req.logger.error("Usuario ya existente.");
+               // return { status: "error", message: "User already exists" };
             }
         } catch (error) {
-            console.error("Error registering user:", error);
+            req.logger.error("Error registrando usuario:", error);
             return { status: "error", message: "Internal Server Error" };
         }
     }

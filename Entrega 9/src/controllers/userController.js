@@ -12,7 +12,6 @@ class UserController {
 
     async register(req, res, next) {
         try {
-
             const { first_name, last_name, email, age, password, role } = req.body;
 
             if (!first_name || !last_name || !email || !age || !password) {
@@ -43,7 +42,7 @@ class UserController {
 
             return res.status(response.status === "success" ? 200 : 400).json(response);
         } catch (error) {
-            req.logger.error(error)
+            req.logger.error("userController line 47", error)
             return next(error);
         }
     }
