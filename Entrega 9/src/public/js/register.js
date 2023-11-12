@@ -32,25 +32,34 @@ const registerUser = async () => {
 
                 if (!response.ok) {
                     console.error("Error al registrar el usuario:", await response.text());
+                    emailInput.style.border = '2px solid #ff0000b0';
+                    Toastify({
+                        text: "¡Usuario ya registrado!",
+                        duration: 1500,
+                        position: "right",
+                        offset: {
+                            x: 0,
+                            y: 55,
+                        }
+                    }).showToast();
                 } else {
                     const data = await response.json();
-                    if (data.status === "success" && data.redirect) {
-                        window.location.href = data.redirect;
+                    if (data.status === "success") {
+                        Toastify({
+                            text: "¡Usuario registrado!",
+                            duration: 1500,
+                            position: "right",
+                            offset: {
+                                x: 0,
+                                y: 55,
+                            }
+                        }).showToast();
+                        setTimeout(() => {
+                            location.href = "/login";
+                        }, 1500);
                     }
                 }
 
-                Toastify({
-                    text: "¡Usuario registrado!",
-                    duration: 1500,
-                    position: "right",
-                    offset: {
-                        x: 0,
-                        y: 55,
-                    }
-                }).showToast();
-                setTimeout(() => {
-                    location.href = "/login";
-                }, 1500);
             } else {
                 Toastify({
                     text: "¡Por favor ingrese una dirección de correo electrónico válida!",

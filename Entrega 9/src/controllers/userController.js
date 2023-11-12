@@ -39,10 +39,14 @@ class UserController {
                 password,
                 role
             });
-
+            if (response.status ===  "success") {
+                req.logger.info("Usuario creado con éxito.");
+            }else{
+                req.logger.error("Usuario ya existente.");
+            }
             return res.status(response.status === "success" ? 200 : 400).json(response);
         } catch (error) {
-            req.logger.error("userController line 47", error)
+            req.logger.error("Error registrando usuario.", error)
             return next(error);
         }
     }
