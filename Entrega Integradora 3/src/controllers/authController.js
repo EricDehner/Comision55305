@@ -75,12 +75,47 @@ class AuthController {
     try {
       await sendResetPasswordEmail(email);
       req.logger.info("¡Correo enviado con éxito!")
-      res.send("Se ha enviado un enlace de restablecimiento de contraseña a tu correo electrónico.");
+      res.json("Se ha enviado un enlace de restablecimiento de contraseña a tu correo electrónico.");
     } catch (error) {
       req.logger.error("Error en la recuperación de contraseña.", error);
       res.status(500).send("Error en la recuperación de contraseña" + error.message);
     }
   }
+
+  async resetPassword(req, res) {
+    const { token } = req.params;
+    const { password,  } = req.body;
+
+
+    try {
+      const user = await userModel.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() },
+      });
+
+      if (!user) {
+        return res.status(400).json({ message: "El token de restablecimiento de contraseña es inválido o ha expirado.", tokenExpired: true });
+      }
+
+      const isSamePassword = isValidPassword(user, password);
+
+      if (isSamePassword) {
+        return res.status(400).send("La nueva contraseña debe ser diferente a la contraseña actual.");
+      }
+
+      user.password = createHash(password);
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+
+      await user.save();
+
+      res.send("Tu contraseña ha sido actualizada con éxito.");
+    } catch (error) {
+      console.error("Error al resetear la contraseña:", error);
+      res.status(500).send("Error interno del servidor al intentar actualizar la contraseña.");
+    }
+  }
 }
+
 
 export default AuthController;

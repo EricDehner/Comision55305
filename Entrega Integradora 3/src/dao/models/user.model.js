@@ -14,6 +14,8 @@ const userSchema = new mongoose.Schema({
     ref: "carts",
   },
   role: String,
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
 });
 
 export const userModel = mongoose.model("users", userSchema);

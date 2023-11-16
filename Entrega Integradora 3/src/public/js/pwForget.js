@@ -1,6 +1,5 @@
 const pwRestore = async () => {
     const emailInputPw = document.getElementById("emailPW");
-
     let email = emailInputPw.value;
 
     emailInputPw.style.border = '1px solid #ccc';
@@ -34,14 +33,21 @@ const pwRestore = async () => {
 
             const data = await response.json();
 
-            console.log("data contiene: ", data);
-
             if (data.status === "success") {
                 console.log("Restablecimiento de contraseña exitoso");
-                setTimeout(() => {
-                    window.location.href = "/login";
-                }, 1500);
             }
+            Toastify({
+                text: "¡Email enviado con éxito!",
+                duration: 1500,
+                position: "right",
+                offset: {
+                    x: 0,
+                    y: 55,
+                }
+            }).showToast();
+            setTimeout(() => {
+                window.location.href = "/login";
+            }, 1500);
         }
 
     } catch (error) {

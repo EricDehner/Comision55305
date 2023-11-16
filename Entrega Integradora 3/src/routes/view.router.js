@@ -100,9 +100,9 @@ router.get('/pw-reset/:token', async (req, res) => {
         resetPasswordExpires: { $gt: Date.now() }
     });
 
-/*     if (!user) {
+    if (!user) {
         return res.redirect('/restore');
-    } */
+    }
     res.render('pw-reset', { token });
 });
 

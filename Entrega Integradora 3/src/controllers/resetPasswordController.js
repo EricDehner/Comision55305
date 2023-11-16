@@ -23,7 +23,7 @@ const sendResetPasswordEmail = async (userEmail) => {
     },
   });
 
-  const resetUrl = `http://localhost:8080/reset-password/${resetToken}`;
+  const resetUrl = `http://localhost:8080/pw-reset/${resetToken}`;
   let mailOptions = {
     from: ENV_CONFIG.EMAIL_USER,
     to: userEmail,
