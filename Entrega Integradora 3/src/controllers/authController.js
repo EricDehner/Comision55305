@@ -3,6 +3,9 @@ import CustomError from "../services/errors/customError.js";
 import EErrors from "../services/errors/errors-enum.js";
 import { generateAuthenticationErrorInfo } from "../services/errors/messages/user.auth.error.js";
 import sendResetPasswordEmail from "./resetPasswordController.js";
+import { userModel } from "../dao/models/user.model.js";
+import { createHash, isValidPassword } from "../utils.js";
+
 
 class AuthController {
   constructor() {
@@ -84,15 +87,14 @@ class AuthController {
 
   async resetPassword(req, res) {
     const { token } = req.params;
-    const { password,  } = req.body;
-
+    const { password } = req.body;
 
     try {
       const user = await userModel.findOne({
         resetPasswordToken: token,
         resetPasswordExpires: { $gt: Date.now() },
       });
-
+      console.log("El usuario es", user);
       if (!user) {
         return res.status(400).json({ message: "El token de restablecimiento de contraseña es inválido o ha expirado.", tokenExpired: true });
       }
