@@ -101,7 +101,7 @@ router.get('/pw-reset/:token', async (req, res) => {
     });
 
     if (!user) {
-        return res.redirect('/restore');
+        return res.redirect('/pw-forget');
     }
     res.render('pw-reset', { token });
 });

@@ -13,7 +13,7 @@ class UserManager {
             }
 
             const hashedPassword = createHash(password);
-            const cart = await cartModel.create({products:[]})
+            const cart = await cartModel.create({ products: [] })
             const user = await userModel.create({
                 first_name,
                 last_name,
@@ -91,6 +91,7 @@ class UserManager {
             return false;
         }
     }
+
 }
 
 

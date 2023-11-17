@@ -100,9 +100,8 @@ class AuthController {
       }
 
       const isSamePassword = isValidPassword(user, password);
-
       if (isSamePassword) {
-        return res.status(400).send("La nueva contraseña debe ser diferente a la contraseña actual.");
+        return res.json({ status: "oldPassword", message: "Tu contraseña debe ser diferente a la contraseña actual." });
       }
 
       user.password = createHash(password);
@@ -111,13 +110,12 @@ class AuthController {
 
       await user.save();
 
-      res.send("Tu contraseña ha sido actualizada con éxito.");
+      res.json({ status: "success", message: "Tu contraseña ha sido actualizada con éxito." });
     } catch (error) {
       console.error("Error al resetear la contraseña:", error);
       res.status(500).send("Error interno del servidor al intentar actualizar la contraseña.");
     }
   }
 }
-
 
 export default AuthController;

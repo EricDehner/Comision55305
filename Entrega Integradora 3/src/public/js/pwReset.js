@@ -3,7 +3,7 @@ const pwResetSend = async () => {
     const tokenIndex = currentUrl.indexOf('pw-reset/') + 'pw-reset/'.length;
     const passwordInput1 = document.getElementById("password1");
     const passwordInput2 = document.getElementById("password2");
-    
+
     let token = currentUrl.substring(tokenIndex);
     let password1 = passwordInput1.value;
     let password2 = passwordInput2.value;
@@ -47,8 +47,6 @@ const pwResetSend = async () => {
 
             const data = await response.json();
 
-            console.log("data contiene: ", data);
-
             if (data.status === "success") {
                 Toastify({
                     text: "¡Contraseña nueva establecida!",
@@ -59,9 +57,24 @@ const pwResetSend = async () => {
                         y: 55,
                     },
                 }).showToast();
-                console.log("Restablecimiento de contraseña exitoso");
+                setTimeout(() => {
+                    window.location.href = "/login";
+                }, 1500);
             }
-        }else{
+
+            if (data.status === "oldPassword") {
+                Toastify({
+                    text: "¡La contraseña debe ser diferente a la actual!",
+                    duration: 1500,
+                    position: "right",
+                    offset: {
+                        x: 0,
+                        y: 55,
+                    },
+                    className: "toastify-error"
+                }).showToast();
+            }
+        } else {
             Toastify({
                 text: "¡Las contraseñas no coinciden!",
                 duration: 1500,
@@ -71,7 +84,6 @@ const pwResetSend = async () => {
                     y: 55,
                 },
                 className: "toastify-error"
-
             }).showToast();
         }
 
