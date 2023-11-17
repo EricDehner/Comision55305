@@ -58,6 +58,7 @@ class ProductController {
     async addProduct(req, res) {
         const { title, description, code, price, status = true, stock, category, thumbnails } = req.body;
         const requiredFields = ['title', 'description', 'code', 'price', 'stock', 'category', 'thumbnails'];
+        const owner = req.user._id;
 
         for (const field of requiredFields) {
             if (!req.body[field]) {
@@ -66,12 +67,12 @@ class ProductController {
         }
 
         try {
-            const wasAdded = await this.productService.addProduct({ title, description, code, price, status, stock, category, thumbnails });
+            const wasAdded = await this.productService.addProduct({ title, description, code, price, status, stock, category, thumbnails, owner });
 
             if (wasAdded && wasAdded._id) {
                 req.logger.info("Producto añadido correctamente:", wasAdded);
                 res.send({ status: "ok", message: "El Producto se agregó correctamente!" });
-                socketServer.emit("product_created", { _id: wasAdded._id, title, description, code, price, status, stock, category, thumbnails });
+                socketServer.emit("product_created", { _id: wasAdded._id, title, description, code, price, status, stock, category, thumbnails, owner });
                 return;
             } else {
                 req.logger.error("Error al añadir producto, wasAdded:", wasAdded);
@@ -110,6 +111,29 @@ class ProductController {
     async deleteProduct(req, res) {
         try {
             const pid = req.params.pid;
+
+            if (!mongoose.Types.ObjectId.isValid(pid)) {
+                req.logger.error("ID del producto no válido");
+                res.status(400).send({ status: "error", message: "ID del producto no válido" });
+                return;
+            }
+
+            const product = await this.productService.getProductById(pid);
+
+            console.log("user", req.user)
+            console.log("product owner", product.owner);
+
+            if (!product) {
+                req.logger.error("Producto no encontrado");
+                res.status(404).send({ status: "error", message: "Producto no encontrado" });
+                return;
+            }
+
+            if (!req.user || (req.user.role !== "admin" && (!product.owner || req.user._id.toString() !== product.owner.toString()))) {
+                req.logger.error("Operación no permitida: el usuario no tiene derechos para eliminar este producto o el producto no tiene propietario definido.");
+                res.status(403).send({ status: "error", message: "No tiene permiso para eliminar este producto o producto no tiene propietario." });
+                return;
+            }
 
             const wasDeleted = await this.productService.deleteProduct(pid);
 

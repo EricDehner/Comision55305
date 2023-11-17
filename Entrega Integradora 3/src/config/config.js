@@ -27,6 +27,8 @@ export const ENV_CONFIG = {
     CLIENT_SECRET_GITHUB: process.env.CLIENT_SECRET_GITHUB,
     ADMIN_EMAIL: process.env.ADMIN_EMAIL,
     ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+    PREMIUM_EMAIL: process.env.PREMIUM_EMAIL,
+    PREMIUM_PASSWORD: process.env.PREMIUM_PASSWORD,
     PERSISTENCE: process.env.PERSISTENCE,
     EMAIL_USER: process.env.EMAIL_USER,
     EMAIL_PASS: process.env.EMAIL_PASS,
@@ -35,6 +37,6 @@ export const ENV_CONFIG = {
     TWILIO_SMS_NUMBER: process.env.TWILIO_SMS_NUMBER
 };
 
-export default{
+export default {
     environment: ENVIRONMENT
 }

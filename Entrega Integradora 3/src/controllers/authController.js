@@ -1,6 +1,5 @@
 import AuthService from "../services/authService.js";
 import CustomError from "../services/errors/customError.js";
-import EErrors from "../services/errors/errors-enum.js";
 import { generateAuthenticationErrorInfo } from "../services/errors/messages/user.auth.error.js";
 import sendResetPasswordEmail from "./resetPasswordController.js";
 import { userModel } from "../dao/models/user.model.js";
@@ -34,8 +33,6 @@ class AuthController {
       };
 
       res.cookie('CookieToken', userData.token, { httpOnly: true, secure: false });
-
-      //console.log('Role retrieved:', userData.user.role);
 
       return res.status(200).json({ status: "success", user: userData.user, token: userData.token, redirect: "/products" });
     } catch (error) {

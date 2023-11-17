@@ -41,6 +41,10 @@ const initializePassport = () => {
                     if (user.email == ENV_CONFIG.ADMIN_EMAIL && password === ENV_CONFIG.ADMIN_PASSWORD) {
                         req.logger.info("Rol de admin asignando");
                         user.role = "admin";
+                    }
+                    else if (user.email == ENV_CONFIG.PREMIUM_EMAIL && password === ENV_CONFIG.PREMIUM_PASSWORD) {
+                        req.logger.info("Rol de premium asigando");
+                        user.role = "premium";
                     } else {
                         req.logger.info("Rol de usuario asignando");
                         user.role = "user";

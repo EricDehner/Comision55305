@@ -25,7 +25,7 @@ router.get("/githubcallback", passport.authenticate("github", { failureRedirect:
 
 router.post("/logout", (req, res) => authController.logout(req, res));
 
-router.get("/current", passportCall("jwt"), authorization("user"), (req, res) => { console.log(req.cookies); userController.currentUser(req, res); });
+router.get("/current", passportCall("jwt"), authorization("user"), (req, res) => { userController.currentUser(req, res); });
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
