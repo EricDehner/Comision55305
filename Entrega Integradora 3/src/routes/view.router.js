@@ -3,7 +3,7 @@ import ProductManager from "../dao/ProductManager.js";
 import CartManager from "../dao/cartManager.js";
 import cartController from "../controllers/cartController.js";
 import { checkSession, checkAuth } from "../middlewares/errorCheck.js"
-import {userModel} from "../dao/models/user.model.js"
+import { userModel } from "../dao/models/user.model.js"
 
 const router = express.Router();
 const PM = new ProductManager();
@@ -31,6 +31,10 @@ router.get("/products/:pid", checkSession, async (req, res) => {
 });
 
 router.get("/realtimeproducts", checkSession, (req, res) => {
+    const user = req.session.user;
+    if (user.role === "user") {
+        return res.redirect('/products');
+    }
     res.render("realtimeProducts");
 });
 
@@ -72,11 +76,11 @@ router.get("/register", checkAuth, (req, res) => {
 
 router.get("/profile", checkSession, (req, res) => {
     const userData = req.session.user;
-    //console.log(userData);
     res.render("profile", { user: userData });
 });
 router.get("/restore", checkSession, (req, res) => {
     const userData = req.session.user;
+    
     res.render("restore", { user: userData });
 });
 

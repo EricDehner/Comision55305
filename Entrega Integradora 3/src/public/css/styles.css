@@ -209,7 +209,7 @@ footer {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    margin: auto;
+    margin: 0 auto 4rem;
     gap: 40px 60px;
     width: 100%;
     max-width: 1080px;
@@ -288,6 +288,13 @@ footer {
     margin-top: 7px;
     font-size: 16px;
     font-weight: 700;
+}
+.card_content-owner {
+    margin-top: 7px;
+    font-size: 16px;
+    position: absolute;
+    font-weight: 700;
+    top: 69px;
 }
 
 .card_content-btn {

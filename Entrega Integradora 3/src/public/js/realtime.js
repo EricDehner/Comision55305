@@ -6,21 +6,22 @@ const button = document.querySelector(".realTime_header-btn");
 let menuActive = false;
 let idActive = false;
 
-socket.on("realTimeProducts",  (data) => {
+socket.on("realTimeProducts", (data) => {
     let salida = ``;
     console.log(data);
     data.forEach(item => {
         salida += `<div class="card">
-            <p id="id" class="ID_card none">${item._id}</p>
-            <div class="card_img">
-            <img class="card_img-img" src=${item.thumbnails} alt=${item.description} />
-            </div>
-        <div class="card_content">
-            <h2 class="card_content-title">${item.title}</h2>
-            <h3 class="card_content-description">${item.description}</h3>
-            <p class="card_content-price">$${item.price}</p>
-            </div>
-            </div>`;
+                        <p id="id" class="ID_card none">${item._id}</p>
+                        <div class="card_img">
+                            <img class="card_img-img" src=${item.thumbnails} alt=${item.description} />
+                        </div>
+                        <div class="card_content">
+                            <h2 class="card_content-title">${item.title}</h2>
+                            <h3 class="card_content-description">${item.description}</h3>
+                            <p class="card_content-price">$${item.price}</p>
+                            <p class="card_content-owner">$${item.owner}</p>
+                        </div>
+                    </div>`;
     });
     content.innerHTML = salida;
 });

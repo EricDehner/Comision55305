@@ -9,7 +9,7 @@ class UserService {
     async registerUser({ first_name, last_name, email, age, password, role }) {
         try {
             const role =
-                email == ENV_CONFIG.ADMIN_EMAIL && password === ENV_CONFIG.ADMIN_PASSWORD ? "admin" : "user";
+                email == ENV_CONFIG.ADMIN_EMAIL && password === ENV_CONFIG.ADMIN_PASSWORD ? "admin" : email === ENV_CONFIG.PREMIUM_EMAIL && password === ENV_CONFIG.PREMIUM_PASSWORD ? "premium" : "user";
             const user = await this.userManager.addUser({
                 first_name,
                 last_name,

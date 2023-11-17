@@ -41,6 +41,7 @@ app.engine('handlebars', expressHandlebars.engine({
     handlebars: allowInsecurePrototypeAccess(Handlebars),
     helpers: {
         eq(value1, value2) { return value1 === value2 },
+        dif(value1, value2) { return value1 !== value2 },
         ejemplo() { return true }
     }
 }));
