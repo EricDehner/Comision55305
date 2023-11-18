@@ -35,7 +35,7 @@ router.get("/realtimeproducts", checkSession, (req, res) => {
     if (user.role === "user") {
         return res.redirect('/products');
     }
-    res.render("realtimeProducts");
+    res.render("realtimeProducts", { user });
 });
 
 router.get("/chat", checkSession, (req, res) => {
@@ -80,7 +80,7 @@ router.get("/profile", checkSession, (req, res) => {
 });
 router.get("/restore", checkSession, (req, res) => {
     const userData = req.session.user;
-    
+
     res.render("restore", { user: userData });
 });
 

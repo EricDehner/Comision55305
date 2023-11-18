@@ -59,7 +59,7 @@ class ProductController {
         const { title, description, code, price, status = true, stock, category, thumbnails } = req.body;
         const requiredFields = ['title', 'description', 'code', 'price', 'stock', 'category', 'thumbnails'];
         const owner = req.user._id;
-
+        console.log(owner)
         for (const field of requiredFields) {
             if (!req.body[field]) {
                 return res.status(400).send({ status: 'error', message: `Error! No se cargó el campo ${field.charAt(0).toUpperCase() + field.slice(1)}!` });

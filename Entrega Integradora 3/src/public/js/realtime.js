@@ -5,6 +5,8 @@ const IDviews = document.getElementById("id")
 const button = document.querySelector(".realTime_header-btn");
 let menuActive = false;
 let idActive = false;
+const token = localStorage.getItem("userID")
+console.log(token);
 
 socket.on("realTimeProducts", (data) => {
     let salida = ``;
@@ -19,7 +21,7 @@ socket.on("realTimeProducts", (data) => {
                             <h2 class="card_content-title">${item.title}</h2>
                             <h3 class="card_content-description">${item.description}</h3>
                             <p class="card_content-price">$${item.price}</p>
-                            <p class="card_content-owner">$${item.owner}</p>
+                            <p class="card_content-owner">${item.owner}</p>
                         </div>
                     </div>`;
     });
