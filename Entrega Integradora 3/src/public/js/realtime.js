@@ -5,8 +5,22 @@ const IDviews = document.getElementById("id")
 const button = document.querySelector(".realTime_header-btn");
 let menuActive = false;
 let idActive = false;
-const token = localStorage.getItem("userID")
-console.log(token);
+
+
+socket.on("infodelete", (data) => {
+    Toastify({
+        text: data,
+        duration: 1500,
+        position: "right",
+        offset: {
+            x: 0,
+            y: 55,
+        },
+        className: "toastify-error"
+    }).showToast();
+})
+
+
 
 socket.on("realTimeProducts", (data) => {
     let salida = ``;
@@ -29,21 +43,21 @@ socket.on("realTimeProducts", (data) => {
 });
 
 function showID() {
-    const IDviews = document.getElementsByClassName("ID_card")
-    if (!idActive) {
-        for (let i = 0; i < IDviews.length; i++) {
+    const IDviews = document.getElementsByClassName("ID_card");
+    const buttonText = document.querySelector(".realTime_content-btn.blue");
+
+    for (let i = 0; i < IDviews.length; i++) {
+        if (idActive) {
+            IDviews[i].classList.add("none");
+        } else {
             IDviews[i].classList.remove("none");
         }
-        document.querySelector(".realTime_content-btn.blue").textContent = "OCULTAR ID's";
-        idActive = true;
-    } else {
-        for (let i = 0; i < IDviews.length; i++) {
-            IDviews[i].classList.add("none");
-        }
-        document.querySelector(".realTime_content-btn.blue").textContent = "MOSTRAR ID's";
-        idActive = false;
     }
+
+    buttonText.textContent = idActive ? "MOSTRAR ID's" : "OCULTAR ID's";
+    idActive = !idActive;
 }
+
 
 function editMenu() {
     if (!menuActive) {
@@ -100,13 +114,17 @@ function addProduct() {
     const stock = document.getElementById("stock").value;
     const category = document.getElementById("category").value;
     const thumbnails = document.getElementById("thumbnails").value;
-    const product = { title: title, description: description, code: code, price: price, status: status, stock: stock, category: category, thumbnails: thumbnails };
+    const product = {
+        title: title, description: description, code: code, price: price, status: status,
+        stock: stock, category: category, thumbnails: thumbnails, token: localStorage.getItem("userID")
+    };
 
     socket.emit("nuevoProducto", product);
 }
 
 function deleteProduct() {
     const idProduct = document.getElementById("idProduct").value;
-    socket.emit("eliminarProducto", idProduct);
+    const product = { idProduct: idProduct, token: localStorage.getItem("userID") }
+    socket.emit("eliminarProducto", product);
 }
 

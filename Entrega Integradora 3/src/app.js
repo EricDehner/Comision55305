@@ -94,15 +94,19 @@ socketServer.on("connection", async (socket) => {
     socket.emit("realTimeProducts", products);
 
     socket.on("nuevoProducto", async (data) => {
-        const product = { title: data.title, description: data.description, code: data.code, price: data.price, status: data.status, stock: data.stock, category: data.category, thumbnails: data.thumbnails };
+        const product = {
+            title: data.title, description: data.description, code: data.code, price: data.price,
+            status: data.status, stock: data.stock, category: data.category, thumbnails: data.thumbnails, token: data.token
+        };
         await PM.addProduct(product);
         const products = await PM.getProducts();
         socket.emit("realTimeProducts", products);
     });
 
     socket.on("eliminarProducto", async (data) => {
-        await PM.deleteProduct((data));
+        const infodelete = await PM.deleteProduct((data));
         const products = await PM.getProducts();
+        socket.emit("infodelete", infodelete)
         socket.emit("realTimeProducts", products);
     });
 

@@ -1,4 +1,6 @@
 import { productModel } from "./models/product.model.js";
+import { ENV_CONFIG } from "../config/config.js";
+import jwt from "jsonwebtoken";
 
 class ProductManager {
     async getProducts(params) {
@@ -35,6 +37,14 @@ class ProductManager {
 
 
     async addProduct(product) {
+        let userInfo = product.token
+        jwt.verify(userInfo, ENV_CONFIG.JWT_SECRET, (err, user) => {
+            if (err) {
+                console.log(err)
+                return false
+            }
+            userInfo = user
+        })
         try {
             if (await this.validateCode(product.code)) {
                 console.log("Error! Code exists!");
@@ -45,11 +55,11 @@ class ProductManager {
                     description: product.description,
                     code: product.code,
                     price: product.price,
-                    status: product.status,
+                    status: product.status !== undefined ? product.status : true,
                     stock: product.stock,
                     category: product.category,
                     thumbnails: product.thumbnails,
-                    owner: product.owner
+                    owner: userInfo.id
                 };
                 const createdProduct = await productModel.create(producto);
                 console.log("Product added!");
@@ -88,16 +98,29 @@ class ProductManager {
         }
     }
 
-    async deleteProduct(id) {
-        try {
-            const deletedProduct = await productModel.findByIdAndDelete(id);
-            if (deletedProduct) {
-                console.log("Product #" + id + " deleted!");
-                return true;
-            } else {
-                console.log("Product not found!");
-                return false;
+    async deleteProduct(product) {
+        let userInfo = product.token
+        jwt.verify(userInfo, ENV_CONFIG.JWT_SECRET, (err, user) => {
+            if (err) {
+                console.log(err)
+                return false
             }
+            userInfo = user
+        })
+        try {
+            const producto = await productModel.findById(product.idProduct);
+            if (userInfo.id === producto.owner + "" || userInfo.role === "admin") {
+                const deletedProduct = await productModel.findByIdAndDelete(product.idProduct);
+                if (deletedProduct) {
+                    return "Producto eliminado.";
+                } else {
+                    return "Producto no encontrado.";
+                }
+            } else {
+                return "No se pudo eliminar, producto ajeno.";
+            }
+
+
         } catch (error) {
             console.error("Error deleting product:", error);
             return false;
