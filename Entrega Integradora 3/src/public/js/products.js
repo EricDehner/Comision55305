@@ -7,8 +7,8 @@ const storedSort = localStorage.getItem("sortValue");
 function getQueryParams() {
     const queryParams = new URLSearchParams(window.location.search);
     return {
-        limit: queryParams.get('limit') || storedLimit || '',
-        sort: queryParams.get('sort') || storedSort || '',
+        limit: queryParams.get('limit') || '',
+        sort: queryParams.get('sort') || '',
         page: queryParams.get("page") || '1'
     };
 }
