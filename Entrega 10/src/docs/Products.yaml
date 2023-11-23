@@ -11,12 +11,9 @@ paths:
             application/json:
               schema:
                 type: array
+                $ref: "#/components/schemas/Products"
         "500":
           description: Error al traer productos.
-          content:
-            application/json:
-              schema:
-                type: object
     post:
       summary: Añade un nuevo producto a la pagina.
       tags:
@@ -154,6 +151,9 @@ paths:
             application/json:
               schema:
                 type: object
+                $ref: "#/components/schemas/Carts"
+        "500":
+          description: Error al traer productos del carrito.
   /api/carts/{cid}/products/{pid}:
     post:
       summary: Añade un producto mediante su ID al carrito por su ID.
@@ -205,49 +205,46 @@ paths:
       summary: Login de usuario.
       tags:
         - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      
       responses:
         "200":
           description: Login correcto, ingresando.
           content:
             application/json:
               schema:
-                type: object
+              $ref: "#/components/schemas/User"
         "401":
           description: Error de autenticación.
-          content:
-            application/json:
-              schema:
-                type: object
         "500":
           description: Error al loguear.
-          content:
-            application/json:
-              schema:
-                type: object
   /api/sessions/register:
     post:
       summary: Register de usuario.
       tags:
         - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
       responses:
         "200":
           description: Usuario creado con éxito.
           content:
             application/json:
               schema:
-                type: object
+              $ref: "#/components/schemas/User"
         "400":
           description: Error al crear usuario.
-          content:
-            application/json:
-              schema:
-                type: object
         "500":
           description: Error al registrar usuario.
-          content:
-            application/json:
-              schema:
-                type: object
 
 components:
   schemas:
@@ -295,7 +292,7 @@ components:
         stock: 35
         category: 'bebidas'
         thumbnails: [Array]
-        owner: 'admin'
+        owner: '653afd14352023d400b9df56'
       
     User:
       title: User
@@ -399,8 +396,8 @@ components:
         amount: 1400
         purchaser: "email.prueba@gmail.com"
 
-    Cart:
-      title: Cart
+    Carts:
+      title: Carts
       type: object
       properties:
         _id:
