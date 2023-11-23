@@ -200,6 +200,55 @@ paths:
         "200":
           description: Producto eliminado del carrito correctamente.
 
+  /api/sessions/login:
+    post:
+      summary: Login de usuario.
+      tags:
+        - User
+      responses:
+        "200":
+          description: Login correcto, ingresando.
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Error de autenticación.
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Error al loguear.
+          content:
+            application/json:
+              schema:
+                type: object
+  /api/sessions/register:
+    post:
+      summary: Register de usuario.
+      tags:
+        - User
+      responses:
+        "200":
+          description: Usuario creado con éxito.
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Error al crear usuario.
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Error al registrar usuario.
+          content:
+            application/json:
+              schema:
+                type: object
+
 components:
   schemas:
     Products:
