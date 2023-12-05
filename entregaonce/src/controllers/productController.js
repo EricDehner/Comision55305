@@ -29,7 +29,6 @@ class ProductController {
     async getProductById(req, res, next) {
         try {
             const pid = req.params.pid;
-            console.log(pid);
             if (!mongoose.Types.ObjectId.isValid(pid)) {
                 throw new CustomError({
                     name: "Invalid ID Error",

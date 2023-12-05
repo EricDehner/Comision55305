@@ -1,3 +1,7 @@
+const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 const registerUser = async () => {
     const first_nameInput = document.getElementById("first_name");
     const last_nameInput = document.getElementById("last_name");
@@ -10,6 +14,9 @@ const registerUser = async () => {
     let email = emailInput.value;
     let age = ageInput.value;
     let password = passwordInput.value;
+
+    first_name = capitalizeFirstLetter(first_name);
+    last_name = capitalizeFirstLetter(last_name);
 
     first_nameInput.style.border = '1px solid #ccc';
     last_nameInput.style.border = '1px solid #ccc';
