@@ -3,7 +3,7 @@ import { createHash, isValidPassword } from "../utils.js";
 import { cartModel } from "./models/cart.model.js";
 
 class UserManager {
-    async addUser({ first_name, last_name, email, age, password, role }) {
+    async addUser({ first_name, last_name, email, age, password, role, last_connection }) {
         try {
             const existingUser = await userModel.findOne({ email });
 
@@ -21,7 +21,8 @@ class UserManager {
                 age,
                 password: hashedPassword,
                 cart: cart._id,
-                role
+                role,
+                last_connection
             });
 
             console.log("User added!", user);

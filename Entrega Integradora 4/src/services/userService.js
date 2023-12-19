@@ -6,7 +6,7 @@ class UserService {
         this.userManager = new UserManager();
     }
 
-    async registerUser({ first_name, last_name, email, age, password, role }) {
+    async registerUser({ first_name, last_name, email, age, password, role, last_connection }) {
         try {
             const role =
                 email == ENV_CONFIG.ADMIN_EMAIL && password === ENV_CONFIG.ADMIN_PASSWORD ? "admin" : email === ENV_CONFIG.PREMIUM_EMAIL && password === ENV_CONFIG.PREMIUM_PASSWORD ? "premium" : "user";
@@ -17,6 +17,7 @@ class UserService {
                 age,
                 password,
                 role,
+                last_connection
             });
 
             if (user) {

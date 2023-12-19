@@ -17,6 +17,7 @@ class AuthController {
       const userData = await this.authService.login(email, password);
       req.logger.info("Usuario conectado:", userData);
 
+      userData.user.last_connection = new Date();
       if (!userData || !userData.user) {
         req.logger.error("Error de autenticación");
         const customError = new CustomError({ name: "Error de autenticación", message: "Datos incorrectos", code: 401, cause: generateAuthenticationErrorInfo(email) });

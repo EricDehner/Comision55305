@@ -13,7 +13,7 @@ class UserController {
 
     async register(req, res, next) {
         try {
-            const { first_name, last_name, email, age, password, role } = req.body;
+            const { first_name, last_name, email, age, password, role, last_connection } = req.body;
 
             if (!first_name || !last_name || !email || !age || !password) {
                 const customError = new CustomError({
@@ -38,7 +38,8 @@ class UserController {
                 email,
                 age,
                 password,
-                role
+                role,
+                last_connection
             });
 
             if (response.status === "success") {

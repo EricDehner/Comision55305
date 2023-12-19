@@ -1,3 +1,8 @@
+const url = window.location.href;
+
+const match = url.match(/\/upload\/([^\/]+)$/);
+const userId = match ? match[1] : null;
+
 function bePremium() {
     const uploadFormDiv = document.querySelector('.upload_form');
     const newDiv = document.createElement('div');
@@ -11,7 +16,7 @@ function bePremium() {
     newDiv.style.overflow = 'hidden';
 
     newDiv.innerHTML = `
-    <form id="uploadPremiumForm" action="/api/users/{{userId}}/premium-documents" method="post"
+    <form id="uploadPremiumForm" action="/api/users/${userId}/premium-documents" method="post"
         enctype="multipart/form-data">
         <h2 class="upload_title">¡Conviértase en Premium! <span class="material-symbols-outlined-premium">
                 workspace_premium
@@ -152,7 +157,7 @@ function submitFormPremium(formId, btnId) {
             }).showToast();
 
             const premiumButtonHtml = `
-            <form class="premiumForm" action="/api/users/premium/{{userId}}" method="post">
+            <form class="premiumForm" action="/api/users/premium/${userId}" method="post">
                 <div class="cont-div">
                     <button class="btn-uploads upload_footer-btn--premium" type="submit">¡Convertirse en Premium!<span class="material-symbols-outlined-premium">
                             workspace_premium
