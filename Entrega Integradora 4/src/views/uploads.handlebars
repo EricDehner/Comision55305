@@ -1,0 +1,31 @@
+<div class="container-forms">
+    <div class="upload_form">
+        <form id="uploadForm" action="/api/users/{{userId}}/documents" method="post" enctype="multipart/form-data">
+            <h2 class="upload_title">Cargar Archivos</h2>
+            <div class="upload_file">
+                <label class="upload_file-title" for="profileImage">Imagen de perfil:</label>
+                <input class="upload_file-file" type="file" name="profileImage" id="profileImage" accept="image/*">
+            </div>
+            <div class="upload_file">
+                <label class="upload_file-title" for="productImage">Imagen de producto:</label>
+                <input class="upload_file-file" type="file" name="productImage" id="productImage" accept="image/*">
+            </div>
+            <div class="upload_file upload_file-last">
+                <label class="upload_file-title" for="document">Documento:</label>
+                <input class="upload_file-file" type="file" name="document" id="document" accept=".pdf,.doc,.docx">
+            </div>
+            <div class="upload_footer">
+                <button class="upload_footer-btn btn-left" id="uploadMessageCommon" type="button"
+                    onclick="validateAndSubmitForm()">Cargar<span
+                        class="material-symbols-outlined-upload">upload</span></button>
+                <button class="upload_footer-btn btn-right" type="button" onclick="bePremium()">¡Conviértase en
+                    Premium!<span class="material-symbols-outlined-premium">
+                        workspace_premium
+                    </span></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script src="/js/uploads.js"></script>
