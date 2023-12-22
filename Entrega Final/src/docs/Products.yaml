@@ -1,0 +1,425 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtiene los productos de la pagina.
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Productos conseguidos.
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: "#/components/schemas/Products"
+        "500":
+          description: Error al traer productos.
+    post:
+      summary: Añade un nuevo producto a la pagina.
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Products"
+      responses:
+        "200":
+          description: El producto fue agregado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Products"
+        "400":
+          description: Campos incompletos.
+        "500":
+          description: Error del servidor.
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto especifico por su ID.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto
+          schema:
+            $type: integer
+            example: 64ed1b2ab5f1cc9ae4545c3d
+      responses:
+        "200":
+          description: Retorna producto correspondiente al ID solicitado.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Products"
+        "400":
+          description: Id proporcionado invalido.
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      summary: Actualiza un producto específico por su ID.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto a actualizar.
+          schema:
+            $type: integer
+            example: 65525c98be0a98cbe8b54067
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Products"
+      responses:
+        "200":
+          description: Producto actualizado correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Products"
+        "404":
+          description: No se pudo actualizar el producto.
+        "500":
+          description: Error del servidor.
+    delete:
+      summary: Elimina un producto específico por su ID.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto a eliminar
+          schema:
+            $type: integer
+            example: 64e938ae2a7c5b36e42681ba
+
+      responses:
+        "200":
+          description: Producto eliminado exitosamente
+        "403":
+          description: No se puede eliminar el producto por falta de permisos.
+        "404":
+          description: Producto no encontrado.
+        "500":
+          description: Error del servidor.
+  
+  /api/carts/:
+    post:
+      summary: Crea un carrito de compras.
+      tags:
+        - Cart
+      responses:
+        "200":
+          description: Carrito creado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    description: ID autogenerado del carrito
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene un carrito específico por su ID.
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito.
+          schema:
+            type: string
+            example: 64e938ae2a7c5b36e42681ba
+      responses:
+        "200":
+          description: Retorna los productos del carrito.
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Carts"
+        "500":
+          description: Error al traer productos del carrito.
+  /api/carts/{cid}/products/{pid}:
+    post:
+      summary: Añade un producto mediante su ID al carrito por su ID.
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito.
+          schema:
+            type: string
+            example: 64e938ae2a7c5b36e42681ba
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto a añadir
+          schema:
+            type: string
+            example: 64e938ae2a7c5b36e42681ba
+      responses:
+        "200":
+          description: Producto agregado al carrito correctamente.
+    delete:
+      summary: Elimina un producto del carrito por su ID.
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito.
+          schema:
+            type: string
+            example: 64e938ae2a7c5b36e42681ba
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto a eliminar.
+          schema:
+            type: string
+            example: 64e938ae2a7c5b36e42681ba
+      responses:
+        "200":
+          description: Producto eliminado del carrito correctamente.
+
+  /api/sessions/login:
+    post:
+      summary: Login de usuario.
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      
+      responses:
+        "200":
+          description: Login correcto, ingresando.
+          content:
+            application/json:
+              schema:
+              $ref: "#/components/schemas/User"
+        "401":
+          description: Error de autenticación.
+        "500":
+          description: Error al loguear.
+  /api/sessions/register:
+    post:
+      summary: Register de usuario.
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: Usuario creado con éxito.
+          content:
+            application/json:
+              schema:
+              $ref: "#/components/schemas/User"
+        "400":
+          description: Error al crear usuario.
+        "500":
+          description: Error al registrar usuario.
+
+components:
+  schemas:
+    Products:
+      title: Products
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado de MongoDB.
+        title:
+          type: String
+          description: Nombre del producto.
+        description:
+          type: String
+          description: Descripción del producto.
+        code:
+          type: String
+          description: Código del producto
+        price:
+          type: Number
+          description: Precio del producto.
+        status:
+          type: Boolean
+          description: Status del producto.
+        stock:
+          type: Number
+          description: Stock del producto
+        category:
+          type: String
+          description: Categoría del producto
+        thumbnails:
+          type: Array
+          description: Imagen del producto
+        owner:
+          type: object
+          description: Usuario que subió el producto
+      example:
+        _id: new ObjectId("64e938ae2a7c5b36e42681ba")
+        title: 'Spite 2.25L'
+        description: 'Gaseosa Sprite Lima-Limón 2,25 Lt'
+        code: '111113'
+        price: 520
+        status: true
+        stock: 35
+        category: 'bebidas'
+        thumbnails: [Array]
+        owner: '653afd14352023d400b9df56'
+      
+    User:
+      title: User
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado de MongoDB para el usuario.
+        first_name:
+          type: string
+          description: Nombre del usuario.
+        last_name:
+          type: string
+          description: Apellido del usuario.
+        email:
+          type: string
+          format: email
+          description: Correo electrónico del usuario.
+          unique: true
+        age:
+          type: number
+          description: Edad del usuario.
+        password:
+          type: string
+          format: password
+          description: Contraseña del usuario.
+        cart:
+          type: string
+          description: Id de cart asignado.
+        role:
+          type: string
+          description: Rol asignado al usuario.
+        resetPasswordToken:
+          type: string
+          description: Token asignado para recuperar la contraseña olvidada.
+        resetPasswordExpires:
+          type: date-time
+          description: Fecha de vencimiento de token asignado para recuperar la contraseña olvidada.
+      example:
+        _id: ObjectId("653afd14352023d400b9df56")
+        first_name: "Nombre"
+        last_name: "Apellido"
+        email: "email.prueba@gmail.com"
+        age: 21
+        password: "$2b$10$6yIQSt4m052wY5lnl6icF.Yfq94emvZZPpTUTRDsh2fXQic9li5QS"
+        cart: ObjectId("653afd14352023d400b9df54")
+        role: "admin"
+        resetPasswordExpires: 2023-11-22T22:03:39.262+00:00
+        resetPasswordToken: "88bf964d59bb0070f68fb827d531129afc145866"
+
+    Message:
+      title: Messages
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado de MongoDB para el mensaje.
+        user:
+          type: string
+          description: Nombre del usuario que envió el mensaje.
+        email:
+          type: string
+          format: email
+          description: Correo electrónico del usuario que envió el mensaje.
+        message:
+          type: string
+          description: Mensaje enviado.
+      example:
+        _id: new ObjectId("64ee3475b5ed7e566d99e16e")
+        user: "Nombre Apellido"
+        email: "email.prueba@gmail.com"
+        message: "Mensaje de prueba."
+
+    Ticket:
+      title: Tickets
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado de MongoDB para el ticket de compra.
+        purchase_datetime:
+          type: string
+          description: Fecha y hora para el ticket de compra.
+        code:
+          type: string
+          description: Codigo unico para el ticket de compra.
+          required: true
+          unique: true
+        amount:
+          type: number
+          description: Precio total del ticket de compra.
+          required: true
+        purchaser:
+          type: number
+          description: Comprador que figura en el ticket de compra.
+          required: true
+      example:
+        _id: ObjectId("655e657b3aa0fd02572c9257")
+        purchase_datetime: 22/11/2023, 17:32:59
+        code: "f608a06f-1419-4892-a323-d895059e9c84"
+        amount: 1400
+        purchaser: "email.prueba@gmail.com"
+
+    Carts:
+      title: Carts
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado de MongoDB para el carrito.
+        products:
+          type: array
+          description: Lista de productos en el carrito.
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                description: ID del producto en el carrito.
+              quantity:
+                type: number
+                description: Cantidad del producto en el carrito.
+        __v:
+          type: number
+          description: Versión del documento en MongoDB.
+      example:
+        _id: ObjectId("653afd14352023d400b9df54")
+        products:
+          - product: ObjectId("64e9391c2a7c5b36e42681c0")
+            quantity: 3

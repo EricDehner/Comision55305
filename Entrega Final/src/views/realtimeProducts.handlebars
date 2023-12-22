@@ -1,0 +1,16 @@
+<div class="realTime">
+    <div class="realTime_header">
+        <h1 class="realTime_header-title">Productos</h1>
+        <button data-tooltip="Agregar producto" class="realTime_header-btn" onclick="editMenu()"><span class="material-symbols-outlined-prod"> add
+            </span></button>
+
+        <button data-tooltip="Mostrar ID productos" class="realTime_header-btn--id" onclick="showID()"><span class="material-symbols-outlined-prod">
+                visibility
+            </span></button>
+    </div>
+    <div id="menu" class="realTime_content none"></div>
+    <div id="content" class="cards_container"></div>
+</div>
+
+<script src="socket.io/socket.io.js"></script>
+<script src="/js/realtime.js"></script>

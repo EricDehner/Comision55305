@@ -1,0 +1,39 @@
+<div class="controlPanel_header">
+    <h1 class="controlPanel_title">Panel de Usuarios</h1>
+    <button data-tooltip="Eliminar usuarios con mas de 48hs de inactividad" class="controlPanel_refresh"
+        onclick="eliminarUsuariosInactivos()"><span class="material-symbols-outlined-refresh"> update
+        </span></button>
+</div>
+<div class="userCard_container">
+    {{#each users}}
+    <div class="userCard">
+        <div class="userCard_header">
+            <button data-tooltip="Eliminar usuario" class="userCard_header-btn" id="{{id}}" onclick="eliminarUsuario('{{id}}')"><span
+                    class="material-symbols-outlined-x">
+                    close
+                </span></button>
+            <p class="userCard_header-id">{{id}} </p>
+        </div>
+        <div class="userCard_profile">
+            <span class="material-symbols-outlined-controlPanel">
+                person </span>
+        </div>
+        <div class="userCard_content">
+            <p class="userCard_content-item"> {{first_name}} {{last_name}} </p>
+            <p class="userCard_content-item"> {{email}} </p>
+            <select class="userCard_content-select" id="role" data-id="{{id}}" name="role">
+                <option class="userCard_content-option" value="admin" {{#if (eq role "admin" )}}selected{{/if}}>Admin
+                </option>
+                <option class="userCard_content-option" value="premium" {{#if (eq role "premium" )}}selected{{/if}}>
+                    Premium</option>
+                <option class="userCard_content-option" value="user" {{#if (eq role "user" )}}selected{{/if}}>User
+                </option>
+            </select>
+            <p class="userCard_content-item"> {{age}} </p>
+
+        </div>
+    </div>
+    {{/each}}
+</div>
+
+<script src="/js/controlPanel.js"></script>
