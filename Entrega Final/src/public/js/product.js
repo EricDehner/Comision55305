@@ -29,6 +29,8 @@ const agregarProductoAlCarrito = async (pid) => {
                 duration: 1500
             }).showToast();
             console.log("Se agregó al Carrito!");
+
+            await actualizarTotalProducts();
         } else {
             console.log("Error en agregar el Producto al Carrito!");
             Toastify({
@@ -52,5 +54,41 @@ const agregarProductoAlCarrito = async (pid) => {
                 y: 55,
             }
         }).showToast();
+    }
+}
+
+async function actualizarTotalProducts() {
+    try {
+        let cart = localStorage.getItem("cartID");
+
+        if (!cart) {
+            return;
+        }
+
+        const totalProducts = await getTotalProductsInCart(cart);
+        console.log(totalProducts);
+
+        const button = document.getElementById('cartQty');
+        if (button) {
+            button.textContent = totalProducts.toString();
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function getTotalProductsInCart(cartId) {
+    try {
+        const response = await fetch(`/api/carts/${cartId}/total-products`);
+        if (!response.ok) {
+            throw new Error(`Error al obtener el total de productos en el carrito: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const totalProducts = data.totalProducts;
+
+        return totalProducts;
+    } catch (error) {
+        console.error(error);
     }
 }

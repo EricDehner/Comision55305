@@ -163,6 +163,23 @@ footer {
     clip-path: inset(0 0 0 0);
 }
 
+#cartQty {
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    width: 16px;
+    align-items: center;
+    height: 16px;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    position: absolute;
+    right: 71px;
+    top: 23px;
+    pointer-events: none;
+}
+
 .navBar_content-item--btn .material-symbols-outlined {
     font-size: 21px !important;
 }
@@ -1520,7 +1537,38 @@ label {
     box-shadow: 5px 3px 8px rgba(0, 0, 0, 0.361);
     margin: 2rem auto;
     width: 100%;
-    max-width: 650px;
+    padding: .5rem 0 0;
+    max-width: 712px;
+}
+
+.cart_container-overflow {
+    max-height: 600px;
+    width: 712px;
+    overflow-y: auto;
+}
+
+.cart_container-overflow::-webkit-scrollbar {
+    width: 10px;
+    /* Ancho de la barra de desplazamiento */
+}
+
+.cart_container-overflow::-webkit-scrollbar-thumb {
+    background-color: grey;
+    /* Color del fondo de la barra de desplazamiento */
+    border-radius: 5px;
+    /* Bordes redondeados de la barra de desplazamiento */
+}
+
+.cart_container-overflow::-webkit-scrollbar-track {
+    background-color: transparent;
+    /* Fondo del contenedor detrás de la barra de desplazamiento */
+}
+
+.cart_container-overflow {
+    scrollbar-width: thin;
+    /* Para navegadores Firefox */
+    scrollbar-color: grey transparent;
+    /* Para navegadores Firefox */
 }
 
 .cart {
@@ -1556,6 +1604,13 @@ label {
     font-family: 'Roboto', sans-serif;
     font-size: 22px;
     margin: 0 0 1.5rem 0.5rem;
+}
+
+.cart_content-description {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 1.5rem 0 1.5rem 1rem;
 }
 
 .cart_content-price {
@@ -1765,14 +1820,15 @@ label {
     font-family: 'Roboto', sans-serif;
     font-size: 24px;
     text-align: center;
-    padding: 1.4rem 0 1.7rem;
+    padding: 1.4rem 0 0.7rem;
 }
 
 .checkout_ticket {
     font-family: 'Roboto', sans-serif;
-    font-size: 19px;
+    font-size: 14px;
     text-align: center;
-    padding: 1rem 0 2rem;
+    padding: 0.8rem 0;
+    color: rgb(47 47 47 / 71%);
 }
 
 .checkoutFooter {
@@ -1786,7 +1842,7 @@ label {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 400;
-    color: #3333336b;
+    color: #333333f0;
 }
 
 
@@ -2805,4 +2861,84 @@ label {
 
 .userCard_header-btn:hover::before {
     width: max-content;
+}
+
+/* CART CHECKOUT */
+
+.checkout_description {
+    font-family: 'Roboto', sans-serif;
+    font-size: 19px;
+    text-align: left;
+    margin: 0 0 0.6rem 1rem;
+}
+
+.productCard {
+    display: flex;
+}
+
+.products-container {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    max-height: 140px;
+    width: 650px;
+    margin: 0.6rem auto 0.6rem;
+    overflow-y: auto;
+    background: #ffffff1c;
+    padding: 1.4rem;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.productCard_img-img {
+    width: 100px;
+}
+
+.checkout_amount {
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px;
+    text-align: left;
+    margin-left: 1rem;
+}
+
+.productCard_content {
+    width: 100%;
+}
+
+.productCard_content-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 0.4rem;
+}
+
+.productCard_content-header--title {
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px;
+    text-align: left;
+    margin-left: 2rem;
+}
+
+.productCard_content-header--quantity {
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px;
+    text-align: left;
+    margin-right: 1rem;
+}
+
+
+.productCard_content-description {
+    font-family: 'Roboto', sans-serif;
+    font-size: 17px;
+    text-align: left;
+    margin: .5rem 0 1.5rem 2.5rem;
+}
+
+.productCard_content-price {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    text-align: left;
+    margin-left: 2rem;
 }

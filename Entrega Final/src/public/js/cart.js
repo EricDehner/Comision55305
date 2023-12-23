@@ -1,4 +1,7 @@
-price();
+const cartItems = document.querySelectorAll('.cart_content');
+if (cartItems.length > 0) {
+    price();
+}
 
 function clearCart() {
     const cid = localStorage.getItem("cartID");
@@ -160,61 +163,96 @@ async function buyCart() {
 }
 
 function openCheckout(responseData) {
-    console.log(responseData);
     const modal = document.getElementById('myModal');
     const ticketCode = responseData.ticket.code;
     const products = responseData.ticket.products;
     const totalAmount = responseData.ticket.amount;
-
+    const fetchPromises = [];
     let productsHtml = "";
 
-    products.forEach((product) => {
-        const { title, /* otras propiedades */ } = product.product;
-        console.log(`Título: ${title}`);
-        productsHtml += `
-            <div class="product-item">
-                <p>${title} x ${product.quantity}</p>
-            </div>
-        `;
-    });
+    for (let i = 0; i < products.length; i++) {
+        const product = products[i];
+        const productId = product.product;
 
-    const contenidoModal = `
-        <div class="checkout_modal">
-            <div class="checkout">
-                <span onclick="closeModal()" class="material-symbols-outlined-x checkout_x"> close </span>
-                <h3 class="checkout_title">¡Gracias por su compra!</h3>
-                <p class="checkout_ticket">Su ticket de compra es: ${ticketCode}</p>
-                <div class="products-container">
-                    ${productsHtml}
+        const fetchPromise = fetch(`/api/products/${productId}`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Error al obtener detalles del producto con ID ${productId}`);
+                }
+                return response.json();
+            })
+            .then((productDetails) => {
+
+                const {
+                    description,
+                    price,
+                    thumbnails,
+                    title,
+                } = productDetails.data;
+
+                productsHtml += `
+                    <div class="productCard">
+                        <div class="productCard_img">
+                            <img class="productCard_img-img" src="${thumbnails[0]}" alt="${title}">
+                        </div>
+                        <div class="productCard_content">
+                            <div class="productCard_content-header">
+                                <h3 class="productCard_content-header--title">${title}</h3>
+                                <p class="productCard_content-header--quantity">Cantidad: ${product.quantity}</p>
+                            </div>
+                            <p class="productCard_content-description">${description}</p>
+                            <p class="productCard_content-price">Precio: $${price}</p>
+                        </div>
+                    </div>
+                `;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+        fetchPromises.push(fetchPromise);
+    }
+
+    Promise.all(fetchPromises)
+        .then(() => {
+            const contenidoModal = `
+                <div class="checkout_modal">
+                    <div class="checkout">
+                        <span onclick="closeModal()" class="material-symbols-outlined-x checkout_x"> close </span>
+                        <h3 class="checkout_title">¡Gracias por su compra!</h3>
+                        <p class="checkout_description">Resumen:</p>
+                        <div class="products-container">
+                        ${productsHtml}
+                        </div>
+                        <p class="checkout_amount">Monto total: $${totalAmount}</p>
+                        <p class="checkout_ticket">Le enviaremos su factura a su email. Su ticket de compra es: <b>${ticketCode}</b></p>
+                        <hr>
+                        <div class="checkoutFooter">
+                            <p class="checkout_footer-text">¡Esperamos que vuelva a elegirnos!</p>
+                            <a href="/products" class="cartFooter_btn--checkout">Seguir comprando</a>
+                        </div>
+                    </div>
                 </div>
-                <p class="checkout_amount">Monto total: $${totalAmount}</p>
-                <p class="checkout_amount">Le enviaremos su factura a su email.</p>
-                <hr>
-                <div class="checkoutFooter">
-                    <p class="checkout_footer-text">¡Esperamos que vuelva a elegirnos!</p>
-                    <a href="/products" class="cartFooter_btn--checkout">Seguir comprando</a>
-                </div>
-            </div>
-        </div>
-    `;
+            `;
 
-    modal.innerHTML = contenidoModal;
+            modal.innerHTML = contenidoModal;
+            modal.style.display = 'block';
 
-    modal.style.display = 'block';
-
-    modal.addEventListener('click', function (event) {
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
+            modal.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+            document.querySelector('.main').style.overflow = 'hidden';
+        });
 }
+
 
 function closeModal() {
     window.location.reload();
 }
 
 function price() {
-    const cartItems = document.querySelectorAll('.cart_content');
     let totalPorProductoArray = [];
 
     cartItems.forEach(function (cartItem) {

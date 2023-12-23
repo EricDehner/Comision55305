@@ -4,6 +4,8 @@ import { cartModel } from "../dao/models/cart.model.js";
 import ticketController from "./ticketController.js";
 import { v4 as uuidv4 } from "uuid"
 import { productModel as ProductModel } from "../dao/models/product.model.js";
+import { transporter } from "./emailController.js";
+import { ENV_CONFIG } from "../config/config.js";
 
 
 class CartController {
@@ -92,6 +94,52 @@ class CartController {
         }
     }
 
+    async sendPurchaseConfirmationEmail(clientEmail, ticketData) {
+        try {
+            const productsHtml = ticketData.products.map((product) => {
+                const { title, description, price, thumbnails } = product.product;
+                return `
+                    <div style="display: flex; margin: 1rem 0;">
+                        <div class="productCard_img">
+                            <img style="width: 160px;" src="${thumbnails[0]}" alt="${title}">
+                        </div>
+                        <div style=" width: 100%;">
+                            <div style="display: flex; width: 100%; margin-top: 0.4rem; align-items: center; justify-content: space-between;">
+                                <h3 style="font-family: 'Roboto', sans-serif; font-size: 17px; text-align: left; margin-left: 2rem;">${title}</h3>
+                                <p style="font-family: 'Roboto', sans-serif; font-size: 17px; text-align: left; margin-left: 4rem;">Cantidad: ${product.quantity}</p>
+                            </div>
+                            <p style="font-family: 'Roboto', sans-serif; font-size: 17px; text-align: left; margin: .5rem 0 1.5rem 2.5rem;">${description}</p>
+                            <p style="font-family: 'Roboto', sans-serif; font-size: 16px; text-align: left; margin-left: 2rem;">Precio: $${price}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const emailContent = `
+            <div style="margin: auto;">
+                <p style="font-family: 'Roboto', sans-serif; font-size: 24px; text-align: center; padding: 1.4rem 0 0.7rem;">¡Gracias por tu compra!</p>
+                <p style="font-family: 'Roboto', sans-serif; font-size: 19px; text-align: left; margin: 0 0 0.6rem 1rem;">Aquí está el resumen de tu compra:</p>
+                <div style="width: 100%;">
+                ${productsHtml}
+                </div>
+                <p style="font-family: 'Roboto', sans-serif; font-size: 19px; text-align: left; margin: 0 0 0.6rem 1rem;">Total: $${ticketData.amount}</p>
+                <p style="font-family: 'Roboto', sans-serif; font-size: 19px; text-align: center; margin: 2rem 0 0;">ID del ticket: ${ticketData.code}</p>
+            </div>
+            `;
+
+            const mailOptions = {
+                from: "Proyecto E-Commerce " + ENV_CONFIG.EMAIL_USER,
+                to: clientEmail,
+                subject: "Confirmación de compra",
+                html: emailContent,
+            };
+
+            await transporter.sendMail(mailOptions);
+            console.log(`Correo electrónico de confirmación de compra enviado a ${clientEmail}`);
+        } catch (error) {
+            console.error("Error al enviar el correo electrónico de confirmación de compra:", error);
+        }
+    }
 
     async createPurchaseTicket(req, res) {
         try {
@@ -168,11 +216,15 @@ class CartController {
                 products: productDetails,
             };
 
-            console.log(ticketData);
-    
             const ticketCreated = await ticketController.createTicket({
                 body: ticketData,
             });
+
+            await this.sendPurchaseConfirmationEmail(req.user.email, ticketData);
+
+
+
+
             res.json({ status: "success", message: "Compra realizada con éxito", ticket: ticketCreated, failedProducts: failedProducts.length > 0 ? failedProducts : undefined });
             req.logger.info(`Compra realizada con éxito.`);
         } catch (error) {
@@ -194,6 +246,24 @@ class CartController {
         } catch (error) {
             console.error(error);
             res.status(500).json({ status: "error", message: "Error interno del servidor" });
+        }
+    }
+
+    async getTotalProductsInCart(req, res) {
+        try {
+            const cart = await this.cartService.getCart(req.params.cid);
+            if (!cart) {
+                return res.status(404).json({ error: "Carrito no encontrado" });
+            }
+    
+            const totalProducts = cart.products.reduce((total, product) => {
+                return total + product.quantity;
+            }, 0);
+    
+            res.json({ totalProducts });
+        } catch (error) {
+            req.logger.error("Error al obtener el total de productos en el carrito:", error);
+            res.status(500).json({ error: "Error interno del servidor" });
         }
     }
 

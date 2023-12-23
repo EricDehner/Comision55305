@@ -105,12 +105,14 @@ class ProductManager {
             }
             userInfo = user
         })
+
         try {
             const producto = await productModel.findById(product.idProduct);
             if (userInfo.id === producto.owner + "" || userInfo.role === "admin") {
                 if (userInfo.role === "admin") {
                     const user = await userModel.findById(producto.owner);
-                    console.log(`Mail enviado a ${user.email}`);
+                    //console.log(`Mail enviado a ${user.email}`);
+
                     if (user) {
                         const mailOptions = {
                             from: "Proyecto E-Commerce " + ENV_CONFIG.EMAIL_USER,
@@ -119,6 +121,8 @@ class ProductManager {
                             html: `<p>Hola, ${user.first_name}. Te informamos que tu producto "${producto.title}" ha sido eliminado de nuestra plataforma. <br> ¡Gracias por utilizar nuestros servicios! <br> Saludos. </p>`,
                         };
                         await transporter.sendMail(mailOptions);
+                    }else {
+                        console.log("Mail no enviado, el ID no pertenece a un usuario existente.");
                     }
                 }
                 const deletedProduct = await productModel.findByIdAndDelete(product.idProduct);

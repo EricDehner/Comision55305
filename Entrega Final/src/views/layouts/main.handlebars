@@ -48,6 +48,10 @@
                 <a class="navBar_content-item" href="/messages">MENSAJES</a>
                 {{/if}}
                 {{#if (dif user.role "admin")}}
+                {{#if user.cart}}
+                <p id="cartQty"></p>
+                {{else}}
+                {{/if}}
                 <a class="navBar_content-item" href="/cart/{{user.cart}}"><span
                         class="material-symbols-outlined cart_icon">
                         shopping_cart

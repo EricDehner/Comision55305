@@ -9,25 +9,28 @@
     </div>
     {{#if products}}
     <div class="cart_container">
-        {{#each products}}
-        <div class="cart">
-            <div class="cart_img">
-                <img class="cart_img-img" src="{{this.product.thumbnails}}" alt="{{this.product.title}}">
+        <div class="cart_container-overflow">
+            {{#each products}}
+            <div class="cart">
+                <div class="cart_img">
+                    <img class="cart_img-img" src="{{this.product.thumbnails}}" alt="{{this.product.title}}">
+                </div>
+                <div class="cart_content">
+                    <h2 class="cart_content-title">{{this.product.title}}</h2>
+                    <hr>
+                    <p class="cart_content-description">{{this.product.description}}</p>
+                    <p class="cart_content-price">${{this.product.price}}</p>
+                    <p class="cart_content-qty">{{this.quantity}} U</p>
+                    <p class="cart_content-qty">{{product.product._id}} U</p>
+                    <p class="cart_content-idProduct">{{this.product._id}}</p>
+                    <button class="cart_content-btn" onclick="deleteProduct('{{this.product._id}}')">
+                        <span class="material-symbols-outlined delete_icon">delete</span>
+                    </button>
+                </div>
             </div>
-            <div class="cart_content">
-                <h2 class="cart_content-title">{{this.product.title}}</h2>
-                <hr>
-                <p class="cart_content-price">${{this.product.price}}</p>
-                <p class="cart_content-qty">{{this.quantity}} U</p>
-                <p class="cart_content-qty">{{product.product._id}} U</p>
-                <p class="cart_content-idProduct">{{this.product._id}}</p>
-                <button class="cart_content-btn" onclick="deleteProduct('{{this.product._id}}')">
-                    <span class="material-symbols-outlined delete_icon">delete</span>
-                </button>
-            </div>
+            <hr>
+            {{/each}}
         </div>
-        <hr>
-        {{/each}}
         <div class="cartFooter">
             <p class="cartFooter_price"></p>
             <button onclick="buyCart()" class="cartFooter_btn">Comprar</button>

@@ -34,7 +34,6 @@ socket.on("productoAgregado", (data) => {
 
 
 socket.on("realTimeProducts", (data) => {
-    console.log(data);
     let salida = ``;
     data.forEach(item => {
         salida += `<div class="card">

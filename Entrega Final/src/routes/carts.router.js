@@ -22,4 +22,6 @@ cartsRouter.delete("/:cid", cartControllers.deleteProductsFromCart.bind(cartCont
 
 cartsRouter.post("/:cid/purchase", (req, res, next) => { next(); }, passportCall("jwt"), cartControllers.createPurchaseTicket.bind(cartControllers));
 
+cartsRouter.get("/:cid/total-products", cartControllers.getTotalProductsInCart.bind(cartControllers));
+
 export default cartsRouter;
