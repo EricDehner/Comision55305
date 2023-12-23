@@ -10,9 +10,9 @@ socket.on("messages", (data) => {
 
 function formatDateTime(dateTimeString, timeZone = 'UTC') {
     const options = { hour: 'numeric', minute: 'numeric', timeZone };
-    
+
     const formattedTime = new Date(dateTimeString).toLocaleTimeString('es-AR', options);
-    
+
     const dateOptions = { day: '2-digit', month: '2-digit', year: 'numeric', timeZone };
     const formattedDate = new Date(dateTimeString).toLocaleDateString('es-AR', dateOptions);
 
@@ -30,26 +30,27 @@ function showMessages(data) {
             statusContent = '<span class="material-symbols-outlined-status solved">check_circle</span>';
         }
 
-        salida += `<div class="message_card">
-        <h3 class="message_card-name">${item.user} </h3>
-        <div class="message_date">
-        <p class="message_date-item">${time}</p>
-        <p class="message_date-item">${date}</p>
-        </div>
-        <div data-tooltip="Estado" class="message_status">
-            <label class="message_status-icon" for="message_status_select_${item._id}">${statusContent}</label>
-            <select  class="message_status-select" id="message_status_select_${item._id}" data-id="${item._id}">
-                <option value="pending" ${item.status === 'pending' ? 'selected' : ''}>
-                    Pendiente
-                </option>
-                <option value="solved" ${item.status === 'solved' ? 'selected' : ''}>
-                    Resuelta
-                </option>
-            </select>
-        </div>
-        <a href="mailto:${item.email}" class="message_card-email">${item.email}</a>
-        <p class="message_card-message">${item.message}</p>
-      </div>`;
+        salida += `
+        <div class="message_card">
+            <h3 class="message_card-name">${item.user} </h3>
+            <div class="message_date">
+                <p class="message_date-item">${time}</p>
+                <p class="message_date-item">${date}</p>
+            </div>
+            <div data-tooltip="Estado" class="message_status">
+                <label class="message_status-icon" for="message_status_select_${item._id}">${statusContent}</label>
+                <select  class="message_status-select" id="message_status_select_${item._id}" data-id="${item._id}">
+                    <option value="pending" ${item.status === 'pending' ? 'selected' : ''}>
+                        Pendiente
+                    </option>
+                    <option value="solved" ${item.status === 'solved' ? 'selected' : ''}>
+                        Resuelta
+                    </option>
+                </select>
+            </div>
+            <a href="mailto:${item.email}" class="message_card-email">${item.email}</a>
+            <p class="message_card-message">${item.message}</p>
+        </div>`;
     });
     messages.innerHTML = salida;
 
@@ -85,26 +86,33 @@ async function updateMessageStatus(messageId, newStatus) {
                 },
                 className: "toastify-error"
             }).showToast();
-        }
-        Toastify({
-            text: "Estado actualizado",
-            duration: 2500,
-            position: "right",
-            offset: {
-                x: 0,
-                y: 55,
-            },
-            className: "green"
-        }).showToast();
+        } else {
+            Toastify({
+                text: "Estado actualizado",
+                duration: 2500,
+                position: "right",
+                offset: {
+                    x: 0,
+                    y: 55,
+                },
+                className: "green"
+            }).showToast();
 
-        setTimeout(() => {
-            window.location.reload();
-        }, 1500);
+            const updatedMessageIndex = globalData.findIndex(item => item._id === messageId);
+            if (updatedMessageIndex !== -1) {
+                globalData[updatedMessageIndex].status = newStatus;
+            }
+
+            if (showAllMessages) {
+                showMessages(globalData);
+            } else {
+                showPendingMessages();
+            }
+        }
     } catch (error) {
-        console.error("Error al realizar la solicitud de actual")
+        console.error("Error al realizar la solicitud de actualización");
     }
 }
-
 function showPendingMessages() {
     if (!globalData) {
         console.error('Error: no hay datos disponibles.');
@@ -144,4 +152,74 @@ function toggleMessages() {
     }
 
     showAllMessages = !showAllMessages;
+}
+
+async function OldSolvedMessages() {
+    try {
+        const response = await fetch('/api/messages/removeOldSolved', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+
+            if (responseData.success) {
+                Toastify({
+                    text: responseData.message,
+                    duration: 2500,
+                    position: "right",
+                    offset: {
+                        x: 0,
+                        y: 55,
+                    },
+                    className: "green"
+                }).showToast();
+
+                if (showAllMessages) {
+                    showMessages(globalData);
+                } else {
+                    showPendingMessages();
+                }
+            } else {
+                console.error('Error al eliminar mensajes resueltos:', responseData.message);
+                Toastify({
+                    text: `Error: ${responseData.message}`,
+                    duration: 2500,
+                    position: "right",
+                    offset: {
+                        x: 0,
+                        y: 55,
+                    },
+                    className: "toastify-error"
+                }).showToast();
+            }
+        } else {
+            console.error('Error al eliminar mensajes resueltos:', response.statusText);
+            Toastify({
+                text: "No se pudo eliminar mensajes resueltos.",
+                duration: 2500,
+                position: "right",
+                offset: {
+                    x: 0,
+                    y: 55,
+                },
+                className: "toastify-error"
+            }).showToast();
+        }
+    } catch (error) {
+        console.error('Error al realizar la solicitud de eliminación:', error);
+        Toastify({
+            text: "Error al eliminar mensajes resueltos.",
+            duration: 2500,
+            position: "right",
+            offset: {
+                x: 0,
+                y: 55,
+            },
+            className: "toastify-error"
+        }).showToast();
+    }
 }

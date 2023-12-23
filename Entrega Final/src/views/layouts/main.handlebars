@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/styles.css">
-    <title>Entrega integradora 4</title>
+    <title>Entrega Final</title>
     {{!-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,6 @@
         <nav class="navBar">
             <h1 class="navBar_brand">E-Commerce</h1>
             <div class="navBar_content">
-
                 {{#if (dif user.role "admin")}}
                 <div class="navBar_content-dropdown">
                     <button onclick="dropdown()" class="navBar_content-item--btn">PRODUCTOS <span
@@ -36,14 +35,12 @@
                         <a class="navBar_content-dropdown--item" href="/products?query=limpieza">Limpieza</a>
                     </div>
                 </div>
-
                 {{else}}
+                <a class="navBar_content-item" href="/realtimeproducts">COMPRAS</a>
                 <a class="navBar_content-item" href="/realtimeproducts">PRODUCTOS</a>
                 {{/if}}
-
                 {{#if (dif user.role "admin")}}
                 <a class="navBar_content-item" href="/messages">CONTACTO</a>
-
                 {{else}}
                 <a class="navBar_content-item" href="/messages">MENSAJES</a>
                 {{/if}}
@@ -59,7 +56,6 @@
                 {{else}}
                 <a class="navBar_content-item" href="/adminController">USUARIOS</a>
                 {{/if}}
-
                 {{#if user}}
                 {{#if (eq user.role "admin")}}
                 <a class="navBar_content-item profile userName" href="/profile" data-tooltip="Admin"><span
@@ -69,17 +65,12 @@
                 <a class="navBar_content-item profile userName" href="/profile"
                     data-tooltip="{{user.first_name}} {{user.last_name}}"><span class="material-symbols-outlined user">
                         person </span></a>
-
                 {{/if}}
                 {{else}}
                 <a class="navBar_content-item profile" href="/profile" data-tooltip="Admin"><span
                         class="material-symbols-outlined user">
                         person </span></a>
                 {{/if}}
-
-
-
-
             </div>
         </nav>
     </header>
