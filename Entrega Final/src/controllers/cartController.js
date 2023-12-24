@@ -7,7 +7,6 @@ import { productModel as ProductModel } from "../dao/models/product.model.js";
 import { transporter } from "./emailController.js";
 import { ENV_CONFIG } from "../config/config.js";
 
-
 class CartController {
     constructor() {
         this.cartService = new CartService();
@@ -38,12 +37,53 @@ class CartController {
         try {
             const { cid, pid } = req.params;
             const result = await this.cartService.addProductToCart(cid, pid);
-            req.logger.info(`Producto ${pid} agregado a su carrito.`);
-            res.send(result);
+
+            if (result.status !== "ok") {
+                if (result.status === "299") {
+                    res.status(299).json(result);
+                } else {
+                    res.status(400).json(result);
+                }
+            } else {
+                req.logger.info(`Producto ${pid} agregado a su carrito.`);
+                res.status(200).json(result);
+            }
         } catch (error) {
             req.logger.error("Error agregando producto al carrito:", error);
+            res.status(500).json({ error: "Error al agregar el producto al carrito" });
         }
     }
+
+    async addProductToCartWithQuantity(req, res) {
+        try {
+            const { cid, pid } = req.params;
+            const { quantity } = req.query;
+
+            const cart = await this.cartService.getCart(cid);
+
+            if (cart && cart.products) {
+                const result = await this.cartService.addProductToCartWithQuantity(cid, pid, quantity);
+
+                if (result.status !== "ok") {
+                    if (result.status === "299") {
+                        res.status(299).json(result);
+                    } else {
+                        res.status(400).json(result);
+                    }
+                } else {
+                    req.logger.info(`Producto ${pid} agregado a su carrito.`);
+                    res.status(200).json(result);
+                }
+            } else {
+                req.logger.error(`Error al agregar producto al carrito ${cid} con cantidad: Carrito no encontrado o no tiene productos`);
+                res.status(404).json({ status: "error", message: "Carrito no encontrado o no tiene productos" });
+            }
+        } catch (error) {
+            req.logger.error(`Error al agregar producto al carrito ${cid} con cantidad:`, error);
+            res.status(500).json({ status: "error", message: "Error interno del servidor" });
+        }
+    }
+
 
     async updateQuantityProductFromCart(req, res) {
         try {
@@ -168,8 +208,6 @@ class CartController {
                 };
             }));
 
-            //console.log("Productos en el carrito:", cart.products);
-
             const productManager = new ProductManager();
             const failedProducts = [];
             const successfulProducts = [];
@@ -222,9 +260,6 @@ class CartController {
 
             await this.sendPurchaseConfirmationEmail(req.user.email, ticketData);
 
-
-
-
             res.json({ status: "success", message: "Compra realizada con éxito", ticket: ticketCreated, failedProducts: failedProducts.length > 0 ? failedProducts : undefined });
             req.logger.info(`Compra realizada con éxito.`);
         } catch (error) {
@@ -255,11 +290,11 @@ class CartController {
             if (!cart) {
                 return res.status(404).json({ error: "Carrito no encontrado" });
             }
-    
+
             const totalProducts = cart.products.reduce((total, product) => {
                 return total + product.quantity;
             }, 0);
-    
+
             res.json({ totalProducts });
         } catch (error) {
             req.logger.error("Error al obtener el total de productos en el carrito:", error);
@@ -267,6 +302,49 @@ class CartController {
         }
     }
 
+    async getProductQuantityInCart(req, res) {
+        try {
+            const { cid, pid } = req.params;
+            const cart = await this.cartService.getCart(cid);
+
+            if (!cart) {
+                return res.status(404).json({ error: "Carrito no encontrado" });
+            }
+
+            const productInCart = cart.products.find(item => item.product._id.toString() === pid);
+
+            if (!productInCart) {
+                return res.status(298).json({ quantity:0 });
+            }
+            const quantity = productInCart.quantity;
+            res.json({ quantity });
+        } catch (error) {
+            req.logger.error("Error al obtener la cantidad del producto en el carrito:", error);
+            res.status(500).json({ error: "Error interno del servidor" });
+        }
+    }
+
+    async changeProductsQuantity(req, res) {
+        try {
+            const { cid, pid } = req.params;
+            const { quantity } = req.body;
+
+            const result = await this.cartService.updateProductQuantityFromCart(
+                cid,
+                pid,
+                quantity
+            );
+
+            if (result.status === "ok") {
+                res.status(200).json({ message: "Cantidad del producto actualizada exitosamente" });
+            } else {
+                res.status(400).json({ error: "No se pudo actualizar la cantidad del producto en el carrito" });
+            }
+        } catch (error) {
+            req.logger.error("Error al cambiar la cantidad del producto en el carrito:", error);
+            res.status(500).json({ error: "Error interno del servidor" });
+        }
+    }
 }
 
 export default new CartController();

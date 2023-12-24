@@ -31,7 +31,6 @@ async function getTotalProductsInCart(cartId) {
 
         const data = await response.json();
         const totalProducts = data.totalProducts;
-
         return totalProducts;
     } catch (error) {
         console.error(error);

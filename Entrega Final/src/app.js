@@ -81,7 +81,7 @@ app.use(session({
         mongoUrl: ENV_CONFIG.MONGO_URL,
         collectionName: 'sessions',
         mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-        ttl: 300
+        ttl: 900
     }),
 }));
 app.use(passport.initialize())

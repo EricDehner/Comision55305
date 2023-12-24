@@ -1,4 +1,5 @@
 import CartManager from "../dao/cartManager.js";
+import { cartModel } from "../dao/models/cart.model.js";
 
 class CartService {
     constructor() {
@@ -15,10 +16,25 @@ class CartService {
 
     async addProductToCart(cid, pid) {
         const result = await this.cartManager.addProductToCart(cid, pid);
-        if (result) {
-            return { status: "ok", message: "El producto se agregó correctamente!" };
+
+        if (result.status === "ok" || result.status === "299") {
+            return result;
         } else {
-            throw new Error("Error! No se pudo agregar el Producto al Carrito!");
+            return { status: "error", message: result.message };
+        }
+    }
+
+    async addProductToCartWithQuantity(cid, pid, quantity) {
+        try {
+            const result = await this.cartManager.addProductToCartWithQuantity(cid, pid, quantity);
+            if (result.status === "ok" || result.status === "299") {
+                return result;
+            } else {
+                return { status: "error", message: result.message };
+            }
+        } catch (error) {
+            console.error("Error al agregar producto al carrito con cantidad:", error);
+            throw error;
         }
     }
 
@@ -81,6 +97,36 @@ class CartService {
             return { status: "ok", message: "El carrito se vació correctamente!" };
         } else {
             throw new Error('Error! No se pudo vaciar el Carrito!');
+        }
+    }
+
+    async getProductQuantityInCart(cartId, productId) {
+        try {
+            const cart = await this.cartManager.getCart(cartId);
+
+            if (!cart) {
+                return null;
+            }
+
+            const productInCart = cart.products.find(item => item.product.toString() === productId);
+
+            return productInCart ? productInCart.quantity : 0;
+        } catch (error) {
+            console.error("Error al obtener la cantidad del producto en el carrito:", error);
+            throw error;
+        }
+    }
+
+    async updateProductQuantityFromCart(cartId, productId, quantity) {
+        const result = await this.cartManager.updateProductQuantity(cartId, productId, quantity);
+
+        if (result) {
+            return {
+                status: "ok",
+                message: "La cantidad del producto se actualizó correctamente",
+            };
+        } else {
+            throw new Error("Error: No se pudo actualizar la cantidad del producto en el carrito");
         }
     }
 }

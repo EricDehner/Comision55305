@@ -22,7 +22,14 @@
             <h3 class="product_content-description">{{product.description}}</h3>
             <p class="product_content-price">${{product.price}}</p>
             {{#if product.stock}}
-            <button class="product_content-btn" onclick="agregarProductoAlCarrito(`{{product._id}}`)">Agregar</button>
+            <div class="quantity-control">
+                <button class="quantity-btn" id="remove" onclick="decrementarCantidad()"><span
+                        class="material-symbols-outlined">remove </span></button>
+                <span class="quantity" id="quantity" data-max="{{product.stock}}">1</span>
+                <button class="quantity-btn" id="add" onclick="incrementarCantidad()"><span class="material-symbols-outlined">
+                        add </span></button>
+            </div>
+            <button class="product_content-btn" onclick="agregarProductoAlCarritoQty('{{product._id}}', document.getElementById('quantity').innerText)">Agregar</button>
             {{else}}
             {{/if}}
         </div>

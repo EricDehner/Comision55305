@@ -45,22 +45,103 @@ sortSelect.addEventListener("change", function () {
     window.location.href = newUrl;
 });
 
-const createCart = async () => {
+const agregarProductoAlCarrito = async (pid) => {
     try {
-/*         localStorage.setItem("cart", session.);
- */    } catch (error) {
-        //        console.log("Error en Crear el Carrito! " + error);
+        let cart = localStorage.getItem("cartID");
 
+        if (!cart) {
+            document.cookie = "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+
+        const response = await fetch("/api/carts/" + cart + "/products/" + pid, {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                authorization: "Bearer " + localStorage.getItem("userID")
+            }
+        });
+
+        if (response.ok || response.status === 299) {
+            if (response.status === 299) {
+                Toastify({
+                    text: "Producto sin stock!",
+                    duration: 1500,
+                    position: "right",
+                    offset: {
+                        x: 0,
+                        y: 55,
+                    },
+                    className: "toastify-error"
+                }).showToast();
+            } else {
+                Toastify({
+                    text: "Se agregó al Carrito!",
+                    position: "right",
+                    offset: {
+                        x: 0,
+                        y: 55,
+                    },
+                    duration: 1500
+                }).showToast();
+
+                await actualizarTotalProducts();
+            }
+        } else {
+            Toastify({
+                text: "Error en agregar el Producto al Carrito!",
+                duration: 1500,
+                position: "right",
+                offset: {
+                    x: 0,
+                    y: 55,
+                },
+                className: "toastify-error"
+            }).showToast();
+        }
+    } catch (error) {
         Toastify({
-            text: "Error en Crear el Carrito! " + error,
+            text: "Error en agregar el Producto al Carrito! " + error,
             duration: 1500,
             position: "right",
             offset: {
                 x: 0,
                 y: 55,
-            }
+            },
+            className: "toastify-error"
         }).showToast();
     }
 }
 
-createCart(); 
+async function actualizarTotalProducts() {
+    try {
+        let cart = localStorage.getItem("cartID");
+
+        if (!cart) {
+            return;
+        }
+
+        const totalProducts = await getTotalProductsInCart(cart);
+
+        const button = document.getElementById('cartQty');
+        if (button) {
+            button.textContent = totalProducts.toString();
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+async function getTotalProductsInCart(cartId) {
+    try {
+        const response = await fetch(`/api/carts/${cartId}/total-products`);
+        if (!response.ok) {
+            throw new Error(`Error al obtener el total de productos en el carrito: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const totalProducts = data.totalProducts;
+
+        return totalProducts;
+    } catch (error) {
+        console.error(error);
+    }
+}

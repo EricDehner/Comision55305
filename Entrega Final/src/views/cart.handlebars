@@ -20,8 +20,15 @@
                     <hr>
                     <p class="cart_content-description">{{this.product.description}}</p>
                     <p class="cart_content-price">${{this.product.price}}</p>
-                    <p class="cart_content-qty">{{this.quantity}} U</p>
-                    <p class="cart_content-qty">{{product.product._id}} U</p>
+                    <div class="quantity-control-cart">
+                        <button class="quantity-btn" id="quantityRemove_{{this.product._id}}"
+                            onclick="decrementarCantidad(this, `{{this.product._id}}`)"><span
+                                class="material-symbols-outlined">remove</span></button>
+                        <span id="qty_{{this.product._id}}" class="quantity" data-max="{{this.product.stock}}">{{this.quantity}}</span>
+                        <button class="quantity-btn" id="quantityAdd"
+                            onclick="incrementarCantidad(this, `{{this.product._id}}`)"><span
+                                class="material-symbols-outlined">add</span></button>
+                    </div>
                     <p class="cart_content-idProduct">{{this.product._id}}</p>
                     <button class="cart_content-btn" onclick="deleteProduct('{{this.product._id}}')">
                         <span class="material-symbols-outlined delete_icon">delete</span>

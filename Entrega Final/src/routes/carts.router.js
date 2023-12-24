@@ -10,7 +10,13 @@ cartsRouter.post("/", cartControllers.createCart.bind(cartControllers));
 
 cartsRouter.get("/:cid", cartControllers.getCart.bind(cartControllers));
 
+cartsRouter.put("/:cid/products/:pid/prodQuantity", cartControllers.changeProductsQuantity.bind(cartControllers));
+
+cartsRouter.get("/:cid/products/:pid/quantity", cartControllers.getProductQuantityInCart.bind(cartControllers));
+
 cartsRouter.post("/:cid/products/:pid", passportCall('jwt'), cartControllers.addProductToCart.bind(cartControllers));
+
+cartsRouter.post("/:cid/products/:pid/add-with-quantity", passportCall('jwt'), cartControllers.addProductToCartWithQuantity.bind(cartControllers));
 
 cartsRouter.put("/:cid/products/:pid", cartControllers.updateQuantityProductFromCart.bind(cartControllers));
 

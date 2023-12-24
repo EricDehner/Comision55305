@@ -31,36 +31,20 @@ function clearCart() {
                         offset: {
                             x: 0,
                             y: 55,
-                        }
+                        },
+                        className: "toastify-error"
                     }).showToast();
                 }
             })
             .catch((error) => {
-                Toastify({
-                    text: "Error al vaciar el carrito:", error,
-                    duration: 1500,
-                    position: "right",
-                    offset: {
-                        x: 0,
-                        y: 55,
-                    }
-                }).showToast();
+                console.error(`Error al vaciar el carrito:, ${error}`);
             });
     } else {
-        Toastify({
-            text: "No se pudo encontrar el carrito en el almacenamiento local.",
-            duration: 1500,
-            position: "right",
-            offset: {
-                x: 0,
-                y: 55,
-            }
-        }).showToast();
+        console.error("No se pudo encontrar el carrito en el almacenamiento local.");
     }
 }
 
 function deleteProduct(productId) {
-    console.log(productId);
     const cid = localStorage.getItem("cartID");
 
     if (cid) {
@@ -70,7 +54,7 @@ function deleteProduct(productId) {
             .then((response) => {
                 if (response.ok) {
                     Toastify({
-                        text: `El producto con ID ${productId} se eliminó correctamente.`,
+                        text: `Producto eliminado.`,
                         duration: 1500,
                         position: "right",
                         offset: {
@@ -80,42 +64,25 @@ function deleteProduct(productId) {
                     }).showToast();
                     setTimeout(() => {
                         window.location.reload();
-
                     }, 1500);
                 } else {
                     Toastify({
-                        text: `Error al eliminar el producto con ID ${productId}.`,
+                        text: `Error al eliminar el producto.`,
                         duration: 1500,
                         position: "right",
                         offset: {
                             x: 0,
                             y: 55,
-                        }
+                        },
+                        className: "toastify-error"
                     }).showToast();
                 }
             })
             .catch((error) => {
-                Toastify({
-                    text: `Error al eliminar el producto con ID ${productId}:`, error,
-                    duration: 1500,
-                    position: "right",
-                    offset: {
-                        x: 0,
-                        y: 55,
-                    }
-
-                }).showToast();
+                console.error(`Error al eliminar el producto con ID ${productId}:, ${error}`);
             });
     } else {
-        Toastify({
-            text: "No se pudo encontrar el carrito en el almacenamiento local.",
-            duration: 1500,
-            position: "right",
-            offset: {
-                x: 0,
-                y: 55,
-            }
-        }).showToast();
+        console.error("No se pudo encontrar el carrito en el almacenamiento local.");
     }
 }
 
@@ -158,7 +125,7 @@ async function buyCart() {
         }, 500);
     }
     catch (error) {
-        console.log("Error en compra", error);
+        console.error("Error en compra", error);
     }
 }
 
@@ -247,7 +214,6 @@ function openCheckout(responseData) {
         });
 }
 
-
 function closeModal() {
     window.location.reload();
 }
@@ -257,7 +223,7 @@ function price() {
 
     cartItems.forEach(function (cartItem) {
         const priceElement = cartItem.querySelector('.cart_content-price');
-        const qtyElement = cartItem.querySelector('.cart_content-qty');
+        const qtyElement = cartItem.querySelector('.quantity');
 
         const price = parseFloat(priceElement.innerText.replace('$', ''));
         const quantity = parseInt(qtyElement.innerText);
@@ -273,3 +239,188 @@ function price() {
     const cartFooterPriceElement = document.querySelector('.cartFooter_price');
     cartFooterPriceElement.innerText = 'Monto total: $' + totalGeneral;
 }
+
+async function incrementarCantidad(btn, pid) {
+    const quantitySpan = btn.parentElement.querySelector('.quantity');
+    const currentQuantity = parseInt(quantitySpan.innerText, 10);
+    const maxQuantity = parseInt(quantitySpan.getAttribute('data-max'), 10);
+
+    if (currentQuantity < maxQuantity) {
+        quantitySpan.innerText = currentQuantity + 1;
+    }
+    await updateProductQuantity(pid, maxQuantity)
+    price();
+    await actualizarTotalProducts("+1")
+    btnsDOM()
+}
+
+async function decrementarCantidad(btn, pid) {
+    const quantitySpan = btn.parentElement.querySelector('.quantity');
+
+    if (quantitySpan === 0) {
+        const buttonR = document.querySelector('#quantityRemove');
+        buttonR.classList.add('disabled');
+        buttonR.onclick = null;
+    }
+    const currentQuantity = parseInt(quantitySpan.innerText, 10);
+    const maxQuantity = parseInt(quantitySpan.getAttribute('data-max'), 10);
+    if (currentQuantity > 1) {
+        quantitySpan.innerText = currentQuantity - 1;
+    }
+    await updateProductQuantity(pid, maxQuantity)
+    price();
+    await actualizarTotalProducts("-1")
+    btnsDOM()
+
+}
+
+async function updateProductQuantity(pid, maxQuantity) {
+    const cid = localStorage.getItem("cartID");
+    const quantitySpan = document.getElementById(`qty_${pid}`);
+    if (cid && quantitySpan) {
+        const newQuantity = parseInt(quantitySpan.innerText);
+        if (!isNaN(newQuantity) && newQuantity > 0) {
+            fetch(`/api/carts/${cid}/products/${pid}/prodQuantity`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ quantity: newQuantity }),
+            })
+                .then((response) => {
+                    if (response.ok && newQuantity >= maxQuantity) {
+                        Toastify({
+                            text: `Stock insuficiente.`,
+                            duration: 1500,
+                            position: "right",
+                            offset: {
+                                x: 0,
+                                y: 55,
+                            }
+                        }).showToast();
+                    } else if (response.ok) {
+                        Toastify({
+                            text: `Cantidad del producto actualizada.`,
+                            duration: 1500,
+                            position: "right",
+                            offset: {
+                                x: 0,
+                                y: 55,
+                            }
+                        }).showToast();
+                    } else {
+                        Toastify({
+                            text: `Error al actualizar producto.`,
+                            duration: 1500,
+                            position: "right",
+                            offset: {
+                                x: 0,
+                                y: 55,
+                            },
+                            className: "toastify-error"
+                        }).showToast();
+                    }
+                })
+                .catch((error) => {
+                    console.error(`Error al actualizar el producto ${pid}, ${error}`);
+                });
+        } else {
+            console.error("Error, la cantidad no es valida.");
+        }
+    } else {
+        console.error("Error, no se encontró su carrito.");
+    }
+}
+
+async function actualizarTotalProducts(actualizacion) {
+    try {
+        let cart = localStorage.getItem("cartID");
+
+        if (!cart) {
+            return;
+        }
+        const totalProducts = await getTotalProductsInCart(cart);
+        correction = parseInt(actualizacion, 10)
+        qtyTotal = totalProducts + correction
+        const button = document.getElementById('cartQty');
+        if (button) {
+            button.textContent = qtyTotal.toString();
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+async function getTotalProductsInCart(cartId) {
+    try {
+        const response = await fetch(`/api/carts/${cartId}/total-products`);
+        if (!response.ok) {
+            throw new Error(`Error al obtener el total de productos en el carrito: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const totalProducts = data.totalProducts;
+
+        return totalProducts;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function fetchCartData() {
+    try {
+        const cid = localStorage.getItem('cartID');
+
+        if (!cid) {
+            console.error('No se encontró el ID del carrito en el localStorage.');
+            return null;
+        }
+
+        const response = await fetch(`/api/carts/${cid}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            return await response.json();
+        } else {
+            console.error('Error al obtener datos del carrito. Código de estado:', response.status);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error en la solicitud fetch:', error);
+        return null;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async function () {
+    btnsDOM();
+});
+
+async function btnsDOM() {
+    const cartData = await fetchCartData();
+
+    if (cartData) {
+        const productIds = cartData.products.map(product => product.product._id);
+
+        productIds.forEach(pid => {
+
+            const quantitySpan = document.querySelector(`#qty_${pid}`);
+
+            const buttonR = document.querySelector(`#quantityRemove_${pid}`);
+
+            if (quantitySpan && quantitySpan.innerText === "1") {
+                buttonR.classList.add('disabled');
+                buttonR.onclick = null;
+            } else {
+                buttonR.classList.remove('disabled');
+                buttonR.onclick = () => decrementarCantidad(buttonR, pid);
+            }
+        });
+
+    } else {
+        console.log('No se pudieron obtener los datos del carrito.');
+    }
+}
+
