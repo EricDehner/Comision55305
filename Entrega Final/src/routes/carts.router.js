@@ -1,10 +1,8 @@
 import { Router } from "express";
-import CartManager from "../dao/cartManager.js";
 import cartControllers from "../controllers/cartController.js";
 import { passportCall } from "../utils.js";
 
 const cartsRouter = Router();
-const CM = new CartManager();
 
 cartsRouter.post("/", cartControllers.createCart.bind(cartControllers));
 
