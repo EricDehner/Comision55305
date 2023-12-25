@@ -1,5 +1,5 @@
 import CartService from "../services/cartService.js";
-import ProductManager from "../dao/productManager.js"
+import ProductManager from "../dao/ProductManager.js"
 import { cartModel } from "../dao/models/cart.model.js";
 import ticketController from "./ticketController.js";
 import { v4 as uuidv4 } from "uuid"
