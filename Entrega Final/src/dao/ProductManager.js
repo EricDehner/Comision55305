@@ -1,7 +1,7 @@
 import { productModel } from "./models/product.model.js";
 import { ENV_CONFIG } from "../config/config.js";
 import jwt from "jsonwebtoken";
-import { userModel } from "../dao/models/user.model.js";
+import { userModel } from "./models/user.model.js";
 import { transporter } from "../controllers/emailController.js";
 
 class ProductManager {
