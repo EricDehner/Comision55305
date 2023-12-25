@@ -1,4 +1,5 @@
 const cartItems = document.querySelectorAll('.cart_content');
+
 if (cartItems.length > 0) {
     price();
 }
@@ -250,8 +251,9 @@ async function incrementarCantidad(btn, pid) {
     }
     await updateProductQuantity(pid, maxQuantity)
     price();
-    await actualizarTotalProducts("+1")
+    //await actualizarTotalProducts("+1")
     udateCart()
+    await updateCartQuantity()
 }
 
 async function decrementarCantidad(btn, pid) {
@@ -269,9 +271,9 @@ async function decrementarCantidad(btn, pid) {
     }
     await updateProductQuantity(pid, maxQuantity)
     price();
-    await actualizarTotalProducts("-1")
+    //await actualizarTotalProducts("-1")
     udateCart()
-
+    await updateCartQuantity()
 }
 
 async function updateProductQuantity(pid, maxQuantity) {
@@ -289,15 +291,9 @@ async function updateProductQuantity(pid, maxQuantity) {
             })
                 .then((response) => {
                     if (response.ok && newQuantity >= maxQuantity) {
-                        Toastify({
-                            text: `Stock insuficiente.`,
-                            duration: 1500,
-                            position: "right",
-                            offset: {
-                                x: 0,
-                                y: 55,
-                            }
-                        }).showToast();
+                        return
+                    } else if (response.ok && newQuantity === 1) {
+                        return
                     } else if (response.ok) {
                         Toastify({
                             text: `Cantidad del producto actualizada.`,
@@ -308,7 +304,7 @@ async function updateProductQuantity(pid, maxQuantity) {
                                 y: 55,
                             }
                         }).showToast();
-                    } else {
+                    }else {
                         Toastify({
                             text: `Error al actualizar producto.`,
                             duration: 1500,
@@ -332,37 +328,29 @@ async function updateProductQuantity(pid, maxQuantity) {
     }
 }
 
-async function actualizarTotalProducts(actualizacion) {
-    try {
-        let cart = localStorage.getItem("cartID");
+async function updateCartQuantity() {
+    const cartData = await fetchCartData();
+    if (cartData && cartData.products) {
+        let totalQuantity = 0;
 
-        if (!cart) {
-            return;
-        }
-        const totalProducts = await getTotalProductsInCart(cart);
-        correction = parseInt(actualizacion, 10)
-        qtyTotal = totalProducts + correction
+        cartData.products.forEach(item => {
+            const product = item.product;
+            if (product && product.stock !== undefined) {
+                const quantitySpan = document.querySelector(`#qty_${product._id}`);
+                if (quantitySpan) {
+                    totalQuantity += parseInt(quantitySpan.innerText, 10) || 0;
+                }
+            }
+        });
+
         const button = document.getElementById('cartQty');
         if (button) {
-            button.textContent = qtyTotal.toString();
+            button.innerText = totalQuantity.toString();
+        } else {
+            console.error('No se encontró el elemento con ID "cartQty".');
         }
-    } catch (error) {
-        console.error(error);
-    }
-}
-async function getTotalProductsInCart(cartId) {
-    try {
-        const response = await fetch(`/api/carts/${cartId}/total-products`);
-        if (!response.ok) {
-            throw new Error(`Error al obtener el total de productos en el carrito: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        const totalProducts = data.totalProducts;
-
-        return totalProducts;
-    } catch (error) {
-        console.error(error);
+    } else {
+        console.log('No se pudieron obtener los datos del carrito o los productos son nulos.');
     }
 }
 
@@ -413,8 +401,6 @@ async function udateCart() {
         console.log('No se pudieron obtener los datos del carrito o los productos son nulos.');
     }
 }
-
-
 
 async function btnsDOM(maxStockValues) {
     maxStockValues.forEach(({ pid, stock }) => {
