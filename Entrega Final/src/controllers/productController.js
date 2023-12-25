@@ -1,7 +1,7 @@
 import ProductService from "../services/productService.js";
 import { socketServer } from "../app.js";
 import mongoose from "mongoose";
-import CustomError from "../services/errors/customError.js";
+import CustomError from "../services/errors/customErrorMsg.js";
 import { generateProductErrorInfo } from "../services/errors/messages/productError.js";
 import { transporter } from "./emailController.js";
 import { ENV_CONFIG } from "../config/config.js";

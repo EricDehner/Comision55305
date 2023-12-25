@@ -1,5 +1,5 @@
 import AuthService from "../services/authService.js";
-import CustomError from "../services/errors/customError.js";
+import CustomError from "../services/errors/customErrorMsg.js";
 import { generateAuthenticationErrorInfo } from "../services/errors/messages/user.auth.error.js";
 import sendResetPasswordEmail from "./resetPasswordController.js";
 import { userModel } from "../dao/models/user.model.js";
