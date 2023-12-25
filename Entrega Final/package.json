@@ -5,7 +5,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start" : "node src/app.js --mode production",
+    "start" : "node src/app.js",
     "test": "mocha ./src/test/super.test.js"
   },
   "keywords": [],

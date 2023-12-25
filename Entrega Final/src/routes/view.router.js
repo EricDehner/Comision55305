@@ -1,6 +1,6 @@
 import express from "express";
 import ProductManager from "../dao/ProductManager.js";
-import CartManager from "../dao/cartManager.js";
+import CartManager from "../dao/cartManagerDao.js";
 import cartController from "../controllers/cartController.js";
 import { checkSession, checkAuth } from "../middlewares/errorCheck.js"
 import { userModel } from "../dao/models/user.model.js"
