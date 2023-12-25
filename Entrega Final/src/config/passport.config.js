@@ -118,7 +118,8 @@ passport.use(
         {
             clientID: ENV_CONFIG.CLIENT_ID_GITHUB,
             clientSecret: ENV_CONFIG.CLIENT_SECRET_GITHUB,
-            callbackURL: "http://localhost:8080/api/sessions/githubcallback",
+            callbackURL: "https://e-commerce-backendcoder.up.railway.app/api/sessions/githubcallback",
+
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
