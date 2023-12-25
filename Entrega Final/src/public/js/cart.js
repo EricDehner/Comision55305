@@ -251,7 +251,7 @@ async function incrementarCantidad(btn, pid) {
     await updateProductQuantity(pid, maxQuantity)
     price();
     await actualizarTotalProducts("+1")
-    btnsDOM()
+    udateCart()
 }
 
 async function decrementarCantidad(btn, pid) {
@@ -270,7 +270,7 @@ async function decrementarCantidad(btn, pid) {
     await updateProductQuantity(pid, maxQuantity)
     price();
     await actualizarTotalProducts("-1")
-    btnsDOM()
+    udateCart()
 
 }
 
@@ -395,32 +395,55 @@ async function fetchCartData() {
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
-    btnsDOM();
+    udateCart()
 });
 
-async function btnsDOM() {
+async function udateCart() {
     const cartData = await fetchCartData();
-
-    if (cartData) {
-        const productIds = cartData.products.map(product => product.product._id);
-
-        productIds.forEach(pid => {
-
-            const quantitySpan = document.querySelector(`#qty_${pid}`);
-
-            const buttonR = document.querySelector(`#quantityRemove_${pid}`);
-
-            if (quantitySpan && quantitySpan.innerText === "1") {
-                buttonR.classList.add('disabled');
-                buttonR.onclick = null;
-            } else {
-                buttonR.classList.remove('disabled');
-                buttonR.onclick = () => decrementarCantidad(buttonR, pid);
+    if (cartData && cartData.products) {
+        const maxStockValues = cartData.products.map(item => {
+            const product = item.product;
+            if (product && product.stock !== undefined) {
+                return { pid: product._id, stock: product.stock };
             }
+            return { pid: null, stock: 0 };
         });
-
+        btnsDOM(maxStockValues);
     } else {
-        console.log('No se pudieron obtener los datos del carrito.');
+        console.log('No se pudieron obtener los datos del carrito o los productos son nulos.');
     }
 }
 
+
+
+async function btnsDOM(maxStockValues) {
+    maxStockValues.forEach(({ pid, stock }) => {
+        console.log("pid", pid);
+        console.log("stock", stock);
+        const quantitySpan = document.querySelector(`#qty_${pid}`);
+        const buttonR = document.querySelector(`#quantityRemove_${pid}`);
+        const buttonA = document.querySelector(`#quantityAdd_${pid}`);
+
+        console.log(buttonR);
+        console.log(quantitySpan);
+        console.log(buttonA);
+
+        if (quantitySpan && buttonR && buttonA) {
+            if (quantitySpan.innerText === "1") {
+                buttonR.classList.add('disabled');
+                buttonR.onclick = null;
+            } else if (quantitySpan.innerText >= stock) {
+                buttonA.classList.add('disabled');
+                buttonA.onclick = null;
+            } else {
+                buttonR.classList.remove('disabled');
+                buttonR.onclick = () => decrementarCantidad(buttonR, pid);
+                buttonA.classList.remove('disabled');
+                buttonA.onclick = () => incrementarCantidad(buttonA, pid);
+            }
+        } else {
+            console.error(`No se encontraron elementos para el producto con ID ${pid}`);
+        }
+    });
+    price();
+}
