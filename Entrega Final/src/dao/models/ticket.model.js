@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const ticketProductSchema = new mongoose.Schema({
     product: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'cart',  // Asegúrate de que coincide con el nombre de tu modelo de productos
+        ref: 'cart',
         required: true,
     },
     quantity: {

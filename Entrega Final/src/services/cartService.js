@@ -1,5 +1,4 @@
 import CartManager from "../dao/cartManagerDao.js";
-import { cartModel } from "../dao/models/cart.model.js";
 
 class CartService {
     constructor() {

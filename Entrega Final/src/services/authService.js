@@ -1,5 +1,7 @@
 import UserManager from '../dao/UserManager.js';
 import jwt from 'jsonwebtoken';
+import CustomError from '../services/errors/customErrorMsg.js';
+import sendResetPasswordEmail from "../controllers/resetPasswordController.js";
 import { userModel } from '../dao/models/user.model.js';
 import { ENV_CONFIG } from '../config/config.js';
 
@@ -12,7 +14,7 @@ class AuthService {
     async login(email, password) {
         const user = await this.userManager.login(email, password);
         if (!user) {
-            return null;
+            throw new CustomError({ name: "Error de autenticación", message: "Datos incorrectos", code: 401, cause: generateAuthenticationErrorInfo(email) });
         }
 
         const token = jwt.sign(
@@ -52,6 +54,63 @@ class AuthService {
             console.error('An error occurred:', error);
             throw error;
         }
+    }
+
+    async updateLastConnection(user) {
+        let fechaHoraUTC = new Date();
+        fechaHoraUTC.setUTCHours(fechaHoraUTC.getUTCHours() - 3);
+        user.last_connection = fechaHoraUTC;
+        await user.save();
+    }
+
+    extractUserData(user) {
+        return {
+            id: user._id,
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            role: user.role,
+            cart: user.cart
+        };
+    }
+
+    destroySession(req, res) {
+        req.session.destroy(async (err) => {
+            if (err) {
+                req.logger.error("Error al finalizar sesión.");
+                return res.redirect("/profile");
+            }
+            req.logger.info("Sesión finalizada");
+            return res.redirect("/login");
+        });
+    }
+
+    async sendResetPasswordEmail(email) {
+        await sendResetPasswordEmail(email);
+    }
+
+    async resetPassword(token, password, res) {
+        const user = await userModel.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() },
+        });
+
+        if (!user) {
+            throw new CustomError({ name: "Error en restablecimiento de contraseña", message: "El token de restablecimiento de contraseña es inválido o ha expirado.", code: 400 });
+        }
+
+        const isSamePassword = isValidPassword(user, password);
+        if (isSamePassword) {
+            return res.json({ status: "oldPassword", message: "Tu contraseña debe ser diferente a la contraseña actual." });
+        }
+
+        user.password = createHash(password);
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+
+        await user.save();
+
+        res.json({ status: "success", message: "Tu contraseña ha sido actualizada con éxito." });
     }
 }
 

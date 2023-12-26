@@ -16,10 +16,10 @@ class CartController {
         try {
             const newCart = await this.cartService.createCart();
             req.logger.info("Carrito creado:", newCart);
-            //console.log(newCart.id.toString());
             res.status(201).send(newCart);
         } catch (error) {
             req.logger.error("Error creando el carrito:", error);
+            res.status(500).json({ error: "Error interno del servidor" });
         }
     }
 

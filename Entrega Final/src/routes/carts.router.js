@@ -6,7 +6,7 @@ const cartsRouter = Router();
 
 cartsRouter.post("/", cartControllers.createCart.bind(cartControllers));
 
-cartsRouter.get("/:cid", passportCall("jwt"), authorization(["admin"]), cartControllers.getCart.bind(cartControllers));
+cartsRouter.get("/:cid", passportCall("jwt"), authorization(["admin", "premium", "user"]), cartControllers.getCart.bind(cartControllers));
 
 cartsRouter.put("/:cid/products/:pid/prodQuantity", passportCall("jwt"), authorization(["admin", "premium", "user"]), cartControllers.changeProductsQuantity.bind(cartControllers));
 

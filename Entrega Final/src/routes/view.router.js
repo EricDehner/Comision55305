@@ -4,6 +4,7 @@ import CartManager from "../dao/cartManagerDao.js";
 import cartController from "../controllers/cartController.js";
 import { checkSession, checkAuth } from "../middlewares/errorCheck.js"
 import { userModel } from "../dao/models/user.model.js"
+import { ticketModel } from "../dao/models/ticket.model.js";
 
 const router = express.Router();
 const PM = new ProductManager();
@@ -145,6 +146,15 @@ router.get("/adminController", checkSession, async (req, res) => {
     }
     else {
         res.render("controlPanel", { user, users });
+    }
+});
+router.get("/purchases", checkSession, async (req, res) => {
+    const user = req.session.user;
+    if (user.role === "user" || user.role === "premium") {
+        return res.redirect('/products');
+    }
+    else {
+        res.render("purchases", { user });
     }
 });
 

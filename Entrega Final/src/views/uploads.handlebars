@@ -18,10 +18,13 @@
                 <button class="upload_footer-btn btn-left" id="uploadMessageCommon" type="button"
                     onclick="validateAndSubmitForm()">Cargar<span
                         class="material-symbols-outlined-upload">upload</span></button>
+{{#if (eq user.role "user")}}
                 <button class="upload_footer-btn btn-right" type="button" onclick="bePremium()">¡Conviértase en
                     Premium!<span class="material-symbols-outlined-premium">
                         workspace_premium
                     </span></button>
+                    {{else}}
+                    {{/if}}
             </div>
         </form>
     </div>

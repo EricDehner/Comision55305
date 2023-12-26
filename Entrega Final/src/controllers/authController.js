@@ -1,9 +1,5 @@
 import AuthService from "../services/authService.js";
 import CustomError from "../services/errors/customErrorMsg.js";
-import { generateAuthenticationErrorInfo } from "../services/errors/messages/user.auth.error.js";
-import sendResetPasswordEmail from "./resetPasswordController.js";
-import { userModel } from "../dao/models/user.model.js";
-import { createHash, isValidPassword } from "../utils.js";
 
 class AuthController {
   constructor() {
@@ -14,34 +10,16 @@ class AuthController {
     try {
       const { email, password } = req.body;
       const userData = await this.authService.login(email, password);
-      req.logger.info("Usuario conectado:", userData);
+      await this.authService.updateLastConnection(userData.user);
 
-      if (!userData || !userData.user) {
-        req.logger.error("Error de autenticación");
-        const customError = new CustomError({ name: "Error de autenticación", message: "Datos incorrectos", code: 401, cause: generateAuthenticationErrorInfo(email) });
-        return next(customError);
-      }
-
-      let fechaHoraUTC = new Date();
-
-      fechaHoraUTC.setUTCHours(fechaHoraUTC.getUTCHours() - 3);
-
-      userData.user.last_connection = fechaHoraUTC;
-      await userData.user.save();
-
-      req.session.user = {
-        id: userData.user._id,
-        email: userData.user.email,
-        first_name: userData.user.first_name,
-        last_name: userData.user.last_name,
-        role: userData.user.role,
-        cart: userData.user.cart
-      };
-
+      req.session.user = this.authService.extractUserData(userData.user);
       res.cookie('CookieToken', userData.token, { httpOnly: true, secure: false });
 
       return res.status(200).json({ status: "success", user: userData.user, token: userData.token, redirect: "/products" });
     } catch (error) {
+      if (error instanceof CustomError) {
+        return next(error);
+      }
       req.logger.error("Ocurrió un error:", error);
       return next(error);
     }
@@ -50,15 +28,11 @@ class AuthController {
   async githubCallback(req, res) {
     console.log("Inside AuthController githubCallback");
     try {
-      if (req.user) {
-        req.session.user = req.user;
-        req.session.loggedIn = true;
-        req.logger.info("Usuario vinculado");
-        return res.redirect("/products");
-      } else {
-        req.logger.info("Volviendo a /login");
-        return res.redirect("/login");
-      }
+      const user = await this.authService.githubCallback(req.user);
+      req.session.user = this.authService.extractUserData(user);
+      req.session.loggedIn = true;
+      req.logger.info("Usuario vinculado");
+      return res.redirect("/products");
     } catch (error) {
       req.logger.error("Ocurrió un error:", error);
       return res.redirect("/login");
@@ -66,54 +40,28 @@ class AuthController {
   }
 
   logout(req, res) {
-    req.session.destroy(async (err) => {
-      if (err) {
-        req.logger.error("Error al finalizar sesión.");
-        return res.redirect("/profile");
-      }
-      req.logger.info("Sesión finalizada");
-      return res.redirect("/login");
-    });
+    this.authService.destroySession(req, res);
   }
 
   async restorePassword(req, res) {
-    const { email } = req.body;
     try {
-      await sendResetPasswordEmail(email);
+      await this.authService.sendResetPasswordEmail(req.body.email);
       req.logger.info("¡Correo enviado con éxito!")
       res.json("Se ha enviado un enlace de restablecimiento de contraseña a tu correo electrónico.");
     } catch (error) {
+      if (error instanceof CustomError) {
+        return res.status(error.statusCode).send(error.message);
+      }
       req.logger.error("Error en la recuperación de contraseña.", error);
       res.status(500).send("Error en la recuperación de contraseña" + error.message);
     }
   }
 
   async resetPassword(req, res) {
-    const { token } = req.params;
-    const { password } = req.body;
-
     try {
-      const user = await userModel.findOne({
-        resetPasswordToken: token,
-        resetPasswordExpires: { $gt: Date.now() },
-      });
-      console.log("El usuario es", user);
-      if (!user) {
-        return res.status(400).json({ message: "El token de restablecimiento de contraseña es inválido o ha expirado.", tokenExpired: true });
-      }
-
-      const isSamePassword = isValidPassword(user, password);
-      if (isSamePassword) {
-        return res.json({ status: "oldPassword", message: "Tu contraseña debe ser diferente a la contraseña actual." });
-      }
-
-      user.password = createHash(password);
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpires = undefined;
-
-      await user.save();
-
-      res.json({ status: "success", message: "Tu contraseña ha sido actualizada con éxito." });
+      const { token } = req.params;
+      const { password } = req.body;
+      await this.authService.resetPassword(token, password, res);
     } catch (error) {
       console.error("Error al resetear la contraseña:", error);
       res.status(500).send("Error interno del servidor al intentar actualizar la contraseña.");

@@ -27,6 +27,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUIExpress from "swagger-ui-express";
 import usersRouter from "./routes/users.router.js"
 import messagesRouter from "./routes/messages.router.js";
+import purchasesRouter from "./routes/purchase.router.js";
 
 const app = express();
 const puerto = ENV_CONFIG.PORT || 8080;
@@ -99,6 +100,7 @@ app.use("/loggerTest", loggerRouter)
 app.use("/apidocs", swaggerUIExpress.serve, swaggerUIExpress.setup(specs));
 app.use("/api/users", usersRouter);
 app.use("/api/messages", messagesRouter);
+app.use("/api/purchases", purchasesRouter);
 app.use("/", viewsRouter);
 
 DBManager.connectToMongoDB();
