@@ -271,6 +271,8 @@ class UserController {
                 role: { $ne: "admin" }
             });
 
+            const deletedCount = result.length;
+
             for (const user of result) {
                 const mailOptions = {
                     from: "Proyecto E-Commerce " + ENV_CONFIG.EMAIL_USER,
@@ -284,7 +286,7 @@ class UserController {
                 await userModel.findByIdAndDelete(user._id);
             }
 
-            res.status(200).json({ success: true, message: `${result.deletedCount} usuarios eliminados.` });
+            res.status(200).json({ success: true, message: `${deletedCount} usuarios eliminados.` });
         } catch (error) {
             console.error("Error eliminando usuarios inactivos:", error);
             res.status(500).json({ success: false, message: "Error interno del servidor." });

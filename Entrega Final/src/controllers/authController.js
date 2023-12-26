@@ -5,7 +5,6 @@ import sendResetPasswordEmail from "./resetPasswordController.js";
 import { userModel } from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils.js";
 
-
 class AuthController {
   constructor() {
     this.authService = new AuthService();

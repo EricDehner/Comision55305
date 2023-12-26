@@ -10,8 +10,7 @@ const PM = new ProductManager();
 const CM = new CartManager();
 
 router.get("/", checkSession, async (req, res) => {
-    const products = await PM.getProducts();
-    res.render("home", { products });
+    return res.redirect('/products');
 });
 
 router.get("/products", checkSession, async (req, res) => {
@@ -24,12 +23,15 @@ router.get("/products", checkSession, async (req, res) => {
     }
 });
 
-router.get("/products/:pid", checkSession, async (req, res) => {
+router.get("/product/:pid", checkSession, async (req, res) => {
     const pid = req.params.pid;
     const product = await PM.getProductById(pid);
     const user = req.session.user;
-
-    res.render("product", { product, user });
+    if (user.role === "admin") {
+        return res.redirect('/realtimeproducts');
+    } else {
+        res.render("product", { product, user });
+    }
 });
 
 router.get("/realtimeproducts", checkSession, (req, res) => {
@@ -42,13 +44,17 @@ router.get("/realtimeproducts", checkSession, (req, res) => {
 
 router.get("/messages", checkSession, (req, res) => {
     const user = req.session.user;
-    console.log(user);
     res.render("messages", { user });
 });
 
 router.get("/carts", checkSession, async (req, res) => {
     const carts = await CM.getCarts();
-    res.render("carts", { carts });
+    const user = req.session.user;
+    if (user.role === "admin") {
+        return res.redirect('/realtimeproducts');
+    } else {
+        res.render("carts", { carts });
+    }
 });
 
 router.get("/cart/:cid", checkSession, async (req, res) => {
@@ -56,16 +62,25 @@ router.get("/cart/:cid", checkSession, async (req, res) => {
     const cart = await CM.getCart(cid);
     const user = req.session.user;
 
-    if (cart) {
-        res.render("cart", { products: cart.products, user });
+    if (user.role === "admin") {
+        return res.redirect('/realtimeproducts');
     } else {
-        res.status(400).send({ status: "error", message: "Error! No se encuentra el ID de Carrito!" });
+        if (cart) {
+            res.render("cart", { products: cart.products, user });
+        } else {
+            res.status(400).send({ status: "error", message: "Error! No se encuentra el ID de Carrito!" });
+        }
     }
 });
 
 router.post("/carts/:cid/purchase", checkSession, async (req, res) => {
     const cid = req.params.cid;
-    cartController.createPurchaseTicket(req, res, cid);
+    const user = req.session.user;
+    if (user.role === "admin") {
+        return res.redirect('/realtimeproducts');
+    } else {
+        cartController.createPurchaseTicket(req, res, cid);
+    }
 });
 
 router.get("/login", checkAuth, (req, res) => {
@@ -95,7 +110,6 @@ router.get("/failregister", async (req, res) => {
 });
 
 router.get("/pw-forget", async (req, res) => {
-    console.log("hola");
     res.render("pw-forget");
 });
 

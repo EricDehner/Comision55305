@@ -11,10 +11,11 @@ export const isValidPassword = (user, password) => bcrypt.compareSync(password, 
 export const passportCall = (strategy) => {
 
     return async (req, res, next) => {
-        console.log('Inicio de la autenticación');
+        console.log('Verificando autenticación');
         if (strategy === "jwt") {
-            console.log("req.headers.authorization",req.headers.authorization);
+            //console.log("req.headers.authorization",req.headers.authorization);
             const authHeader = req.headers.authorization;
+            //console.log(authHeader);
             if (!authHeader) {
                 console.log("no autorizado");
                 return res.status(401).json({ message: "no estas autorizado" });

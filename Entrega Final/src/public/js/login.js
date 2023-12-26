@@ -12,7 +12,10 @@ const loginUser = async () => {
         if (email !== "" && password !== "") {
             const response = await fetch("/api/sessions/login/", {
                 method: "POST",
-                headers: { "Content-type": "application/json; charset=UTF-8" },
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    authorization: "Bearer " + localStorage.getItem("userID")
+                },
                 body: JSON.stringify({ email: email, password: password }),
             });
 

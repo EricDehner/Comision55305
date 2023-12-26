@@ -78,6 +78,10 @@ function submitForm() {
 
     fetch(form.action, {
         method: 'POST',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            authorization: "Bearer " + localStorage.getItem("userID")
+        },
         body: formData
     })
         .then(response => response.json())
@@ -141,6 +145,10 @@ function submitFormPremium(formId, btnId) {
 
     fetch(form.action, {
         method: 'POST',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            authorization: "Bearer " + localStorage.getItem("userID")
+        },
         body: formData
     })
         .then(response => response.json())
@@ -187,7 +195,11 @@ function submitFormPremium(formId, btnId) {
 
 function upgradeToPremium() {
     fetch(`/api/users/premium/${userId}`, {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            authorization: "Bearer " + localStorage.getItem("userID")
+        },
     })
         .then(response => {
             const contentType = response.headers.get('content-type');

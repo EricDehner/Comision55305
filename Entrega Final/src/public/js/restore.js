@@ -4,7 +4,13 @@ const restorePw = async () => {
 
     console.log(email, password);
 
-    const response = await fetch(`/api/sessions/restore?user=${email}&pass=${password}`);
+    const response = await fetch(`/api/sessions/restore?user=${email}&pass=${password}`,{
+        method:"GET",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            authorization: "Bearer " + localStorage.getItem("userID")
+        },
+    });
     const data = await response.json();
     console.log(data);
 

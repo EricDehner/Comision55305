@@ -6,7 +6,7 @@
     <a class="profile_data-pass" href="/restore">Cambiar contraseña</a>
     <p class="profile_data-role">{{user.role}}: {{user.id}} </p>
     <a class="profile_data-uploads" href="/upload/{{user.id}}"><span class="material-symbols-outlined-uploads">upload_file</span></a>
-    <form class="profile_btn" action="/api/sessions/logout" method="POST">
+    <form class="profile_btn" action="/api/sessions/logout" method="POST" >
         <button class="profile_btn-btn" type="submit" onclick="logout()">Cerrar Sesión <span
                 class="material-symbols-outlined">
                 logout

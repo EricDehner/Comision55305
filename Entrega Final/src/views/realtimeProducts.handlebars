@@ -4,7 +4,7 @@
         <button data-tooltip="Agregar producto" class="realTime_header-btn" onclick="editMenu()"><span class="material-symbols-outlined-prod"> add
             </span></button>
 
-        <button data-tooltip="Mostrar ID productos" class="realTime_header-btn--id" onclick="showID()"><span class="material-symbols-outlined-prod">
+        <button data-tooltip="Mostrar ID dueño" class="realTime_header-btn--id" onclick="showID()"><span class="material-symbols-outlined-prod">
                 visibility
             </span></button>
     </div>
@@ -13,4 +13,11 @@
 </div>
 
 <script src="socket.io/socket.io.js"></script>
+
+{{#if (eq user.role "admin")}}
+<script src="/js/realtimeAdmin.js"></script>
+
+{{else}}
 <script src="/js/realtime.js"></script>
+
+{{/if}}

@@ -69,7 +69,8 @@ async function updateMessageStatus(messageId, newStatus) {
         const response = await fetch(`/api/messages/${messageId}/status`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json',
+                "Content-type": "application/json; charset=UTF-8",
+                authorization: "Bearer " + localStorage.getItem("userID")
             },
             body: JSON.stringify({ status: newStatus }),
         });
@@ -159,7 +160,8 @@ async function OldSolvedMessages() {
         const response = await fetch('/api/messages/removeOldSolved', {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json',
+                "Content-type": "application/json; charset=UTF-8",
+                authorization: "Bearer " + localStorage.getItem("userID")
             },
         });
 

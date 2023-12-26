@@ -23,6 +23,8 @@
         <nav class="navBar">
             <h1 class="navBar_brand">E-Commerce</h1>
             <div class="navBar_content">
+                {{#if user}}
+
                 {{#if (dif user.role "admin")}}
                 <div class="navBar_content-dropdown">
                     <button onclick="dropdown()" class="navBar_content-item--btn">PRODUCTOS <span
@@ -36,7 +38,6 @@
                     </div>
                 </div>
                 {{else}}
-                <a class="navBar_content-item" href="/realtimeproducts">COMPRAS</a>
                 <a class="navBar_content-item" href="/realtimeproducts">PRODUCTOS</a>
                 {{/if}}
                 {{#if (dif user.role "admin")}}
@@ -70,6 +71,8 @@
                 <a class="navBar_content-item profile" href="/profile" data-tooltip="Admin"><span
                         class="material-symbols-outlined user">
                         person </span></a>
+                {{/if}}
+                {{else}}
                 {{/if}}
             </div>
         </nav>

@@ -23,6 +23,7 @@ const pwRestore = async () => {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
+                    authorization: "Bearer " + localStorage.getItem("userID")
                 },
                 body: JSON.stringify({ email: email }),
             });

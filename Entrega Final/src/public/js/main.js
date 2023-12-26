@@ -24,7 +24,13 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 async function getTotalProductsInCart(cartId) {
     try {
-        const response = await fetch(`/api/carts/${cartId}/total-products`);
+        const response = await fetch(`/api/carts/${cartId}/total-products`, {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                authorization: "Bearer " + localStorage.getItem("userID")
+            },
+        });
         if (!response.ok) {
             throw new Error(`Error al obtener el total de productos en el carrito: ${response.statusText}`);
         }

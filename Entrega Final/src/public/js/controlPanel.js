@@ -28,7 +28,8 @@ async function eliminarUsuariosInactivos() {
         const response = await fetch('api/users/inactive', {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json',
+                "Content-type": "application/json; charset=UTF-8",
+                authorization: "Bearer " + localStorage.getItem("userID")
             },
         });
 
@@ -37,7 +38,6 @@ async function eliminarUsuariosInactivos() {
         }
 
         const data = await response.json();
-
         if (data.message === "0 usuarios eliminados.") {
             Toastify({
                 text: "¡Los usuarios se encuentran actualizados!",
@@ -49,6 +49,21 @@ async function eliminarUsuariosInactivos() {
                 },
                 backgroundColor: "green"
             }).showToast();
+
+        } else if (data.message === "1 usuarios eliminados.") {
+            Toastify({
+                text: "1 usuario eliminado",
+                duration: 3000,
+                position: 'right',
+                offset: {
+                    x: 0,
+                    y: 55,
+                },
+                backgroundColor: "green"
+            }).showToast();
+            setTimeout(() => {
+                window.location.reload();
+            }, 4500);
 
         } else {
 
@@ -89,7 +104,8 @@ async function eliminarUsuario(userId) {
         const response = await fetch(`/api/users/deleteUser/${userId}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json',
+                "Content-type": "application/json; charset=UTF-8",
+                authorization: "Bearer " + localStorage.getItem("userID")
             },
             body: JSON.stringify({ userId: userId }),
         });
@@ -154,8 +170,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 const response = await fetch(`/api/users/${userId}/role`, {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json',
+                        "Content-type": "application/json; charset=UTF-8",
+                        authorization: "Bearer " + localStorage.getItem("userID")
                     },
+        
                     body: JSON.stringify({ role: nuevoRol }),
                 });
 

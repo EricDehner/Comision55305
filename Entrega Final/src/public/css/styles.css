@@ -300,6 +300,17 @@ footer {
     transition: all .15s ease-in-out;
 }
 
+.card-realtime {
+    width: 320px;
+    height: 412px;
+    border-radius: 14px;
+    background-color: rgb(228, 228, 228);
+    box-shadow: 5px 3px 8px rgba(0, 0, 0, 0.361);
+    position: relative;
+    color: #3f3f3f;
+    transition: all .15s ease-in-out;
+}
+
 .card_x {
     border: 0;
     background: transparent;
@@ -386,39 +397,161 @@ footer {
     height: 250px;
 }
 
-.card_content {
+.card_content-prod {
     position: absolute;
-    bottom: 20px;
+    bottom: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 28px;
     width: 100%;
     font-family: 'Roboto', sans-serif;
 }
 
+.card_content {
+    position: absolute;
+    bottom: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.card_content-input {
+    border: 0;
+    background-color: transparent;
+}
+
+.card_content-input:hover {
+    cursor: pointer;
+}
+
 .card_content-title {
     font-size: 20px;
+    width: 90%;
+    text-align: center;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 600;
 }
 
 .card_content-description {
     font-size: 17px;
     font-weight: 400;
+    width: 90%;
+    text-align: center;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+.card_content-container {
+    margin-top: 7px;
+    display: flex;
+    width: 85%;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.lowSpace {
+    width: 50% !important;
+}
+
+.card_content-price-prod {
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    flex-direction: row;
 }
 
 .card_content-price {
-    margin-top: 7px;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    width: 80px;
+    flex-direction: row;
+}
+
+.card_content-stock {
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    width: 80px;
+    text-align: end;
+}
+
+.card_content-id {
     font-size: 16px;
     font-weight: 700;
 }
 
-.card_content-owner {
-    margin-top: 7px;
-    font-size: 16px;
-    position: absolute;
-    font-weight: 700;
-    top: 69px;
+.card_content-save {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    height: 36px;
+    width: 36px;
+    z-index: 9;
+    border: 1px solid #00000040;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background-color: #e3e3e3;
+    font-size: 15px;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.176);
+    transition: all .15s ease-in-out;
 }
+
+.card_content-save:hover {
+    cursor: pointer;
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.361);
+    color: black;
+    background-color: rgb(246, 246, 246);
+    border: solid 1px #00000045;
+}
+
+.card_content-save::before,
+.card_content-save::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    background-color: #707070;
+    color: #fff;
+    padding: 5px;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.card_content-save::before {
+    border-radius: 5px;
+    top: 2.9rem;
+    right: 1.3rem;
+    z-index: 10;
+    transition: opacity 0s;
+    z-index: 12;
+}
+
+.card_content-save::after {
+    content: "";
+    position: absolute;
+    border-style: solid;
+    border-radius: 50% 50% 0 50%;
+    border-width: 8px;
+    border-color: #707070;
+    width: 0rem !important;
+    top: 3.4rem;
+    right: 2.2rem;
+    z-index: 9;
+    transform: rotate(45deg);
+    transition: opacity 0s;
+}
+
+.card_content-save:hover::before,
+.card_content-save:hover::after {
+    visibility: visible;
+    opacity: 1;
+}
+
+.card_content-save:hover::before {
+    width: max-content;
+}
+
 
 .card_content-btn {
     text-decoration: none;
@@ -607,7 +740,6 @@ footer {
     cursor: pointer;
 }
 
-
 .realTime_header-btn::before,
 .realTime_header-btn::after {
     content: attr(data-tooltip);
@@ -687,7 +819,7 @@ footer {
 .realTime_header-btn--id::before {
     border-radius: 5px;
     top: 2.8rem;
-    right: -4.1rem;
+    right: -3.1rem;
     z-index: 10;
     transition: opacity 0s;
     z-index: 10;
@@ -1522,6 +1654,7 @@ label {
     justify-content: center;
     align-items: center;
 }
+
 .quantity-btn {
     width: 30px;
     padding-top: 3px;

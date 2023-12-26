@@ -33,7 +33,10 @@ const registerUser = async () => {
 
                 const response = await fetch("/api/sessions/register", {
                     method: "POST",
-                    headers: { "Content-type": "application/json; charset=UTF-8" },
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8",
+                        authorization: "Bearer " + localStorage.getItem("userID")
+                    },
                     body: JSON.stringify(user),
                 });
 

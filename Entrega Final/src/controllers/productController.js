@@ -94,6 +94,9 @@ class ProductController {
             const { title, description, code, price, status, stock, category, thumbnails } = req.body;
             const pid = req.params.pid;
 
+            console.log(req.body);
+            console.log(pid);
+
             const wasUpdated = await this.productService.updateProduct(pid, { title, description, code, price, status, stock, category, thumbnails });
 
             if (wasUpdated) {

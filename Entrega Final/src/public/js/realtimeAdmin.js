@@ -6,6 +6,7 @@ const button = document.querySelector(".realTime_header-btn");
 let menuActive = false;
 let idActive = false;
 
+
 socket.on("infodelete", (data) => {
     Toastify({
         text: data,
@@ -30,29 +31,111 @@ socket.on("productoAgregado", (data) => {
     }).showToast();
 })
 
+
 socket.on("realTimeProducts", (data) => {
     let salida = ``;
     data.forEach(item => {
         salida += `
-        <div class="card">
-            <button data-tooltip="Eliminar producto" class="card_x" type="button" onclick="deleteProduct('${item._id}')"><span class="material-symbols-outlined-x">close</span></button>
-            <p id="id" class="ID_card none">${item.owner}</p>
-            <div class="card_img">
-                <img class="card_img-img" src=${item.thumbnails} alt=${item.description} />
+        <div class="card-realtime">
+        <button data-tooltip="Eliminar producto" class="card_x" type="button" onclick="deleteProduct('${item._id}')">
+            <span class="material-symbols-outlined-x">close</span>
+        </button>
+        <p id="id" class="ID_card none">${item.owner}</p>
+        <div class="card_img">
+            <img class="card_img-img" src="${item.thumbnails}" alt="${item.description}" />
+        </div>
+        <div class="card_content">
+            <h2 class="card_content-title">
+                <input class="card_content-input card_content-title" type="text" id="titleInput_${item._id}" value="${item.title}" />
+            </h2>
+            <h3 class="card_content-description">
+                <input class="card_content-input card_content-description" type="text" id="descriptionInput_${item._id}" value="${item.description}" />
+            </h3>
+            <div class="card_content-container lowSpace ">
+                <p class="card_content-price">
+                    $
+                    <input class="card_content-input card_content-price" type="number" id="priceInput_${item._id}" value="${item.price}" />
+                </p>
+                <p class="card_content-stock">
+                    <input class="card_content-input card_content-stock" type="number" id="stockInput_${item._id}" value="${item.stock}" />
+                    U
+                </p>
             </div>
-            <div class="card_content">
-                <h2 class="card_content-title">${item.title}</h2>
-                <h3 class="card_content-description">${item.description}</h3>
-                <p class="card_content-price-prod">$${item.price}</p>
-                <div class="card_content-container">
+            <div class="card_content-container">
                 <p class="card_content-id">${item._id}</p>
-                </div>
+                <button data-tooltip="Guardar cambios" type="button" class="card_content-save" onclick="saveChanges('${item._id}','${item.title}','${item.description}','${item.price}','${item.stock}')">
+                    <span class="material-symbols-outlined">save</span>
+                </button>
             </div>
         </div>
+    </div>
         `;
     });
     content.innerHTML = salida;
 });
+
+function saveChanges(pid, originalTitle, originalDescription, originalPrice, originalStock) {
+    const title = document.getElementById(`titleInput_${pid}`).value;
+    const description = document.getElementById(`descriptionInput_${pid}`).value;
+    const price = parseFloat(document.getElementById(`priceInput_${pid}`).value);
+    const stock = parseInt(document.getElementById(`stockInput_${pid}`).value, 10);
+
+    if (title !== originalTitle || description !== originalDescription || price !== parseFloat(originalPrice) || stock !== parseFloat(originalStock)) {
+        const data = {
+            title,
+            description,
+            price,
+            stock
+        };
+
+        fetch(`/api/products/${pid}`, {
+            method: 'PUT',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                authorization: "Bearer " + localStorage.getItem("userID")
+            },
+            body: JSON.stringify(data),
+        })
+
+            .then(response => response.json())
+            .then(result => {
+                Toastify({
+                    text: "Producto actualizado",
+                    duration: 1500,
+                    position: "right",
+                    offset: {
+                        x: 0,
+                        y: 55,
+                    },
+                }).showToast();
+            })
+            .catch(error => {
+                console.error("Error en la actuualización del producto,", error)
+                Toastify({
+                    text: "Error en la actualización del producto",
+                    duration: 1500,
+                    position: "right",
+                    offset: {
+                        x: 0,
+                        y: 55,
+                    },
+                    className: "toastify-error"
+                }).showToast();
+            });
+    } else {
+        Toastify({
+            text: "No realizó modificación",
+            duration: 1500,
+            position: "right",
+            offset: {
+                x: 0,
+                y: 55,
+            },
+            className: "toastify-error"
+        }).showToast();
+        return;
+    }
+}
 
 function showID() {
     const IDviews = document.getElementsByClassName("ID_card");

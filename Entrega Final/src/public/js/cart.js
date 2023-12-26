@@ -9,6 +9,10 @@ function clearCart() {
     if (cid) {
         fetch(`/api/carts/${cid}`, {
             method: "DELETE",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                authorization: "Bearer " + localStorage.getItem("userID")
+            },
         })
             .then((response) => {
                 if (response.ok) {
@@ -51,6 +55,10 @@ function deleteProduct(productId) {
     if (cid) {
         fetch(`/api/carts/${cid}/products/${productId}`, {
             method: "DELETE",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                authorization: "Bearer " + localStorage.getItem("userID")
+            },
         })
             .then((response) => {
                 if (response.ok) {
@@ -142,7 +150,13 @@ function openCheckout(responseData) {
         const product = products[i];
         const productId = product.product;
 
-        const fetchPromise = fetch(`/api/products/${productId}`)
+        const fetchPromise = fetch(`/api/products/${productId}`,{
+            method:"GET",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                authorization: "Bearer " + localStorage.getItem("userID")
+            },
+        })
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(`Error al obtener detalles del producto con ID ${productId}`);
@@ -285,7 +299,8 @@ async function updateProductQuantity(pid, maxQuantity) {
             fetch(`/api/carts/${cid}/products/${pid}/prodQuantity`, {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-type": "application/json; charset=UTF-8",
+                    authorization: "Bearer " + localStorage.getItem("userID")
                 },
                 body: JSON.stringify({ quantity: newQuantity }),
             })
@@ -304,7 +319,7 @@ async function updateProductQuantity(pid, maxQuantity) {
                                 y: 55,
                             }
                         }).showToast();
-                    }else {
+                    } else {
                         Toastify({
                             text: `Error al actualizar producto.`,
                             duration: 1500,
@@ -366,7 +381,8 @@ async function fetchCartData() {
         const response = await fetch(`/api/carts/${cid}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
+                "Content-type": "application/json; charset=UTF-8",
+                authorization: "Bearer " + localStorage.getItem("userID")
             },
         });
 
