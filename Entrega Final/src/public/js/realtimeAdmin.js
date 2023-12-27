@@ -37,7 +37,7 @@ socket.on("realTimeProducts", (data) => {
     data.forEach(item => {
         salida += `
         <div class="card-realtime">
-        <button data-tooltip="Eliminar producto" class="card_x" type="button" onclick="deleteProduct('${item._id}')">
+        <button data-tooltip="Eliminar producto" class="card_x" type="button" onclick="deleteProduct(event, '${item._id}')">
             <span class="material-symbols-outlined-x">close</span>
         </button>
         <p id="id" class="ID_card none">${item.owner}</p>
@@ -75,6 +75,9 @@ socket.on("realTimeProducts", (data) => {
 });
 
 function saveChanges(pid, originalTitle, originalDescription, originalPrice, originalStock) {
+    const saveButton = document.querySelector('.card_content-save');
+    saveButton.disabled = true;
+
     const title = document.getElementById(`titleInput_${pid}`).value;
     const description = document.getElementById(`descriptionInput_${pid}`).value;
     const price = parseFloat(document.getElementById(`priceInput_${pid}`).value);
@@ -108,6 +111,7 @@ function saveChanges(pid, originalTitle, originalDescription, originalPrice, ori
                         y: 55,
                     },
                 }).showToast();
+                saveButton.disabled = false;
             })
             .catch(error => {
                 console.error("Error en la actuualización del producto,", error)
@@ -121,6 +125,7 @@ function saveChanges(pid, originalTitle, originalDescription, originalPrice, ori
                     },
                     className: "toastify-error"
                 }).showToast();
+                saveButton.disabled = false;
             });
     } else {
         Toastify({
@@ -133,6 +138,7 @@ function saveChanges(pid, originalTitle, originalDescription, originalPrice, ori
             },
             className: "toastify-error"
         }).showToast();
+        saveButton.disabled = false;
         return;
     }
 }
@@ -185,7 +191,7 @@ function editMenu() {
         <input type="text" class="realTime_content-add--input---item" id="thumbnails" placeholder="Imagen"
         required>
         </div>
-        <button class="realTime_content-btn green" type="submit" onclick="addProduct()">AGREGAR</button>
+        <button class="realTime_content-btn green" type="submit" onclick="addProduct(event)">AGREGAR</button>
     </div>
     `
         button.classList.add("realTime_header-btn--active");
@@ -199,7 +205,10 @@ function editMenu() {
     }
 }
 
-function addProduct() {
+function addProduct(event) {
+    const addButton = event.currentTarget;
+    addButton.disabled = true;
+
     const title = document.getElementById("title").value;
     const description = document.getElementById("description").value;
     const code = document.getElementById("code").value;
@@ -208,17 +217,53 @@ function addProduct() {
     const stock = document.getElementById("stock").value;
     const category = document.getElementById("category").value;
     const thumbnails = document.getElementById("thumbnails").value;
+
+    /*     if (title === "" || description === "" || code === "" || price === "" || stock === "" || category === "" || thumbnails === "") {
+            Toastify({
+                text: "¡Complete todos los campos!",
+                duration: 1500,
+                position: "right",
+                offset: {
+                    x: 0,
+                    y: 55,
+                },
+                className: "toastify-error"
+            }).showToast();
+            addButton.disabled = false; 
+            return;
+        } */
+
     const product = {
         title: title, description: description, code: code, price: price, status: status,
         stock: stock, category: category, thumbnails: thumbnails, token: localStorage.getItem("userID")
     };
 
-    socket.emit("nuevoProducto", product);
+    /*     socket.emit("nuevoProducto", product);
+     */
+    document.getElementById("title").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("code").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("status").value = "";
+    document.getElementById("stock").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("thumbnails").value = "";
+
+    addButton.disabled = false;
+
+    //menuContainer.classList.add("none")
+    menu.classList.add("none")
+    button.classList.remove("realTime_header-btn--active")
+    menu.innerHTML = "";
+    menuActive = true;
 }
 
-function deleteProduct(idProduct) {
+function deleteProduct(event, idProduct) {
+    const deleteButton = event.currentTarget;
+    deleteButton.disabled = true;
     const product = { idProduct: idProduct, token: localStorage.getItem("userID") }
     socket.emit("eliminarProducto", product);
+    deleteButton.disabled = false;
 
 }
 

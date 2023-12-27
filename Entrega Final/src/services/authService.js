@@ -4,6 +4,7 @@ import CustomError from '../services/errors/customErrorMsg.js';
 import sendResetPasswordEmail from "../controllers/resetPasswordController.js";
 import { userModel } from '../dao/models/user.model.js';
 import { ENV_CONFIG } from '../config/config.js';
+import { createHash, isValidPassword } from "../utils.js";
 
 class AuthService {
     constructor() {

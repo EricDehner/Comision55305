@@ -8,6 +8,9 @@ const registerUser = async () => {
     const emailInput = document.getElementById("email");
     const ageInput = document.getElementById("age");
     const passwordInput = document.getElementById("password");
+    const registerButton = document.querySelector('.formAcc_content-btns-btn');
+    registerButton.disabled = true;
+
 
     let first_name = first_nameInput.value;
     let last_name = last_nameInput.value;
@@ -52,6 +55,7 @@ const registerUser = async () => {
                             y: 55,
                         }
                     }).showToast();
+                    registerButton.disabled = false;
                 } else {
                     const data = await response.json();
                     if (data.status === "success") {
@@ -66,6 +70,7 @@ const registerUser = async () => {
                         }).showToast();
                         setTimeout(() => {
                             location.href = "/login";
+                            registerButton.disabled = false;
                         }, 1500);
                     }
                 }
@@ -81,6 +86,7 @@ const registerUser = async () => {
                     },
                     className: "red-toastify"
                 }).showToast();
+                registerButton.disabled = false;
             }
         } else {
             Toastify({
@@ -109,9 +115,11 @@ const registerUser = async () => {
             if (password === "") {
                 passwordInput.style.border = '2px solid #ff0000b0';
             }
+            registerButton.disabled = false;
         }
     } catch (error) {
         console.error("Hubo un error al registrar el usuario:", error);
+        registerButton.disabled = false;
     }
 }
 

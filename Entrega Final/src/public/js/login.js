@@ -1,6 +1,8 @@
 const loginUser = async () => {
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
+    const loginButton = document.querySelector('.formAcc_content-btns--btn');
+    loginButton.disabled = true;
 
     let email = emailInput.value;
     let password = passwordInput.value;
@@ -20,6 +22,7 @@ const loginUser = async () => {
             });
 
             if (!response.ok) {
+                loginButton.disabled = false;
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
@@ -29,6 +32,7 @@ const loginUser = async () => {
             localStorage.setItem("userID", data.token)
             if (data.status === "success") {
                 localStorage.setItem("cartID", data.user.cart)
+                loginButton.disabled = false;
                 window.location.href = "/products";
             }
         } else {
@@ -49,8 +53,10 @@ const loginUser = async () => {
             if (password === "") {
                 passwordInput.style.border = '2px solid #ff0000b0';
             }
+            loginButton.disabled = false;
         }
     } catch (error) {
+        console.log("Hubo un problema con la operación, usuario o contraseña incorrectos", error);
         Toastify({
             text: "No se pudo loguear el Usuario!",
             className: "toastify-error",
@@ -61,8 +67,7 @@ const loginUser = async () => {
                 y: 55,
             }
         }).showToast();
-
-        console.log("Hubo un problema con la operación, usuario o contraseña incorrectos", error);
+        loginButton.disabled = false;
     }
 }
 

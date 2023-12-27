@@ -1,11 +1,11 @@
 const restorePw = async () => {
     let email = document.getElementById("userEmail").textContent;
     let password = document.getElementById("restorePassword1").value;
+    const restoreButton = document.querySelector('.restore_btn-btn');
+    restoreButton.disabled = true;
 
-    console.log(email, password);
-
-    const response = await fetch(`/api/sessions/restore?user=${email}&pass=${password}`,{
-        method:"GET",
+    const response = await fetch(`/api/sessions/restore?user=${email}&pass=${password}`, {
+        method: "GET",
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             authorization: "Bearer " + localStorage.getItem("userID")
@@ -24,6 +24,7 @@ const restorePw = async () => {
             },
             duration: 1500
         }).showToast();
+        restoreButton.disabled = false;
     } else {
         if (data.status === "OK") {
             Toastify({
@@ -49,6 +50,7 @@ const restorePw = async () => {
                     y: 55,
                 }
             }).showToast();
+            restoreButton.disabled = false;
         }
     }
 }

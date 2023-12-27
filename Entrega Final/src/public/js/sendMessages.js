@@ -4,7 +4,8 @@ function sendMessage() {
     event.preventDefault();
     const user = document.getElementById("user").textContent;
     const email = document.getElementById("email").textContent;
-
+    const buyButton = document.querySelector('.form_form-btn');
+    buyButton.disabled = true;
 
     const message = document.getElementById("message");
     if (message.value === "") {
@@ -13,7 +14,7 @@ function sendMessage() {
             className: "toastify-error",
             duration: 3000
         }).showToast();
-
+        buyButton.disabled = false;
     } else {
         let fechaHoraArgentina = new Date();
         fechaHoraArgentina.setUTCHours(fechaHoraArgentina.getUTCHours() - 3);
@@ -36,5 +37,7 @@ function sendMessage() {
             },
             backgroundColor: "green"
         }).showToast();
+        buyButton.disabled = false;
+
     }
 }

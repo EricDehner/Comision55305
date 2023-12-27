@@ -48,6 +48,9 @@ sortSelect.addEventListener("change", function () {
 const agregarProductoAlCarrito = async (pid) => {
     try {
         let cart = localStorage.getItem("cartID");
+        const addButton = document.querySelector('.card_content-btn--add');
+        addButton.disabled = true;
+
 
         if (!cart) {
             document.cookie = "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -73,6 +76,7 @@ const agregarProductoAlCarrito = async (pid) => {
                     },
                     className: "toastify-error"
                 }).showToast();
+                addButton.disabled = false;
             } else {
                 Toastify({
                     text: "Se agregó al Carrito!",
@@ -85,6 +89,8 @@ const agregarProductoAlCarrito = async (pid) => {
                 }).showToast();
 
                 await actualizarTotalProducts();
+                addButton.disabled = false;
+
             }
         } else {
             Toastify({
@@ -97,6 +103,7 @@ const agregarProductoAlCarrito = async (pid) => {
                 },
                 className: "toastify-error"
             }).showToast();
+            addButton.disabled = false;
         }
     } catch (error) {
         Toastify({
@@ -109,6 +116,7 @@ const agregarProductoAlCarrito = async (pid) => {
             },
             className: "toastify-error"
         }).showToast();
+        addButton.disabled = false;
     }
 }
 

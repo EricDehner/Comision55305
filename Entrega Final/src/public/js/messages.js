@@ -65,6 +65,9 @@ function showMessages(data) {
 }
 
 async function updateMessageStatus(messageId, newStatus) {
+    const input = document.querySelector('.message_status-select');
+    input.disabled = true;
+
     try {
         const response = await fetch(`/api/messages/${messageId}/status`, {
             method: 'PUT',
@@ -87,6 +90,7 @@ async function updateMessageStatus(messageId, newStatus) {
                 },
                 className: "toastify-error"
             }).showToast();
+            input.disabled = false;
         } else {
             Toastify({
                 text: "Estado actualizado",
@@ -109,9 +113,11 @@ async function updateMessageStatus(messageId, newStatus) {
             } else {
                 showPendingMessages();
             }
+            input.disabled = false;
         }
     } catch (error) {
         console.error("Error al realizar la solicitud de actualización");
+        input.disabled = false;
     }
 }
 function showPendingMessages() {
@@ -156,6 +162,9 @@ function toggleMessages() {
 }
 
 async function OldSolvedMessages() {
+    const messageDeleteButton = document.querySelector('.message_delete');
+    messageDeleteButton.disabled = true;
+
     try {
         const response = await fetch('/api/messages/removeOldSolved', {
             method: 'DELETE',
@@ -185,6 +194,7 @@ async function OldSolvedMessages() {
                 } else {
                     showPendingMessages();
                 }
+                messageDeleteButton.disabled = false;
             } else {
                 console.error('Error al eliminar mensajes resueltos:', responseData.message);
                 Toastify({
@@ -197,6 +207,7 @@ async function OldSolvedMessages() {
                     },
                     className: "toastify-error"
                 }).showToast();
+                messageDeleteButton.disabled = false;
             }
         } else {
             console.error('Error al eliminar mensajes resueltos:', response.statusText);
@@ -210,6 +221,7 @@ async function OldSolvedMessages() {
                 },
                 className: "toastify-error"
             }).showToast();
+            messageDeleteButton.disabled = false;
         }
     } catch (error) {
         console.error('Error al realizar la solicitud de eliminación:', error);
@@ -223,5 +235,6 @@ async function OldSolvedMessages() {
             },
             className: "toastify-error"
         }).showToast();
+        messageDeleteButton.disabled = false;
     }
 }

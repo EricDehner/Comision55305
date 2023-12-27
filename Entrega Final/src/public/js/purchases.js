@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fetchData() {
+    const filterButton = document.querySelector('.purchase_filter');
+    filterButton.disabled = true;
+
     fetch("/api/purchases/purchase", {
         method: "GET",
         headers: {
@@ -13,9 +16,11 @@ function fetchData() {
         .then(response => response.json())
         .then(data => {
             createPurchaseCard(data);
+            filterButton.disabled = false;
         })
         .catch(error => {
             console.log('Error en la solicitud:', error);
+            filterButton.disabled = false;
         });
 }
 
@@ -159,6 +164,8 @@ function searchButtonClicked() {
     const code = document.getElementById("codeInput").value;
     const container = document.getElementById("purchase_container");
     const cards = container.querySelectorAll(".purchase_card");
+    const searchButton = document.querySelector('.purchase_btn');
+    searchButton.disabled = true;
 
     let hasMatches = false;
     if (code !== "") {
@@ -175,6 +182,7 @@ function searchButtonClicked() {
 
         if (!hasMatches) {
             container.innerHTML = `<p class="purchase_noMatches">No hay coincidencias, por favor vuelva a intentarlo</p>`;
+            searchButton.disabled = false;
         }
     } else {
         Toastify({
@@ -187,5 +195,7 @@ function searchButtonClicked() {
             },
             className: "toastify-error"
         }).showToast();
+        searchButton.disabled = false;
+
     }
 }

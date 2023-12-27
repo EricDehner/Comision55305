@@ -74,6 +74,9 @@ function validateAndSubmitForm() {
 function submitForm() {
     const form = document.getElementById('uploadForm');
     const formData = new FormData(form);
+    const formButton = document.querySelector('.cart_content-btn');
+    formButton.disabled = true;
+
 
 
     fetch(form.action, {
@@ -100,6 +103,7 @@ function submitForm() {
             if (uploadMessageBtn) {
                 uploadMessageBtn.style.display = 'none';
             }
+            formButton.disabled = false;
         })
         .catch(error => {
             console.error("Error durante la carga del archivo:", error);
@@ -113,7 +117,9 @@ function submitForm() {
                 },
                 backgroundColor: "red"
             }).showToast();
+            formButton.disabled = false;
         });
+
 }
 
 
@@ -142,6 +148,8 @@ function submitFormPremium(formId, btnId) {
     const form = document.getElementById(formId);
     const formData = new FormData(form);
     const uploadMessageBtn = document.getElementById(btnId);
+    const formPremiumButton = document.querySelector('.cart_content-btn');
+    formPremiumButton.disabled = true;
 
     fetch(form.action, {
         method: 'POST',
@@ -176,6 +184,8 @@ function submitFormPremium(formId, btnId) {
         `;
             uploadMessageBtn.insertAdjacentHTML('afterend', premiumButtonHtml);
             uploadMessageBtn.style.display = 'none';
+            formPremiumButton.disabled = false
+
         })
         .catch(error => {
             console.error("Error durante la carga del archivo:", error);
@@ -189,11 +199,16 @@ function submitFormPremium(formId, btnId) {
                 },
                 backgroundColor: "red"
             }).showToast();
+            formPremiumButton.disabled = false
+
         });
     return true;
 }
 
 function upgradeToPremium() {
+    const upgradeButton = document.querySelector('.upload_footer-btn--premium');
+    upgradeButton.disabled = true;
+
     fetch(`/api/users/premium/${userId}`, {
         method: 'POST',
         headers: {
@@ -204,8 +219,10 @@ function upgradeToPremium() {
         .then(response => {
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('application/json')) {
+                upgradeButton.disabled = false;
                 return response.json();
             } else {
+                upgradeButton.disabled = false;
                 return response.text();
             }
         })
@@ -223,6 +240,7 @@ function upgradeToPremium() {
                     },
                     backgroundColor: "green"
                 }).showToast();
+                upgradeButton.disabled = false;
             } else {
                 Toastify({
                     text: data,
@@ -234,6 +252,7 @@ function upgradeToPremium() {
                     },
                     backgroundColor: "green"
                 }).showToast();
+                upgradeButton.disabled = false;
             }
         })
         .catch(error => {
@@ -248,5 +267,6 @@ function upgradeToPremium() {
                 },
                 backgroundColor: "red"
             }).showToast();
+            upgradeButton.disabled = false;
         });
 }

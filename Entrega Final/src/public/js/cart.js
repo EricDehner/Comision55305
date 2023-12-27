@@ -6,6 +6,9 @@ if (cartItems.length > 0) {
 
 function clearCart() {
     const cid = localStorage.getItem("cartID");
+    const buyButton = document.querySelector('.cartHeader_btn');
+    buyButton.disabled = true;
+
     if (cid) {
         fetch(`/api/carts/${cid}`, {
             method: "DELETE",
@@ -27,6 +30,8 @@ function clearCart() {
                     }).showToast();
                     setTimeout(() => {
                         window.location.reload();
+                        buyButton.disabled = false;
+
                     }, 1500);
                 } else {
                     Toastify({
@@ -39,18 +44,27 @@ function clearCart() {
                         },
                         className: "toastify-error"
                     }).showToast();
+                    buyButton.disabled = false;
+
                 }
             })
             .catch((error) => {
                 console.error(`Error al vaciar el carrito:, ${error}`);
+                buyButton.disabled = false;
+
             });
     } else {
         console.error("No se pudo encontrar el carrito en el almacenamiento local.");
+        buyButton.disabled = false;
+
     }
 }
 
 function deleteProduct(productId) {
     const cid = localStorage.getItem("cartID");
+    const buyButton = document.querySelector('.cart_content-btn');
+    buyButton.disabled = true;
+
 
     if (cid) {
         fetch(`/api/carts/${cid}/products/${productId}`, {
@@ -85,13 +99,19 @@ function deleteProduct(productId) {
                         },
                         className: "toastify-error"
                     }).showToast();
+                    buyButton.disabled = false;
+
                 }
             })
             .catch((error) => {
                 console.error(`Error al eliminar el producto con ID ${productId}:, ${error}`);
+                buyButton.disabled = false;
+
             });
     } else {
         console.error("No se pudo encontrar el carrito en el almacenamiento local.");
+        buyButton.disabled = false;
+
     }
 }
 
@@ -99,6 +119,8 @@ async function buyCart() {
     try {
         const cartId = await localStorage.getItem("cartID")
         const url = `/api/carts/${cartId}/purchase`;
+        const buyButton = document.querySelector('.cartFooter_btn');
+        buyButton.disabled = true;
 
         const response = await fetch(url, {
             method: "POST",
@@ -131,10 +153,12 @@ async function buyCart() {
 
         setTimeout(() => {
             openCheckout(responseData)
+            buyButton.disabled = false;
         }, 500);
     }
     catch (error) {
         console.error("Error en compra", error);
+        buyButton.disabled = false;
     }
 }
 
@@ -265,7 +289,6 @@ async function incrementarCantidad(btn, pid) {
     }
     await updateProductQuantity(pid, maxQuantity)
     price();
-    //await actualizarTotalProducts("+1")
     udateCart()
     await updateCartQuantity()
 }
@@ -285,7 +308,6 @@ async function decrementarCantidad(btn, pid) {
     }
     await updateProductQuantity(pid, maxQuantity)
     price();
-    //await actualizarTotalProducts("-1")
     udateCart()
     await updateCartQuantity()
 }
@@ -440,5 +462,4 @@ async function btnsDOM(maxStockValues) {
             console.error(`No se encontraron elementos para el producto con ID ${pid}`);
         }
     });
-    price();
 }

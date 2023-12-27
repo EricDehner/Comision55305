@@ -3,6 +3,8 @@ const pwResetSend = async () => {
     const tokenIndex = currentUrl.indexOf('pw-reset/') + 'pw-reset/'.length;
     const passwordInput1 = document.getElementById("password1");
     const passwordInput2 = document.getElementById("password2");
+    const pwResetButton = document.querySelector('.formAcc_content-btns--btn');
+    pwResetButton.disabled = true;
 
     let token = currentUrl.substring(tokenIndex);
     let password1 = passwordInput1.value;
@@ -29,6 +31,7 @@ const pwResetSend = async () => {
             if (password2 === "") {
                 passwordInput2.style.border = '2px solid #ff0000b0';
             }
+            pwResetButton.disabled = false;
         }
 
         if (password1 === password2) {
@@ -74,6 +77,7 @@ const pwResetSend = async () => {
                     },
                     className: "toastify-error"
                 }).showToast();
+                pwResetButton.disabled = true;
             }
         } else {
             Toastify({
@@ -86,6 +90,7 @@ const pwResetSend = async () => {
                 },
                 className: "toastify-error"
             }).showToast();
+            pwResetButton.disabled = true;
         }
 
     } catch (error) {
@@ -99,6 +104,7 @@ const pwResetSend = async () => {
                 y: 55,
             }
         }).showToast();
+        pwResetButton.disabled = true;
         console.log("Hubo un problema con la operación, usuario o contraseña incorrectos", error);
     }
 }

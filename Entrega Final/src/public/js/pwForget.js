@@ -1,5 +1,8 @@
 const pwRestore = async () => {
     const emailInputPw = document.getElementById("emailPW");
+    const pwForgotButton = document.querySelector('.formAcc_content-btns--btn');
+    pwForgotButton.disabled = true;
+
     let email = emailInputPw.value;
 
     emailInputPw.style.border = '1px solid #ccc';
@@ -17,7 +20,9 @@ const pwRestore = async () => {
                 },
                 className: "toastify-error"
             }).showToast();
-            emailInput.style.border = '2px solid #ff0000b0';
+            emailInputPw.style.border = '2px solid #ff0000b0';
+            pwForgotButton.disabled = false;
+
         } else {
             const response = await fetch("/api/sessions/restore-password", {
                 method: "POST",
@@ -29,13 +34,14 @@ const pwRestore = async () => {
             });
 
             if (!response.ok) {
+                pwForgotButton.disabled = false;
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
             const data = await response.json();
 
             if (data.status === "success") {
-                console.log("Restablecimiento de contraseña exitoso");
+                console.log("Restablecimiento de contraseña exitosamente");
             }
             Toastify({
                 text: "¡Email enviado con éxito!",
@@ -48,6 +54,7 @@ const pwRestore = async () => {
             }).showToast();
             setTimeout(() => {
                 window.location.href = "/login";
+                pwForgotButton.disabled = false;
             }, 1500);
         }
 
@@ -62,7 +69,7 @@ const pwRestore = async () => {
                 y: 55,
             }
         }).showToast();
-
+        pwForgotButton.disabled = false;
         console.log("Hubo un problema con la operación:", error);
     }
 }

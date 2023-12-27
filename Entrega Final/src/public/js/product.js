@@ -52,6 +52,8 @@ function decrementarCantidad() {
 const agregarProductoAlCarritoQty = async (pid, cantidad) => {
     try {
         let cart = localStorage.getItem("cartID");
+        const addQtyButton = document.querySelector('.product_content-btn');
+        addQtyButton.disabled = true;
 
         if (!cart) {
             document.cookie = "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -80,8 +82,8 @@ const agregarProductoAlCarritoQty = async (pid, cantidad) => {
                 },
                 duration: 1500
             }).showToast();
-
             await actualizarTotalProducts();
+            addQtyButton.disabled = true;
         } else if (response.status === 299) {
             Toastify({
                 text: "Producto fuera de stock!",
@@ -93,6 +95,7 @@ const agregarProductoAlCarritoQty = async (pid, cantidad) => {
                 },
                 className: "toastify-error"
             }).showToast();
+            addQtyButton.disabled = true;
         } else {
             Toastify({
                 text: "Error en agregar el Producto al Carrito!",
@@ -104,6 +107,7 @@ const agregarProductoAlCarritoQty = async (pid, cantidad) => {
                 },
                 className: "toastify-error"
             }).showToast();
+            addQtyButton.disabled = true;
         }
     } catch (error) {
         Toastify({
@@ -116,6 +120,7 @@ const agregarProductoAlCarritoQty = async (pid, cantidad) => {
             },
             className: "toastify-error"
         }).showToast();
+        addQtyButton.disabled = true;
     }
 }
 

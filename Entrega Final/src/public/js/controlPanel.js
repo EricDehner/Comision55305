@@ -24,6 +24,9 @@ function fondoCards() {
 
 
 async function eliminarUsuariosInactivos() {
+    const deleteInactiveButton = document.querySelector('.controlPanel_refresh');
+    deleteInactiveButton.disabled = true;
+
     try {
         const response = await fetch('api/users/inactive', {
             method: 'DELETE',
@@ -34,6 +37,7 @@ async function eliminarUsuariosInactivos() {
         });
 
         if (!response.ok) {
+            deleteInactiveButton.disabled = false;
             throw new Error(`Error al eliminar usuarios inactivos: ${response.status} ${response.statusText}`);
         }
 
@@ -49,7 +53,7 @@ async function eliminarUsuariosInactivos() {
                 },
                 backgroundColor: "green"
             }).showToast();
-
+            deleteInactiveButton.disabled = false;
         } else if (data.message === "1 usuarios eliminados.") {
             Toastify({
                 text: "1 usuario eliminado",
@@ -64,9 +68,7 @@ async function eliminarUsuariosInactivos() {
             setTimeout(() => {
                 window.location.reload();
             }, 4500);
-
         } else {
-
             Toastify({
                 text: data.message,
                 duration: 3000,
@@ -85,7 +87,6 @@ async function eliminarUsuariosInactivos() {
 
     } catch (error) {
         console.error('Error al eliminar usuarios inactivos:', error.message);
-
         Toastify({
             text: "Error al eliminar usuarios inactivos",
             duration: 3000,
@@ -96,10 +97,14 @@ async function eliminarUsuariosInactivos() {
             },
             backgroundColor: "red"
         }).showToast();
+        deleteInactiveButton.disabled = false;
+
     }
 }
 
 async function eliminarUsuario(userId) {
+    const deleteButton = document.querySelector('.userCard_header-btn');
+    deleteButton.disabled = true;
     try {
         const response = await fetch(`/api/users/deleteUser/${userId}`, {
             method: 'DELETE',
@@ -111,6 +116,7 @@ async function eliminarUsuario(userId) {
         });
 
         if (!response.ok) {
+            deleteButton.disabled = false;
             throw new Error(`Error al eliminar usuario: ${response.status} ${response.statusText}`);
         }
 
@@ -142,6 +148,7 @@ async function eliminarUsuario(userId) {
                 },
                 backgroundColor: "red"
             }).showToast();
+            deleteButton.disabled = false;
         }
     } catch (error) {
         Toastify({
@@ -154,6 +161,8 @@ async function eliminarUsuario(userId) {
             },
             backgroundColor: "red"
         }).showToast();
+        deleteButton.disabled = false;
+
     }
 }
 
@@ -173,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         "Content-type": "application/json; charset=UTF-8",
                         authorization: "Bearer " + localStorage.getItem("userID")
                     },
-        
+
                     body: JSON.stringify({ role: nuevoRol }),
                 });
 

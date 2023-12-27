@@ -35,7 +35,7 @@ socket.on("realTimeProducts", (data) => {
     data.forEach(item => {
         salida += `
         <div class="card">
-            <button data-tooltip="Eliminar producto" class="card_x" type="button" onclick="deleteProduct('${item._id}')"><span class="material-symbols-outlined-x">close</span></button>
+            <button data-tooltip="Eliminar producto" class="card_x" type="button" onclick="deleteProduct(event, '${item._id}')"><span class="material-symbols-outlined-x">close</span></button>
             <p id="id" class="ID_card none">${item.owner}</p>
             <div class="card_img">
                 <img class="card_img-img" src=${item.thumbnails} alt=${item.description} />
@@ -102,7 +102,7 @@ function editMenu() {
         <input type="text" class="realTime_content-add--input---item" id="thumbnails" placeholder="Imagen"
         required>
         </div>
-        <button class="realTime_content-btn green" type="submit" onclick="addProduct()">AGREGAR</button>
+        <button class="realTime_content-btn green" type="submit" onclick="addProduct(event)">AGREGAR</button>
     </div>
     `
         button.classList.add("realTime_header-btn--active");
@@ -116,7 +116,10 @@ function editMenu() {
     }
 }
 
-function addProduct() {
+function addProduct(event) {
+    const addButton = event.currentTarget;
+    addButton.disabled = true;
+
     const title = document.getElementById("title").value;
     const description = document.getElementById("description").value;
     const code = document.getElementById("code").value;
@@ -131,11 +134,24 @@ function addProduct() {
     };
 
     socket.emit("nuevoProducto", product);
+
+    document.getElementById("title").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("code").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("status").value = "";
+    document.getElementById("stock").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("thumbnails").value = "";
+
+    addButton.disabled = false;
 }
 
-function deleteProduct(idProduct) {
+function deleteProduct(event, idProduct) {
+    const deleteButton = event.currentTarget;
+    deleteButton.disabled = true;
     const product = { idProduct: idProduct, token: localStorage.getItem("userID") }
     socket.emit("eliminarProducto", product);
+    deleteButton.disabled = false;
 
 }
-
