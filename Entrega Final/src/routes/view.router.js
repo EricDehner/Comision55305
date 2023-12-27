@@ -62,14 +62,14 @@ router.get("/cart/:cid", checkSession, async (req, res) => {
     const cid = req.params.cid;
     const cart = await CM.getCart(cid);
     const user = req.session.user;
-
+    
     if (user.role === "admin") {
         return res.redirect('/realtimeproducts');
     } else {
-        if (cart) {
+        if (cart && user.cart === cid) {
             res.render("cart", { products: cart.products, user });
         } else {
-            res.status(400).send({ status: "error", message: "Error! No se encuentra el ID de Carrito!" });
+            res.status(403).send({ status: "error", message: "No tienes permiso para acceder a este carrito." });
         }
     }
 });

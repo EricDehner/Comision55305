@@ -420,16 +420,9 @@ async function udateCart() {
 
 async function btnsDOM(maxStockValues) {
     maxStockValues.forEach(({ pid, stock }) => {
-        console.log("pid", pid);
-        console.log("stock", stock);
         const quantitySpan = document.querySelector(`#qty_${pid}`);
         const buttonR = document.querySelector(`#quantityRemove_${pid}`);
         const buttonA = document.querySelector(`#quantityAdd_${pid}`);
-
-        console.log(buttonR);
-        console.log(quantitySpan);
-        console.log(buttonA);
-
         if (quantitySpan && buttonR && buttonA) {
             if (quantitySpan.innerText === "1") {
                 buttonR.classList.add('disabled');

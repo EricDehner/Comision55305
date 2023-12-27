@@ -31,9 +31,13 @@ class AuthService {
                 throw new Error("Profile information is incomplete.");
             }
 
-            if (!profile._json.email) {
-                console.warn('Email is null. Handling this case specifically.');
-                profile._json.email = 'no-email@example.com';
+            if (!profile._json.email || profile._json.email === 'no-email@example.com') {
+                console.warn('Email is null or no-email@example.com. Sending an error.');
+                throw new CustomError({
+                    name: "Error de autenticación",
+                    message: "No se puede acceder porque los datos son privados.",
+                    code: 401
+                });
             }
 
             let user = await userModel.findOne({ email: profile._json.email });

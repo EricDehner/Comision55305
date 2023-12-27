@@ -1,8 +1,26 @@
 {{#if (eq user.role "admin")}}
-<h2>COMPPRAS</h2>
-<div id="purchase_container"></div>
-
-
+<div class="purchase_header">
+    <h2 class="purchase_header-title">Compras</h2>
+    <button data-tooltip="Buscar compra por code" class="purchase_filter" id="toggleButton" onclick="searchCode()"><span
+            class="material-symbols-outlined-message">
+            feature_search
+        </span></button>
+    <div class="purchase_filter-container-none">
+        <input class="purchase_input" type="text" placeholder="Ingrese el código de la compra" id="codeInput">
+        <button class="purchase_btn" onclick="searchButtonClicked()">
+            <span class="material-symbols-outlined-search">
+                search
+            </span>
+        </button>
+    </div>
+</div>
+<div class="purchase_container" id="purchase_container"></div>
+<div class="modal purchaseModal">
+    <div class="modal-content-purchase">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div class="modal-content-container"></div>
+    </div>
+</div>
 {{else}}
 {{/if}}
 
