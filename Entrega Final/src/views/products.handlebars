@@ -40,7 +40,7 @@
             </div>
         </a>
         {{#if this.stock}}
-        <button class="card_content-btn--add" onclick="agregarProductoAlCarrito(`{{this._id}}`)">Agregar</button>
+        <button id="btn-{{this._id}}" class="card_content-btn--add" onclick="agregarProductoAlCarrito(`{{this._id}}`)">Agregar</button>
         {{else}}
         <p class="card_content-btn--noStock">Sin Stock</p>
         {{/if}}

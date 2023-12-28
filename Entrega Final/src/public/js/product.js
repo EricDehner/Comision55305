@@ -68,8 +68,6 @@ const agregarProductoAlCarritoQty = async (pid, cantidad) => {
         });
 
         cantidadGlobal = parseInt(cantidad, 10);
-
-
         updateDOM(parseInt(cantidad, 10));
 
         if (response.status === 200) {
@@ -83,7 +81,7 @@ const agregarProductoAlCarritoQty = async (pid, cantidad) => {
                 duration: 1500
             }).showToast();
             await actualizarTotalProducts();
-            addQtyButton.disabled = true;
+            addQtyButton.disabled = false;
         } else if (response.status === 299) {
             Toastify({
                 text: "Producto fuera de stock!",
@@ -95,7 +93,7 @@ const agregarProductoAlCarritoQty = async (pid, cantidad) => {
                 },
                 className: "toastify-error"
             }).showToast();
-            addQtyButton.disabled = true;
+            addQtyButton.disabled = false;
         } else {
             Toastify({
                 text: "Error en agregar el Producto al Carrito!",
@@ -107,7 +105,7 @@ const agregarProductoAlCarritoQty = async (pid, cantidad) => {
                 },
                 className: "toastify-error"
             }).showToast();
-            addQtyButton.disabled = true;
+            addQtyButton.disabled = false;
         }
     } catch (error) {
         Toastify({
@@ -120,7 +118,7 @@ const agregarProductoAlCarritoQty = async (pid, cantidad) => {
             },
             className: "toastify-error"
         }).showToast();
-        addQtyButton.disabled = true;
+        addQtyButton.disabled = false;
     }
 }
 

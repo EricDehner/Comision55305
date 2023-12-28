@@ -48,9 +48,8 @@ sortSelect.addEventListener("change", function () {
 const agregarProductoAlCarrito = async (pid) => {
     try {
         let cart = localStorage.getItem("cartID");
-        const addButton = document.querySelector('.card_content-btn--add');
+        const addButton = document.querySelector(`#btn-${pid}`);
         addButton.disabled = true;
-
 
         if (!cart) {
             document.cookie = "connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -87,10 +86,8 @@ const agregarProductoAlCarrito = async (pid) => {
                     },
                     duration: 1500
                 }).showToast();
-
                 await actualizarTotalProducts();
                 addButton.disabled = false;
-
             }
         } else {
             Toastify({
