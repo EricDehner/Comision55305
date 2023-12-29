@@ -8,7 +8,7 @@ const registerUser = async () => {
     const emailInput = document.getElementById("email");
     const ageInput = document.getElementById("age");
     const passwordInput = document.getElementById("password");
-    const registerButton = document.querySelector('.formAcc_content-btns-btn');
+    const registerButton = document.querySelector('#btn-register');
     registerButton.disabled = true;
 
 
