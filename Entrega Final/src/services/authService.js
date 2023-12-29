@@ -28,16 +28,12 @@ class AuthService {
 
     async githubCallback(profile) {
         try {
-            if (typeof profile === 'string') {
-                profile = JSON.parse(profile);
-            }
-
             if (!profile || !profile._json) {
                 throw new Error("Profile information is incomplete.");
             }
 
-            if (!profile._json.email || profile._json.email === 'no-email@example.com') {
-                console.warn('Email is null or no-email@example.com. Sending an error.');
+            if (!profile._json.email) {
+                console.warn('Email is null. Sending an error.');
                 throw new CustomError({
                     name: "Error de autenticación",
                     message: "No se puede acceder porque los datos son privados. Vaya a https://github.com/settings/profile y verifique en la opcion public email  figure su email.",
@@ -57,9 +53,6 @@ class AuthService {
                     role: 'user',
                 });
             }
-
-            console.log("usuario github:", user);
-
 
             return user;
         } catch (error) {

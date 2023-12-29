@@ -126,7 +126,7 @@ passport.use(
                 const authService = new AuthService();
                 //console.log("Profile:", JSON.stringify(profile, null, 2));
                 const user = await authService.githubCallback(profile);
-
+console.log("Usuario de github",user);
                 if (user) {
                     return done(null, user);
                 } else {

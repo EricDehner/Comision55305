@@ -11,7 +11,6 @@ const registerUser = async () => {
     const registerButton = document.querySelector('#btn-register');
     registerButton.disabled = true;
 
-
     let first_name = first_nameInput.value;
     let last_name = last_nameInput.value;
     let email = emailInput.value;
