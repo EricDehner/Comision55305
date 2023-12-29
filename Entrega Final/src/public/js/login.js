@@ -28,7 +28,6 @@ const loginUser = async () => {
 
             const data = await response.json();
 
-            console.log("data contiene: ", data);
             localStorage.setItem("userID", data.token)
             if (data.status === "success") {
                 localStorage.setItem("cartID", data.user.cart)
@@ -84,3 +83,5 @@ togglePassword.addEventListener('click', function () {
         visibilityIcon.textContent = 'visibility';
     }
 });
+
+

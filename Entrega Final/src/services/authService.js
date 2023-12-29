@@ -29,6 +29,7 @@ class AuthService {
     async githubCallback(profile) {
         try {
             console.log("Perfil de GitHub:", profile);
+            console.log("Perfil _json :", profile._json);
 
             if (!profile || !profile._json) {
                 throw new Error("Profile information is incomplete.");
