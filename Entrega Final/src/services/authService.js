@@ -28,11 +28,7 @@ class AuthService {
 
     async githubCallback(profile) {
         try {
-            //console.log("Perfil de GitHub:", profile);
-            //console.log("Perfil _json :", profile._json);
-
             if (typeof profile === 'string') {
-                // Si profile es una cadena JSON, analízala para obtener el objeto
                 profile = JSON.parse(profile);
             }
 
@@ -44,7 +40,7 @@ class AuthService {
                 console.warn('Email is null or no-email@example.com. Sending an error.');
                 throw new CustomError({
                     name: "Error de autenticación",
-                    message: "No se puede acceder porque los datos son privados.",
+                    message: "No se puede acceder porque los datos son privados. Vaya a https://github.com/settings/profile y verifique en la opcion public email  figure su email.",
                     code: 401
                 });
             }
@@ -53,6 +49,7 @@ class AuthService {
 
             if (!user) {
                 user = await userModel.create({
+                    _id: new mongoose.Types.ObjectId(),
                     first_name: profile._json.name || 'Unknown',
                     last_name: '',
                     email: profile._json.email,
