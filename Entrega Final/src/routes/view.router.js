@@ -4,7 +4,6 @@ import CartManager from "../dao/cartManagerDao.js";
 import cartController from "../controllers/cartController.js";
 import { checkSession, checkAuth } from "../middlewares/errorCheck.js"
 import { userModel } from "../dao/models/user.model.js"
-import { ticketModel } from "../dao/models/ticket.model.js";
 
 const router = express.Router();
 const PM = new ProductManager();
