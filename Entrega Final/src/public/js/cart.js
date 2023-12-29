@@ -280,6 +280,7 @@ function price() {
 }
 
 async function incrementarCantidad(btn, pid) {
+    btn.disabled = true;
     const quantitySpan = btn.parentElement.querySelector('.quantity');
     const currentQuantity = parseInt(quantitySpan.innerText, 10);
     const maxQuantity = parseInt(quantitySpan.getAttribute('data-max'), 10);
@@ -291,9 +292,12 @@ async function incrementarCantidad(btn, pid) {
     price();
     udateCart()
     await updateCartQuantity()
+    btn.disabled = false;
+
 }
 
 async function decrementarCantidad(btn, pid) {
+    btn.disabled = true;
     const quantitySpan = btn.parentElement.querySelector('.quantity');
 
     if (quantitySpan === 0) {
@@ -310,6 +314,7 @@ async function decrementarCantidad(btn, pid) {
     price();
     udateCart()
     await updateCartQuantity()
+    btn.disabled = false;
 }
 
 async function updateProductQuantity(pid, maxQuantity) {

@@ -31,22 +31,28 @@ async function actualizarTotalProducts() {
 }
 
 function incrementarCantidad() {
+    const addBtn = document.getElementById('add');
+    addBtn.disabled = true;
     const quantitySpan = document.getElementById('quantity');
     const currentQuantity = parseInt(quantitySpan.innerText, 10);
     const maxQuantity = parseInt(quantitySpan.getAttribute('data-max'), 10);
-
+    
     if (currentQuantity < maxQuantity) {
         quantitySpan.innerText = currentQuantity + 1;
     }
+    addBtn.disabled = false;
 }
 
 function decrementarCantidad() {
+    const removeBtn = document.getElementById('add');
+    removeBtn.disabled = true;
     const quantitySpan = document.getElementById('quantity');
     const currentQuantity = parseInt(quantitySpan.innerText, 10);
-
+    
     if (currentQuantity > 1) {
         quantitySpan.innerText = currentQuantity - 1;
     }
+    removeBtn.disabled = false;
 }
 
 const agregarProductoAlCarritoQty = async (pid, cantidad) => {

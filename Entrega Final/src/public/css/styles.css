@@ -3194,23 +3194,20 @@ label {
 
 .purchase_card {
     width: 340px;
-    height: 80px;
     display: flex;
     flex-direction: column;
     background-color: rgb(228, 228, 228);
     border-radius: 14px;
-    box-shadow: 5px 3px 8px rgba(0, 0, 0, 0.361);
-    padding: 0.5rem;
     margin: 18px;
     position: relative;
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.361);
 }
 
 .purchase_card:hover {
     cursor: pointer;
-    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.361);
     color: black;
+    box-shadow: 5px 3px 8px rgba(0, 0, 0, 0.361);
     background-color: rgb(233 233 233);
-    border: solid 1px #00000045;
 }
 
 .purchase_card-date {
@@ -3517,4 +3514,60 @@ label {
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
+}
+
+.purchaseCard_icon {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+    border: 0;
+    position: absolute;
+    z-index: 9;
+    left: 11px;
+    top: 8px;
+}
+
+.material-symbols-outlined-purchase {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 23px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    position: relative;
+    white-space: nowrap;
+    word-wrap: normal;
+    left: 10px;
+    top: 9px;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -moz-font-feature-settings: 'liga';
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+.purchaseCard_header {
+    border-radius: 14px 14px 0 0;
+    background-color: #b9d3d35f;
+    height: 25px;
+    width: 100%;
+    position: relative;
+}
+
+.purchaseCard_content{
+    padding: .5rem;
+}
+
+.purchaseCard_header-code {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    position: absolute;
+    top: 3px;
+    left: 59px;
+    filter: drop-shadow(1px 2px 2px #33333316);
+    color: #292929c7;
 }

@@ -125,7 +125,6 @@ class UserController {
                 return res.status(404).send("Usuario no encontrado.");
             }
 
-            // Función auxiliar para agregar o actualizar un archivo en documentos
             const addOrUpdateFile = (file, fileName) => {
                 const existingIndex = user.documents.findIndex(
                     (doc) => doc.name === fileName

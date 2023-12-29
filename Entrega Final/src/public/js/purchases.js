@@ -47,16 +47,51 @@ function createPurchaseCard(purchases) {
         card.onclick = function () { openModal(purchase._id, purchase.products, purchase.code, fecha, hora); };
 
         card.innerHTML = `
-        <p class="purchase_card-purchaser">${purchase.purchaser}</p>
-        <div class="purchase_card-footer">
-            <p class="purchase_card-amount">$${purchase.amount}</p>
-            <div class="purchase_card-date">
-                <p class="purchase_card-date--item">${fecha}</p>
-                <p class="purchase_card-date--item time">${hora}</p>
+        <div class="purchaseCard_header"><p class="purchaseCard_header-code">${purchase.code}</p></div>
+        <div class="purchaseCard_icon">
+            <span class="material-symbols-outlined-purchase">shopping_cart</span>
+        </div>
+        <div class="purchaseCard_content">
+            <p class="purchase_card-purchaser">${purchase.purchaser}</p>
+            <div class="purchase_card-footer">
+                <p class="purchase_card-amount">$${purchase.amount}</p>
+                <div class="purchase_card-date">
+                    <p class="purchase_card-date--item">${fecha}</p>
+                    <p class="purchase_card-date--item time">${hora}</p>
+                </div>
             </div>
         </div>
         `;
         container.appendChild(card);
+        fondoCards(purchase._id)
+    });
+}
+
+function fondoCards(id) {
+    const cards = document.querySelectorAll(".purchase_card");
+
+    function hashCode(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
+            hash = (hash << 5) - hash + char;
+        }
+        return hash;
+    }
+
+    function actualizarFondo(purchaseCard) {
+        const purchaseId = purchaseCard.getAttribute("data-id");
+        const ultimosSeisCaracteres = purchaseId.slice(-6);
+        const colorUnico = Math.abs(hashCode(ultimosSeisCaracteres)).toString(16).substring(0, 6);
+
+        purchaseCard.querySelector(".purchaseCard_header").style.backgroundColor = `#${colorUnico}a4`;
+    }
+
+    cards.forEach(card => {
+        const dataId = card.getAttribute("data-id");
+        if (dataId === id) {
+            actualizarFondo(card);
+        }
     });
 }
 
