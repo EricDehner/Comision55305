@@ -28,8 +28,8 @@ class AuthService {
 
     async githubCallback(profile) {
         try {
-            console.log("Perfil de GitHub:", profile);
-            console.log("Perfil _json :", profile._json);
+            //console.log("Perfil de GitHub:", profile);
+            //console.log("Perfil _json :", profile._json);
 
             if (typeof profile === 'string') {
                 // Si profile es una cadena JSON, analízala para obtener el objeto

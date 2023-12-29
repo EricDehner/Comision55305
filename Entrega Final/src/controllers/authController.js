@@ -27,13 +27,15 @@ class AuthController {
 
   async githubCallback(req, res) {
     try {
-      const user = await this.authService.githubCallback(req.user);
-      req.session.user = this.authService.extractUserData(user);
-      req.session.loggedIn = true;
-      req.logger.info("Usuario vinculado");
-      return res.redirect("/products");
+      if (req.user) {
+        req.session.user = req.user;
+        req.session.loggedIn = true;
+        return res.redirect("/products");
+      } else {
+        return res.redirect("/login");
+      }
     } catch (error) {
-      req.logger.error("Ocurrió un error:", error);
+      console.error("An error occurred:", error);
       return res.redirect("/login");
     }
   }

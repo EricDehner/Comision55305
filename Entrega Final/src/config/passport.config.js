@@ -124,7 +124,7 @@ passport.use(
         async (accessToken, refreshToken, profile, done) => {
             try {
                 const authService = new AuthService();
-                console.log("Profile:", JSON.stringify(profile, null, 2));
+                //console.log("Profile:", JSON.stringify(profile, null, 2));
                 const user = await authService.githubCallback(profile);
 
                 if (user) {
