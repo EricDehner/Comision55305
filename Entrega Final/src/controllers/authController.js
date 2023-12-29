@@ -26,7 +26,6 @@ class AuthController {
   }
 
   async githubCallback(req, res) {
-    console.log("Inside AuthController githubCallback");
     try {
       const user = await this.authService.githubCallback(req.user);
       req.session.user = this.authService.extractUserData(user);

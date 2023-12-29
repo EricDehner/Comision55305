@@ -62,7 +62,7 @@ function clearCart() {
 
 function deleteProduct(productId) {
     const cid = localStorage.getItem("cartID");
-    const buyButton = document.querySelector('.cart_content-btn');
+    const buyButton = document.querySelector(`#delete-${productId}`);
     buyButton.disabled = true;
 
 

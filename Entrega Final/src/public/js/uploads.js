@@ -74,7 +74,7 @@ function validateAndSubmitForm() {
 function submitForm() {
     const form = document.getElementById('uploadForm');
     const formData = new FormData(form);
-    const formButton = document.querySelector('.cart_content-btn');
+    const formButton = document.querySelector('.upload_footer-btn');
     formButton.disabled = true;
 
 
@@ -148,7 +148,7 @@ function submitFormPremium(formId, btnId) {
     const form = document.getElementById(formId);
     const formData = new FormData(form);
     const uploadMessageBtn = document.getElementById(btnId);
-    const formPremiumButton = document.querySelector('.cart_content-btn');
+    const formPremiumButton = document.querySelector('#uploadMessage');
     formPremiumButton.disabled = true;
 
     fetch(form.action, {

@@ -37,7 +37,7 @@
                         </button>
                     </div>
                     <p class="cart_content-idProduct">{{this.product._id}}</p>
-                    <button class="cart_content-btn" onclick="deleteProduct('{{this.product._id}}')">
+                    <button id="delete-{{this.product._id}}" class="cart_content-btn" onclick="deleteProduct('{{this.product._id}}')">
                         <span class="material-symbols-outlined delete_icon">delete</span>
                     </button>
                 </div>
