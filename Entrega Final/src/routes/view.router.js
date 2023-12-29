@@ -17,6 +17,7 @@ router.get("/", checkSession, async (req, res) => {
 router.get("/products", checkSession, async (req, res) => {
     const products = await PM.getProducts(req.query);
     const user = req.session.user;
+    console.log("usuario view", user);
     if (user.role === "admin") {
         return res.redirect('/realtimeproducts');
     } else {
@@ -62,7 +63,7 @@ router.get("/cart/:cid", checkSession, async (req, res) => {
     const cid = req.params.cid;
     const cart = await CM.getCart(cid);
     const user = req.session.user;
-    
+
     if (user.role === "admin") {
         return res.redirect('/realtimeproducts');
     } else {
