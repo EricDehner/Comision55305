@@ -27,6 +27,8 @@ class UserService {
                 last_connection
             });
 
+console.log("usuario registrado:", user);
+
             if (user) {
                 return { status: "success", user, redirect: "/login" };
             } else {

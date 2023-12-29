@@ -49,7 +49,6 @@ class AuthService {
 
             if (!user) {
                 user = await userModel.create({
-                    _id: new mongoose.Types.ObjectId(),
                     first_name: profile._json.name || 'Unknown',
                     last_name: '',
                     email: profile._json.email,
@@ -58,6 +57,9 @@ class AuthService {
                     role: 'user',
                 });
             }
+
+            console.log("usuario github:", user);
+
 
             return user;
         } catch (error) {
