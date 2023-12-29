@@ -31,6 +31,11 @@ class AuthService {
             console.log("Perfil de GitHub:", profile);
             console.log("Perfil _json :", profile._json);
 
+            if (typeof profile === 'string') {
+                // Si profile es una cadena JSON, analízala para obtener el objeto
+                profile = JSON.parse(profile);
+            }
+
             if (!profile || !profile._json) {
                 throw new Error("Profile information is incomplete.");
             }
