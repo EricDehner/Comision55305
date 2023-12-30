@@ -82,7 +82,6 @@ function submitForm() {
     fetch(form.action, {
         method: 'POST',
         headers: {
-            "Content-type": "application/json; charset=UTF-8",
             authorization: "Bearer " + localStorage.getItem("userID")
         },
         body: formData
@@ -154,7 +153,6 @@ function submitFormPremium(formId, btnId) {
     fetch(form.action, {
         method: 'POST',
         headers: {
-            "Content-type": "application/json; charset=UTF-8",
             authorization: "Bearer " + localStorage.getItem("userID")
         },
         body: formData

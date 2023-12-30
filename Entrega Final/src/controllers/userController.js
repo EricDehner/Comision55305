@@ -8,7 +8,6 @@ import { userModel } from "../dao/models/user.model.js";
 import { transporter } from "./emailController.js";
 import { ENV_CONFIG } from "../config/config.js";
 
-
 class UserController {
     constructor() {
         this.userService = new UserService();
@@ -170,7 +169,6 @@ class UserController {
         try {
             const userId = req.params.uid;
             const user = await userModel.findById(userId);
-
             if (!user) {
                 return res.status(404).send("Usuario no encontrado.");
             }
@@ -190,6 +188,12 @@ class UserController {
                 user.isPremium = true;
                 user.role = "premium";
                 await user.save();
+
+                req.session.user = {
+                    ...req.session.user,
+                    role: "premium",
+                };
+
                 res.status(200).send("Cuenta actualizada a premium.");
             } else {
                 res.status(400).send("Documentos requeridos no están completos.");
@@ -201,8 +205,6 @@ class UserController {
     }
 
     async uploadPremiumDocuments(req, res) {
-        console.log("uploadPremiumDocuments llamado", req.body);
-
         try {
             const userId = req.params.uid;
             const files = req.files;
@@ -212,7 +214,6 @@ class UserController {
                 return res.status(404).send("Usuario no encontrado.");
             }
 
-            // Función auxiliar para actualizar o agregar un documento
             const updateOrAddDocument = (docName, file) => {
                 const existingDocIndex = user.documents.findIndex(
                     (doc) => doc.name === docName
@@ -230,7 +231,6 @@ class UserController {
                 }
             };
 
-            // Actualizar los documentos premium en el usuario
             if (files.identificationDocument) {
                 updateOrAddDocument(
                     "identificationDocument",
